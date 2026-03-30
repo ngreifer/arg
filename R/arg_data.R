@@ -49,70 +49,88 @@
 
 #' @export
 #' @rdname arg_data
-arg_atomic <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_atomic <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                       .call) {
   if (!is.atomic(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be an atomic vector")
+    err(.msg %or% "{.arg {(.arg)}} must be an atomic vector",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_data
-arg_vector <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_vector <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                       .call) {
   if (!is.atomic(x) || !is_null(dim(x))) {
-    err(.msg %or% "{.arg {(.arg)}} must be a vector")
+    err(.msg %or% "{.arg {(.arg)}} must be a vector",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_data
-arg_list <- function(x, df_ok = FALSE, .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_flag(df_ok)
+arg_list <- function(x, df_ok = FALSE,
+                     .arg = rlang::caller_arg(x), .msg = NULL,
+                     .call) {
+  arg_flag(df_ok, .call = rlang::current_env())
 
   if (!df_ok && is.data.frame(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a list and not a data frame")
+    err(.msg %or% "{.arg {(.arg)}} must be a list and not a data frame",
+        .call = .call)
   }
 
   if (!is.list(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a list")
+    err(.msg %or% "{.arg {(.arg)}} must be a list",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_data
-arg_data.frame <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_data.frame <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                           .call) {
   if (!is.data.frame(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a data frame")
+    err(.msg %or% "{.arg {(.arg)}} must be a data frame",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_data
-arg_matrix <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_matrix <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                       .call) {
   if (!is.matrix(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a matrix")
+    err(.msg %or% "{.arg {(.arg)}} must be a matrix",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_data
-arg_array <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_array <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                      .call) {
   if (!is.array(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be an array")
+    err(.msg %or% "{.arg {(.arg)}} must be an array",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_data
-arg_data <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_data <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                     .call) {
   if (!is.data.frame(x) && !is.matrix(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a data frame or matrix")
+    err(.msg %or% "{.arg {(.arg)}} must be a data frame or matrix",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_data
-arg_env <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_env <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                    .call) {
   if (!is.environment(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be an enviornment")
+    err(.msg %or% "{.arg {(.arg)}} must be an enviornment",
+        .call = .call)
   }
 }

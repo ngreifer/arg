@@ -53,60 +53,79 @@
 #' try(g(.7))   # No error: number within range
 
 #' @export
-when_supplied <- function(x, ..., .arg = rlang::caller_arg(x)) {
-  if (!missing(x)) {
+when_supplied <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
+  if (!rlang::is_missing(x)) {
     force(.arg)
-    arg_dots_supplied(...)
+    arg_dots_supplied(..., .call = rlang::current_env())
 
     dots <- rlang::call_match(dots_expand = FALSE)[["..."]]
 
-    for (i in dots) {
-      j <- .to_arg_fun_call(i)
+    for (i in seq_along(dots)) {
+      test <- .to_arg_fun_call(dots[[i]]) |>
+        eval() |>
+        try(silent = TRUE)
 
-      tryCatch({eval(j)},
-               error = function(e) {
-                 err(paste("when supplied,",
-                           ansi_lower_first(conditionMessage(e))))
-               })
+      if (inherits(test, "try-error")) {
+        .msg <- conditionMessage(attr(test, "condition")) |>
+          cli::ansi_strsplit("\n") |>
+          unlist(recursive = FALSE)
+
+        .msg[1L] <- paste("When {.arg {(.arg)}} is supplied,", ansi_lower_first(.msg[1L]))
+
+        err(.msg, .call = .call)
+      }
     }
   }
 }
 
 #' @export
 #' @rdname when_supplied
-when_not_null <- function(x, ..., .arg = rlang::caller_arg(x)) {
+when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
   if (is_not_null(x)) {
     force(.arg)
-    arg_dots_supplied(...)
+    arg_dots_supplied(..., .call = rlang::current_env())
 
     dots <- rlang::call_match(dots_expand = FALSE)[["..."]]
 
-    for (i in dots) {
-      j <- .to_arg_fun_call(i)
+    for (i in seq_along(dots)) {
+      test <- .to_arg_fun_call(dots[[i]]) |>
+        eval() |>
+        try(silent = TRUE)
 
-      tryCatch({eval(j)},
-               error = function(e) {
-                 err(paste(cli::format_inline("when not {.val {list(NULL)}},"),
-                           ansi_lower_first(conditionMessage(e))))
-               })
+      if (inherits(test, "try-error")) {
+        .msg <- conditionMessage(attr(test, "condition")) |>
+          cli::ansi_strsplit("\n") |>
+          unlist(recursive = FALSE)
+
+        .msg[1L] <- paste(cli::format_inline("When {.arg {(.arg)}} is not {.val {list(NULL)}},"),
+                          ansi_lower_first(.msg[1L]))
+
+        err(.msg, .call = .call)
+      }
     }
   }
 }
 
 .to_arg_fun_call <- function(arg_call) {
-  if (!is.call(arg_call)) {
+  if (!is.call(arg_call) ||
+      any_apply(as.list(arg_call), identical, as.name("::")) ||
+      any_apply(as.list(arg_call), identical, as.name(":::"))) {
     arg_call <- rlang::call2(arg_call)
   }
 
   fmls <- rlang::fn_fmls_names(rlang::call_fn(arg_call))
 
   if ("x" %in% fmls && !("x" %in% rlang::call_args_names(arg_call))) {
-    arg_call <- rlang::call_modify(arg_call, x = quote(x))
+    arg_call <- rlang::call_modify(arg_call, !!!list(x = quote(x)))
   }
 
   if (".arg" %in% fmls && !(".arg" %in% rlang::call_args_names(arg_call))) {
-    arg_call <- rlang::call_modify(arg_call, .arg = quote(.arg))
+    arg_call <- rlang::call_modify(arg_call, !!!list(.arg = quote(.arg)))
   }
 
-  rlang::call_match(call = arg_call, fn  = rlang::call_fn(arg_call))
+  if (".call" %in% fmls) {
+    arg_call <- rlang::call_modify(arg_call, !!!list(.call = NULL))
+  }
+
+  rlang::call_match(call = arg_call, fn = rlang::call_fn(arg_call))
 }

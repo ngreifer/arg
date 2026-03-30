@@ -40,16 +40,20 @@
 #' try(f2(TRUE)) ## Error: z must be NULL or a number
 
 #' @export
-arg_non_null <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_non_null <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                         .call) {
   if (is_null(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be non-{.val {list(NULL)}}")
+    err(.msg %or% "{.arg {(.arg)}} must be non-{.val {list(NULL)}}",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_non_null
-arg_null <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_null <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                     .call) {
   if (is_not_null(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be {.val {list(NULL)}}")
+    err(.msg %or% "{.arg {(.arg)}} must be {.val {list(NULL)}}",
+        .call = .call)
   }
 }

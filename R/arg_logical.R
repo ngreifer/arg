@@ -29,19 +29,23 @@
 #' try(arg_logical(obj)) # Error must be logical
 
 #' @export
-arg_logical <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_logical <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   if (!is.logical(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a logical vector")
+    err(.msg %or% "{.arg {(.arg)}} must be a logical vector",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_logical
-arg_flag <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
-  if (!is.logical(x) || !anyNA(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a logical value ({.or {.val {c(TRUE, FALSE)}}})")
+arg_flag <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
+  if (!is.logical(x) || anyNA(x)) {
+    err(.msg %or% "{.arg {(.arg)}} must be a logical value ({.or {.val {c(TRUE, FALSE)}}})",
+        .call = .call)
   }
-  else if (length(x) != 1L) {
-    err(.msg %or% "{.arg {(.arg)}} must be a single logical value ({.or {.val {c(TRUE, FALSE)}}})")
+
+  if (length(x) != 1L) {
+    err(.msg %or% "{.arg {(.arg)}} must be a single logical value ({.or {.val {c(TRUE, FALSE)}}})",
+        .call = .call)
   }
 }

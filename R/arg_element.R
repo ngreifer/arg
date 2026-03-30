@@ -36,44 +36,53 @@
 #' try(g(c("opt1", "opt2"))) # No error, none are elements
 
 #' @export
-arg_element <- function(x, values, .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_supplied(values)
+arg_element <- function(x, values,
+                        .arg = rlang::caller_arg(x), .msg = NULL,
+                        .call) {
+  arg_supplied(values, .call = rlang::current_env())
 
   if (is_null(x) || !all(is.element(x, values))) {
     if (is_not_null(.msg)) {
-      err(.msg)
+      err(.msg, .call = .call)
     }
 
     if (is_null(values)) {
-      err("{.arg {(.arg)}} cannot take on any value")
+      err("{.arg {(.arg)}} cannot take on any value",
+          .call = .call)
     }
 
     one_of <- if (length(values) > 1L) "one of"
 
     if (length(x) <= 1L) {
-      err("{.arg {(.arg)}} must be {one_of} {.or {.val {values}}}")
+      err("{.arg {(.arg)}} must be {one_of} {.or {.val {values}}}",
+          .call = .call)
     }
 
-    err("each element of {.arg {(.arg)}} must be {one_of} {.or {.val {values}}}")
+    err("each element of {.arg {(.arg)}} must be {one_of} {.or {.val {values}}}",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_element
-arg_not_element <- function(x, values, .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_supplied(values)
+arg_not_element <- function(x, values,
+                            .arg = rlang::caller_arg(x), .msg = NULL,
+                            .call) {
+  arg_supplied(values, .call = rlang::current_env())
 
   if (is_not_null(x) && any(is.element(x, values))) {
     if (is_not_null(.msg)) {
-      err(.msg)
+      err(.msg, .call = .call)
     }
 
     one_of <- if (length(values) > 1L) "one of"
 
     if (length(x) == 1L) {
-      err("{.arg {(.arg)}} must not be {one_of} {.or {.val {values}}}")
+      err("{.arg {(.arg)}} must not be {one_of} {.or {.val {values}}}",
+          .call = .call)
     }
 
-    err("no element of {.arg {(.arg)}} may be {one_of} {.or {.val {values}}}")
+    err("no element of {.arg {(.arg)}} may be {one_of} {.or {.val {values}}}",
+        .call = .call)
   }
 }

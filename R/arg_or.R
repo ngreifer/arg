@@ -76,7 +76,7 @@
 #' try(h("d")) # Error: not in "a", "b", or "c"
 
 #' @export
-arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   force(.arg)
 
   if (...length() == 0L) {
@@ -100,7 +100,7 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL) {
   }
 
   if (is_not_null(.msg)) {
-    err(.msg)
+    err(.msg, .call = .call)
   }
 
   grouped_msgs <- group_messages(failures, "or")
@@ -161,17 +161,19 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL) {
   n_err <- sum(nzchar(grouped_msgs))
 
   if (n_err == 1L) {
-    err(grouped_msgs[nzchar(grouped_msgs)])
+    err(grouped_msgs[nzchar(grouped_msgs)],
+        .call = .call)
   }
 
   err(c("At least one of the following conditions must be met:",
         setNames(grouped_msgs[nzchar(grouped_msgs)],
-                 rep.int("*", n_err))))
+                 rep.int("*", n_err))),
+      .call = .call)
 }
 
 #' @export
 #' @rdname arg_or
-arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   force(.arg)
 
   dots <- rlang::call_match(dots_expand = FALSE)[["..."]]
@@ -195,7 +197,7 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL) {
   }
 
   if (is_not_null(.msg)) {
-    err(.msg)
+    err(.msg, .call = .call)
   }
 
   ## Get error messages for non-failures
@@ -255,11 +257,12 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL) {
   }
 
   if (length(failures) == 1L) {
-    err(failures)
+    err(failures, .call = .call)
   }
 
   err(c("All of the following conditions must be met:",
-        setNames(failures, ifelse(failed, "x", "v"))))
+        setNames(failures, ifelse(failed, "x", "v"))),
+      .call = .call)
 }
 
 group_messages <- function(messages, and_or = "and", .envir = parent.frame()) {

@@ -7,6 +7,7 @@
 #' @param class a character vector of one or more classes to check `x` against.
 #' @param .arg the name of the argument supplied to `x` to appear in error messages. The default is to extract the argument's name using [rlang::caller_arg()]. Ignored if `.msg` is supplied.
 #' @param .msg an optional alternative message to display if an error is thrown instead of the default message.
+#' @param .call the execution environment of a currently running function, e.g. `.call = rlang::current_env()`. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to [err()]. Set to `NULL` to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.
 #'
 #' @details
 #' `arg_is()` and `arg_is_not()` use [inherits()] to test for class membership. `arg_is()` throws an error only if no elements of `class(x)` are in `class`. `arg_is_not()` throws an error if any elements of `class(x)` are in `class`.
@@ -50,23 +51,27 @@
 
 #' @export
 arg_is <- function(x, class,
-                   .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_supplied(class)
-  arg_character(class)
+                   .arg = rlang::caller_arg(x), .msg = NULL,
+                   .call) {
+  arg_supplied(class, .call = rlang::current_env())
+  arg_character(class, .call = rlang::current_env())
 
   if (!inherits(x, class)) {
-    err(.msg %or% "{.arg {(.arg)}} must inherit from class {.or {.cls {class}}}")
+    err(.msg %or% "{.arg {(.arg)}} must inherit from class {.or {.cls {class}}}",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_is
 arg_is_not <- function(x, class,
-                       .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_supplied(class)
-  arg_character(class)
+                       .arg = rlang::caller_arg(x), .msg = NULL,
+                       .call) {
+  arg_supplied(class, .call = rlang::current_env())
+  arg_character(class, .call = rlang::current_env())
 
   if (inherits(x, class)) {
-    err(.msg %or% "{.arg {(.arg)}} must not inherit from class {.or {.cls {class}}}")
+    err(.msg %or% "{.arg {(.arg)}} must not inherit from class {.or {.cls {class}}}",
+        .call = .call)
   }
 }

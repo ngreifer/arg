@@ -37,68 +37,78 @@
 
 #' @export
 arg_symmetric <- function(x, tol = 100 * .Machine$double.eps, ...,
-                          .arg = rlang::caller_arg(x), .msg = NULL) {
+                          .arg = rlang::caller_arg(x), .msg = NULL,
+                          .call) {
   if (!is.matrix(x) || nrow(x) != ncol(x) || !is.numeric(x) ||
       !isSymmetric(unname(x), tol = tol, ...)) {
-    if (is_not_null(.msg)) {
-      err(.msg)
-    }
-
     if (isTRUE(all.equal(tol, Inf))) {
-      err("{.arg {(.arg)}} must be a square, numeric matrix")
+      err(.msg %or% "{.arg {(.arg)}} must be a square, numeric matrix",
+          .call = .call)
     }
 
-    err("{.arg {(.arg)}} must be a square, symmetric, numeric matrix")
+    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_symmetric
 arg_cov <- function(x, tol = 100 * .Machine$double.eps, ...,
-                    .arg = rlang::caller_arg(x), .msg = NULL) {
+                    .arg = rlang::caller_arg(x), .msg = NULL,
+                    .call) {
   if (!is.matrix(x) || nrow(x) != ncol(x) || !is.numeric(x) ||
       !isSymmetric(unname(x), tol = tol, ...)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix")
+    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix",
+        .call = .call)
   }
 
   if (any(diag(x) < -tol)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric matrix with non-negative values on the diagonal")
+    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric matrix with non-negative values on the diagonal",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_symmetric
 arg_cor <- function(x, tol = 100 * .Machine$double.eps, ...,
-                    .arg = rlang::caller_arg(x), .msg = NULL) {
+                    .arg = rlang::caller_arg(x), .msg = NULL,
+                    .call) {
 
   if (!is.matrix(x) || nrow(x) != ncol(x) || !is.numeric(x) ||
       !isSymmetric(unname(x), tol = tol, ...)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix")
+    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix",
+        .call = .call)
   }
 
   if (any(abs(x) > 1 + tol)) {
-    err(.msg %or% "all values in {.arg {(.arg)}} must be between {.val {c(-1, 1)}}")
+    err(.msg %or% "all values in {.arg {(.arg)}} must be between {.val {c(-1, 1)}}",
+        .call = .call)
   }
 
   if (any(abs(diag(x) - 1) > tol)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric matrix with ones on the diagonal")
+    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric matrix with ones on the diagonal",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_symmetric
 arg_distance <- function(x, tol = 100 * .Machine$double.eps, ...,
-                         .arg = rlang::caller_arg(x), .msg = NULL) {
+                         .arg = rlang::caller_arg(x), .msg = NULL,
+                         .call) {
   if (!is.matrix(x) || nrow(x) != ncol(x) || !is.numeric(x) ||
       !isSymmetric(unname(x), tol = tol, ...)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix")
+    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix",
+        .call = .call)
   }
 
   if (any(abs(diag(x)) > tol)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric matrix with zeros on the diagonal")
+    err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric matrix with zeros on the diagonal",
+        .call = .call)
   }
 
   if (any(x < -tol)) {
-    err(.msg %or% "all values in {.arg {(.arg)}} must be non-negative")
+    err(.msg %or% "all values in {.arg {(.arg)}} must be non-negative",
+        .call = .call)
   }
 }

@@ -18,8 +18,9 @@
 #' try(f("print")) # Error: must be a function
 
 #' @export
-arg_function <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_function <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   if (!rlang::is_function(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a function")
+    err(.msg %or% "{.arg {(.arg)}} must be a function",
+        .call = .call)
   }
 }

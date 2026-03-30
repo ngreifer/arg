@@ -40,18 +40,22 @@
 #' try(arg_colnamed(mat)) # Error: no colnames
 
 #' @export
-arg_named <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_named <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                      .call) {
   if (is_null(names(x)) || anyNA(names(x)) ||
       !all(nzchar(names(x)))) {
-    err(.msg %or% "{.arg {(.arg)}} must have non-empty and non-{.val {NA}} names")
+    err(.msg %or% "{.arg {(.arg)}} must have non-empty and non-{.val {NA}} names",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_named
-arg_colnamed <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_colnamed <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                         .call) {
   if (is_null(colnames(x)) || anyNA(colnames(x)) ||
       !all(nzchar(colnames(x)))) {
-    err(.msg %or% "{.arg {(.arg)}} must have non-empty and non-{.val {NA}} names")
+    err(.msg %or% "{.arg {(.arg)}} must have non-empty and non-{.val {NA}} names",
+        .call = .call)
   }
 }

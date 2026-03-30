@@ -23,16 +23,18 @@
 #' try(f())  # Error!
 
 #' @export
-arg_dots_supplied <- function(..., .msg = NULL) {
+arg_dots_supplied <- function(..., .msg = NULL, .call) {
   if (...length() == 0L) {
-    err(.msg %or% "an argument must be supplied to {.arg ...}")
+    err(.msg %or% "an argument must be supplied to {.arg ...}",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_dots_supplied
-arg_dots_not_supplied <- function(..., .msg = NULL) {
+arg_dots_not_supplied <- function(..., .msg = NULL, .call) {
   if (...length() != 0L) {
-    err(.msg %or% "no arguments may be supplied to {.arg ...}")
+    err(.msg %or% "no arguments may be supplied to {.arg ...}",
+        .call = .call)
   }
 }

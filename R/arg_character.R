@@ -22,24 +22,30 @@
 #' try(f(NA)) # NAs not allowed for arg_string()
 
 #' @export
-arg_character <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_character <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                          .call) {
   if (!is.character(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a character vector")
+    err(.msg %or% "{.arg {(.arg)}} must be a character vector",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_character
-arg_string <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_string <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                       .call) {
   if (length(x) != 1L || !is.character(x) || anyNA(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a string")
+    err(.msg %or% "{.arg {(.arg)}} must be a string",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_character
-arg_factor <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_factor <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                       .call) {
   if (!is.factor(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a factor")
+    err(.msg %or% "{.arg {(.arg)}} must be a factor",
+        .call = .call)
   }
 }

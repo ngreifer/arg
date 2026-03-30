@@ -32,32 +32,40 @@
 #' try(f2(c(1, NA, 3))) ## Error: y is not all NA
 
 #' @export
-arg_no_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_no_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                      .call) {
   if (anyNA(x)) {
     if (length(x) == 1L) {
-      err(.msg %or% "{.arg {(.arg)}} must not be {.val {NA}}")
+      err(.msg %or% "{.arg {(.arg)}} must not be {.val {NA}}",
+          .call = .call)
     }
 
-    err(.msg %or% "{.arg {(.arg)}} must not contain {.val {NA}} values")
+    err(.msg %or% "{.arg {(.arg)}} must not contain {.val {NA}} values",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_no_NA
-arg_is_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_is_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                      .call) {
   if (length(x) != 1L || !is.atomic(x) || !anyNA(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be {.val {NA}}")
+    err(.msg %or% "{.arg {(.arg)}} must be {.val {NA}}",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_no_NA
-arg_all_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL) {
+arg_all_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
+                       .call) {
   if (!all(is.na(x))) {
     if (length(x) == 1L) {
-      err(.msg %or% "{.arg {(.arg)}} must be {.val {NA}}")
+      err(.msg %or% "{.arg {(.arg)}} must be {.val {NA}}",
+          .call = .call)
     }
 
-    err(.msg %or% "{.arg {(.arg)}} must only contain {.val {NA}} values")
+    err(.msg %or% "{.arg {(.arg)}} must only contain {.val {NA}} values",
+        .call = .call)
   }
 }

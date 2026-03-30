@@ -34,10 +34,12 @@
 
 #' @export
 arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
-                        .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_length(range, 2L)
-  arg_logical(inclusive)
-  arg_length(inclusive, 1:2)
+                        .arg = rlang::caller_arg(x), .msg = NULL,
+                        .call) {
+
+  arg_length(range, 2L, .call = rlang::current_env())
+  arg_logical(inclusive, .call = rlang::current_env())
+  arg_length(inclusive, 1:2, .call = rlang::current_env())
 
   if (length(inclusive) == 1L) {
     inclusive <- inclusive[c(1L, 1L)]
@@ -52,7 +54,8 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
   .gt_comp <- if (inclusive[1L]) function(a, b) {a >= b} else function(a, b) {a > b}
   .lt_comp <- if (inclusive[2L]) function(a, b) {a <= b} else function(a, b) {a < b}
 
-  if (!setequal(typeof(x), typeof(range)) ||
+  if (!are_comparable(x, range[1L], .gt_comp) ||
+      !are_comparable(x, range[2L], .lt_comp) ||
       !safe_all(.gt_comp(x, range[1L])) ||
       !safe_all(.lt_comp(x, range[2L]))) {
 
@@ -63,11 +66,13 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
     each_element_of <- if (length(x) > 1L) "each element of"
 
     if (all(inclusive)) {
-      err("{each_element_of} {.arg {(.arg)}} must be between {.val {range}} (inclusive)")
+      err("{each_element_of} {.arg {(.arg)}} must be between {.val {range}} (inclusive)",
+          .call = .call)
     }
 
     if (!any(inclusive)) {
-      err("{each_element_of} {.arg {(.arg)}} must be between {.val {range}} (exclusive)")
+      err("{each_element_of} {.arg {(.arg)}} must be between {.val {range}} (exclusive)",
+          .call = .call)
     }
 
     .gt_str <- {
@@ -83,94 +88,136 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
     }
 
     err(sprintf("{each_element_of} {.arg {(.arg)}} must be %s and %s",
-                .gt_str, .lt_str))
+                .gt_str, .lt_str),
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_between
 arg_gt <- function(x, bound = 0,
-                   .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_length(bound, 1L)
+                   .arg = rlang::caller_arg(x), .msg = NULL,
+                   .call) {
+  arg_length(bound, 1L, .call = rlang::current_env())
 
-  if (!setequal(typeof(x), typeof(bound)) ||
+  if (!are_comparable(x, bound, `>`) ||
       !safe_all(x > bound)) {
+
     if (is_not_null(.msg)) {
-      err(.msg)
+      err(.msg, .call = .call)
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
 
     if (bound == 0) {
-      err("{each_element_of} {.arg {(.arg)}} must be positive")
+      err("{each_element_of} {.arg {(.arg)}} must be positive",
+          .call = .call)
     }
 
-    err("{each_element_of} {.arg {(.arg)}} must be greater than {.val {bound}}")
+    err("{each_element_of} {.arg {(.arg)}} must be greater than {.val {bound}}",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_between
 arg_gte <- function(x, bound = 0,
-                    .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_length(bound, 1L)
+                    .arg = rlang::caller_arg(x), .msg = NULL,
+                    .call) {
+  arg_length(bound, 1L, .call = rlang::current_env())
 
-  if (!setequal(typeof(x), typeof(bound)) ||
+  if (!are_comparable(x, bound, `>=`) ||
       !safe_all(x >= bound)) {
+
     if (is_not_null(.msg)) {
-      err(.msg)
+      err(.msg, .call = .call)
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
 
     # if (bound == 0) {
-    #   err(.msg %or% "{each_element_of} {.arg {(.arg)}} must be non-negative")
+    #   err(.msg %or% "{each_element_of} {.arg {(.arg)}} must be non-negative",
+    #       .call = .call)
     # }
 
-    err("{each_element_of} {.arg {(.arg)}} must be greater than or equal to {.val {bound}}")
+    err("{each_element_of} {.arg {(.arg)}} must be greater than or equal to {.val {bound}}",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_between
 arg_lt <- function(x, bound = 0,
-                   .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_length(bound, 1L)
+                   .arg = rlang::caller_arg(x), .msg = NULL,
+                   .call) {
+  arg_length(bound, 1L, .call = rlang::current_env())
 
-  if (!setequal(typeof(x), typeof(bound)) ||
+  if (!are_comparable(x, bound, `<`) ||
       !safe_all(x < bound)) {
+
     if (is_not_null(.msg)) {
-      err(.msg)
+      err(.msg, .call = .call)
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
 
     if (bound == 0) {
-      err("{each_element_of} {.arg {(.arg)}} must be negative")
+      err("{each_element_of} {.arg {(.arg)}} must be negative",
+          .call = .call)
     }
 
-    err("{each_element_of} {.arg {(.arg)}} must be less than {.val {bound}}")
+    err("{each_element_of} {.arg {(.arg)}} must be less than {.val {bound}}",
+        .call = .call)
   }
 }
 
 #' @export
 #' @rdname arg_between
 arg_lte <- function(x, bound = 0,
-                    .arg = rlang::caller_arg(x), .msg = NULL) {
-  arg_length(bound, 1L)
+                    .arg = rlang::caller_arg(x), .msg = NULL,
+                    .call) {
+  arg_length(bound, 1L, .call = rlang::current_env())
 
-  if (!setequal(typeof(x), typeof(bound)) ||
+  if (!are_comparable(x, bound, `<=`) ||
       !safe_all(x <= bound)) {
+
     if (is_not_null(.msg)) {
-      err(.msg)
+      err(.msg, .call = .call)
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
 
     # if (bound == 0) {
-    #   err("{each_element_of} {.arg {(.arg)}} must be non-positive")
+    #   err("{each_element_of} {.arg {(.arg)}} must be non-positive",
+    #       .call = .call)
     # }
 
-    err("{each_element_of} {.arg {(.arg)}} must be less than or equal to {.val {bound}}")
+    err("{each_element_of} {.arg {(.arg)}} must be less than or equal to {.val {bound}}",
+        .call = .call)
   }
+}
+
+are_comparable <- function(x, y, comparison) {
+  if (is.numeric(x)) {
+    return(is.numeric(y))
+  }
+
+  if (is.numeric(y)) {
+    return(is.numeric(x))
+  }
+
+  if (is.character(x)) {
+    return(is.character(y))
+  }
+
+  if (is.character(y)) {
+    return(is.character(x))
+  }
+
+  tryCatch({
+    comparison(x, y)
+    TRUE
+  },
+  error = function(e) FALSE,
+  warning = function(w) FALSE)
 }
