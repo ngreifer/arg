@@ -1,32 +1,46 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# arg: Clean, Simple Argument Checking
+# *arg*: Clean, Simple Argument Checking
 
 <!-- badges: start -->
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/arg)](https://CRAN.R-project.org/package=arg)
 <!-- badges: end -->
 
 *arg* produces nice, clean error messages for checking function
 arguments in R packages. I developed *arg* because I often found myself
 writing the same error messages in my packages, and I wasn’t satisfied
-with the other similar R packages available. *arg* uses *cli* to produce
-clean and clear errors without requiring much programming from the
-developer. These messages are designed to be clear to the user, not
-using complicated language. Many messages adapt to the type of
-(incorrect) input received.
+with the other similar R packages available. *arg* uses
+[*cli*](https://cli.r-lib.org/) to produce clean and clear errors
+without requiring much programming from the developer. These messages
+are designed to be clear to the user, not using complicated language.
+Many messages adapt to the type of (incorrect) input received.
+
+*arg* contains function for common arguments checks, such as checking
+that an argument is a single number (`arg_number()`), a string
+(`arg_string()`), a single `TRUE`/`FALSE` value (`arg_flag()`), or a
+data frame or matrix (`arg_data()`). In addition, it is possible to
+build more complex argument checks using `arg_and()` and `arg_or()`,
+which require that all or at least one check is passed, and
+`when_not_null()` and `when_supplied()`, which allow for `NULL` or
+omitted arguments.
 
 ``` r
 library(arg)
 
 z <- "a string"
 
+# Check that `z` is a string
 arg_string(z)
 
+# Check that `z` is a number
 arg_number(z)
 #> Error:
 #> ! `z` must be a number.
 
+# Check that `z` is a string of length 2
 arg_and(z,
         arg_string,
         arg_length(2L))
@@ -35,6 +49,7 @@ arg_and(z,
 #> ✔ `z` must be a string
 #> ✖ `z` must have length 2
 
+# Check that `z` is NA, a flag, or a count
 arg_or(z,
        arg_is_NA,
        arg_flag,
@@ -44,18 +59,22 @@ arg_or(z,
 #>   non-negative whole number).
 ```
 
+*arg* is meant to be used inside other R packages. Its error-throwing
+function `err()` (a wrapper for `rlang::abort()`) automatically includes
+the relevant (user-facing) function in its error message.
+
 The name “arg” is meant to be short for “argument”, but also perhaps
 represents the sound you would make if you were to encounter an error
 when running some code. Hopefully *arg* reduces the number of times
-users say “arg”.
+users say “arg!”.
 
-If you use any of my R packages, including *MatchIt*, *WeightIt*,
-*cobalt*, *optweight*, or *adrftools*, you may already be using *arg*!
+<!-- If you use any of my R packages, including [*MatchIt*], [*WeightIt*], [*cobalt*], [*optweight*], or [*adrftools*], you may already be using *arg*!
+-->
 
 ## Installation
 
 You can install the development version of arg from
-[GitHub](https://github.com/) with:
+[GitHub](https://github.com/ngreifer/arg) with:
 
 ``` r
 # install.packages("pak")
@@ -66,19 +85,18 @@ You can install the stable version on CRAN using
 
 ``` r
 install.packages("arg")
-#> Error in `contrib.url()`:
-#> ! trying to use CRAN without setting a mirror
 ```
 
 ## Related packages
 
-*arg* has a similar function to other existing packages. These packages
-may be better for your purposes, and *arg* is not meant to compete with
-them.
+*arg* serves a similar function to other existing packages. These
+packages may be better for your purposes, and *arg* is not meant to
+compete with them.
 
-- *checkmate*
-- *checkarg*
-- *erify*
-- *favr*
-- *assertions*
-- *dreamerr*
+- [*assertions*](https://selkamand.github.io/assertions/)
+- [*checkmate*](https://mllg.github.io/checkmate/)
+- [*checkarg*](https://cran.r-project.org/package=checkarg)
+- [*chk*](https://poissonconsulting.github.io/chk/)
+- [*dreamerr*](https://cran.r-project.org/package=dreamerr)
+- [*erify*](https://flujoo.github.io/erify/)
+- [*favr*](https://lj-jenkins.github.io/favr/)

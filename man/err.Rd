@@ -6,7 +6,7 @@
 \alias{msg}
 \title{Throw an Error, Warning, or Message}
 \usage{
-err(m, call = rlang::caller_env(2), .envir = rlang::caller_env())
+err(m, .call, .envir = rlang::caller_env())
 
 wrn(m, immediate = TRUE, .envir = rlang::caller_env())
 
@@ -15,7 +15,7 @@ msg(m, .envir = rlang::caller_env())
 \arguments{
 \item{m}{the message to be displayed, passed to the \code{message} argument of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:abort]{rlang::warn()}}, or \code{\link[rlang:abort]{rlang::inform()}}.}
 
-\item{call}{the execution environment of the function. The corresponding function call is retrieved and mentioned in error messages as the source of the error. See \code{\link[rlang:abort]{rlang::abort()}} for details.}
+\item{.call}{the execution environment of a currently running function, e.g. \code{.call = rlang::current_env()}. The corresponding function call is retrieved and mentioned in error messages as the source of the error. See the \code{call} argument of \code{\link[rlang:abort]{rlang::abort()}} for details. Set to \code{NULL} to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.}
 
 \item{.envir}{the environment to evaluate the glue expressions in. See \code{\link[rlang:abort]{rlang::abort()}} for details. Typically this does not need to be changed.}
 

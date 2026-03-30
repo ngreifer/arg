@@ -8,9 +8,10 @@ match_arg(
   x,
   choices,
   several.ok = FALSE,
-  ignore.case = FALSE,
+  ignore.case = TRUE,
   .context = NULL,
-  .arg = rlang::caller_arg(x)
+  .arg = rlang::caller_arg(x),
+  .call
 )
 }
 \arguments{
@@ -20,14 +21,16 @@ match_arg(
 
 \item{several.ok}{\code{logical}; if \code{TRUE}, \code{x} may contain more than one element. Defaults to \code{FALSE}.}
 
-\item{ignore.case}{\code{logical}; if \code{FALSE} (the default), the matching is case sensitive, and if \code{TRUE}, case is ignored.}
+\item{ignore.case}{\code{logical}; if \code{FALSE}, the matching is case sensitive, and if \code{TRUE} (the default), case is ignored.}
 
 \item{.context}{an optional character string providing context for error messages (e.g., a function or object name). Prepended to the error message when supplied before being evaluated by \pkg{cli}.}
 
 \item{.arg}{the name of the argument supplied to \code{x} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
+
+\item{.call}{the execution environment of a currently running function, e.g. \code{.call = rlang::current_env()}. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to \code{\link[=err]{err()}}. Set to \code{NULL} to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.}
 }
 \value{
-A character string (or vector, if \code{several.ok = TRUE}) of the matched element(s) from \code{choices}. If there is no match, an error is thrown. When \code{several.okay = TRUE}, no error is thrown if there is at least one match.
+A character string (or vector, if \code{several.ok = TRUE}) of the matched element(s) from \code{choices}. If there is no match, an error is thrown. When \code{several.ok = TRUE}, no error is thrown if there is at least one match.
 }
 \description{
 An alternative to \code{\link[=match.arg]{match.arg()}} with improved
@@ -38,6 +41,8 @@ and supports partial matching.
 Partial matching is supported via \code{\link[=pmatch]{pmatch()}}. If no match is found, an error is thrown listing the valid \code{choices}.
 
 Checks are run on \code{x} prior to matching: first, \code{\link[=arg_supplied]{arg_supplied()}} is used to check whether \code{x} was supplied; then \code{\link[=arg_string]{arg_string()}} (if \code{several.ok = TRUE}) or \code{\link[=arg_character]{arg_character()}} (if \code{several.ok = FALSE}) is used to check whether \code{x} is a valid string or character vector, respectively.
+
+When \code{ignore.case = TRUE} (the default), an initial case-sensitive match is run, and if any values in \code{x} are unmatched, a second, case-insensitive match is run. When \code{ignore.case = FALSE}, only the first match is run. This ensures that exact matches (on both content and case) are prioritized before case-insensitive matches.
 }
 \examples{
 f <- function(z = NULL) {

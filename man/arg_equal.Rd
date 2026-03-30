@@ -11,7 +11,8 @@ arg_equal(
   ...,
   .arg = rlang::caller_arg(x),
   .arg2 = rlang::caller_arg(x2),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 
 arg_not_equal(
@@ -20,7 +21,8 @@ arg_not_equal(
   ...,
   .arg = rlang::caller_arg(x),
   .arg2 = rlang::caller_arg(x2),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 }
 \arguments{
@@ -31,6 +33,8 @@ arg_not_equal(
 \item{.arg, .arg2}{the names of the objects being compared; used in the error message if triggered. Ignored if \code{.msg} is supplied.}
 
 \item{.msg}{an optional alternative message to display if an error is thrown instead of the default message.}
+
+\item{.call}{the execution environment of a currently running function, e.g. \code{.call = rlang::current_env()}. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to \code{\link[=err]{err()}}. Set to \code{NULL} to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.}
 }
 \value{
 Returns \code{NULL} invisibly if an error is not thrown.

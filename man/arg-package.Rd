@@ -8,6 +8,15 @@
 \description{
 Functions for checking arguments in R package. Uses a simple interface and produces clean, informative error messages using 'cli'.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://ngreifer.github.io/arg/}
+  \item \url{https://github.com/ngreifer/arg}
+  \item Report bugs at \url{https://github.com/ngreifer/arg/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Noah Greifer \email{noah.greifer@gmail.com} (\href{https://orcid.org/0000-0003-3067-7154}{ORCID})
 

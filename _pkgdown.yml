@@ -2,3 +2,14 @@ url: https://ngreifer.github.io/arg/
 template:
   bootstrap: 5
 
+reference:
+- title: Argument checking
+- contents:
+  - starts_with("arg_")
+  - when_supplied
+- title: Argument processing
+- contents:
+  - match_arg
+- title: Assertions
+- contents:
+  - err

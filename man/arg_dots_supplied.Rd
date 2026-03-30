@@ -5,14 +5,16 @@
 \alias{arg_dots_not_supplied}
 \title{Check Supplied Dots Argument}
 \usage{
-arg_dots_supplied(..., .msg = NULL)
+arg_dots_supplied(..., .msg = NULL, .call)
 
-arg_dots_not_supplied(..., .msg = NULL)
+arg_dots_not_supplied(..., .msg = NULL, .call)
 }
 \arguments{
 \item{\dots}{the \code{...} argument passed from a calling function. The argument is not evaluated. See Examples.}
 
 \item{.msg}{an optional alternative message to display if an error is thrown instead of the default message.}
+
+\item{.call}{the execution environment of a currently running function, e.g. \code{.call = rlang::current_env()}. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to \code{\link[=err]{err()}}. Set to \code{NULL} to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.}
 }
 \value{
 Returns \code{NULL} invisibly if an error is not thrown.

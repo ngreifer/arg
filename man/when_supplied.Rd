@@ -5,9 +5,9 @@
 \alias{when_not_null}
 \title{Check Arguments When Supplied}
 \usage{
-when_supplied(x, ..., .arg = rlang::caller_arg(x))
+when_supplied(x, ..., .arg = rlang::caller_arg(x), .call)
 
-when_not_null(x, ..., .arg = rlang::caller_arg(x))
+when_not_null(x, ..., .arg = rlang::caller_arg(x), .call)
 }
 \arguments{
 \item{x}{the argument to be checked}
@@ -15,6 +15,8 @@ when_not_null(x, ..., .arg = rlang::caller_arg(x))
 \item{\dots}{\verb{arg_*()} functions or unevaluated function calls to be applied to \code{x}. See Examples.}
 
 \item{.arg}{the name of the argument supplied to \code{x} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
+
+\item{.call}{the execution environment of a currently running function, e.g. \code{.call = rlang::current_env()}. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to \code{\link[=err]{err()}}. Set to \code{NULL} to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.}
 }
 \value{
 Returns \code{NULL} invisibly if an error is not thrown.

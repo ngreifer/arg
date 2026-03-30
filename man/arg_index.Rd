@@ -10,7 +10,8 @@ arg_index(
   data,
   .arg = rlang::caller_arg(x),
   .arg_data = rlang::caller_arg(data),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 
 arg_indices(
@@ -18,7 +19,8 @@ arg_indices(
   data,
   .arg = rlang::caller_arg(x),
   .arg_data = rlang::caller_arg(data),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 }
 \arguments{
@@ -31,6 +33,8 @@ arg_indices(
 \item{.arg_data}{the name of the argument supplied to \code{data} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
 
 \item{.msg}{an optional alternative message to display if an error is thrown instead of the default message.}
+
+\item{.call}{the execution environment of a currently running function, e.g. \code{.call = rlang::current_env()}. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to \code{\link[=err]{err()}}. Set to \code{NULL} to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.}
 }
 \value{
 Returns \code{NULL} invisibly if an error is not thrown.

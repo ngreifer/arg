@@ -11,21 +11,21 @@
 \alias{arg_env}
 \title{Check Common Argument Types}
 \usage{
-arg_atomic(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_atomic(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_vector(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_vector(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_list(x, df_ok = FALSE, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_list(x, df_ok = FALSE, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_data.frame(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_data.frame(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_matrix(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_matrix(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_array(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_array(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_data(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_data(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_env(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_env(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 }
 \arguments{
 \item{x}{the argument to be checked}
@@ -33,6 +33,8 @@ arg_env(x, .arg = rlang::caller_arg(x), .msg = NULL)
 \item{.arg}{the name of the argument supplied to \code{x} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
 
 \item{.msg}{an optional alternative message to display if an error is thrown instead of the default message.}
+
+\item{.call}{the execution environment of a currently running function, e.g. \code{.call = rlang::current_env()}. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to \code{\link[=err]{err()}}. Set to \code{NULL} to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.}
 
 \item{df_ok}{\code{logical}; whether to allow data frames (which are technically lists). Default is \code{FALSE} to throw an error on a data frame input.}
 }
