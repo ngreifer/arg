@@ -24,7 +24,7 @@
 #' ```
 #' or as a mixture of both.
 #'
-#' These functions do their best to provide a clean error message composed of all the error messages for the failed checks. With many options, this can yield a complicated error message, so use caution. `arg_and()` marks with a check (`✔`) any passed checks and with an x (`✖`) any failed checks.
+#' These functions do their best to provide a clean error message composed of all the error messages for the failed checks. With many options, this can yield a complicated error message, so use caution. `arg_and()` marks with a check (```r cli::symbol$tick```) any passed checks and with an x (```r cli::symbol$cross```) any failed checks.
 #'
 #' @inherit arg_is return
 #'
