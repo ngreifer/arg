@@ -78,7 +78,7 @@ or as a mixture of both.
 These functions do their best to provide a clean error message composed
 of all the error messages for the failed checks. With many options, this
 can yield a complicated error message, so use caution. `arg_and()` marks
-with a check (`v`) any passed checks and with an x (`x`) any failed
+with a check (`v`) any passed checks and with a cross (`x`) any failed
 checks.
 
 ## See also
