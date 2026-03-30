@@ -84,3 +84,32 @@ trim_final_punct <- function(x) {
 `%or%` <- function(x, y) {
   if (is_null(x)) y else x
 }
+
+any_apply <- function(X, FUN, ...) {
+  FUN <- match.fun(FUN)
+  if (!is.vector(X) || is.object(X)) {
+    X <- as.list(X)
+  }
+
+  for (x in X) {
+    if (isTRUE(FUN(x, ...))) {
+      return(TRUE)
+    }
+  }
+
+  FALSE
+}
+all_apply <- function(X, FUN, ...) {
+  FUN <- match.fun(FUN)
+  if (!is.vector(X) || is.object(X)) {
+    X <- as.list(X)
+  }
+
+  for (x in X) {
+    if (isFALSE(FUN(x, ...))) {
+      return(FALSE)
+    }
+  }
+
+  TRUE
+}
