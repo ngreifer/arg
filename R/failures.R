@@ -13,10 +13,13 @@ make_fail <- function(a0, x) {
       j <- .to_arg_fun_call(j)
 
       if ("x" %in% names(j)) {
-        j <- rlang::call_modify(j, x = args[["x"]])
+        j <- rlang::call_modify(j, !!!list(x = args[["x"]]))
       }
       if (".arg" %in% names(j)) {
-        j <- rlang::call_modify(j, .arg = args[[".arg"]])
+        j <- rlang::call_modify(j, !!!list(.arg = args[[".arg"]]))
+      }
+      if (".call" %in% names(j)) {
+        j <- rlang::call_modify(j, !!!list(.call = NULL))
       }
 
       make_fail(j, x)
