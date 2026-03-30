@@ -1,6 +1,6 @@
 # arg: Clean, Simple Argument Checking
 
-Functions for checking arguments in R package. Uses a simple interface
+Functions for checking arguments in R packages. Uses a simple interface
 and produces clean, informative error messages using 'cli'.
 
 ## See also
