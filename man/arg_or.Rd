@@ -47,7 +47,7 @@ or as unevaluated function calls with the \code{x} argument absent, e.g.,
 
 or as a mixture of both.
 
-These functions do their best to provide a clean error message composed of all the error messages for the failed checks. With many options, this can yield a complicated error message, so use caution. \code{arg_and()} marks with a check (\code{v}) any passed checks and with an x (\code{x}) any failed checks.
+These functions do their best to provide a clean error message composed of all the error messages for the failed checks. With many options, this can yield a complicated error message, so use caution. \code{arg_and()} marks with a check (\code{v}) any passed checks and with a cross (\code{x}) any failed checks.
 }
 \examples{
 # `arg_or()`
