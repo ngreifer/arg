@@ -6,9 +6,9 @@ not of a specified class (`arg_is_not()`).
 ## Usage
 
 ``` r
-arg_is(x, class, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_is(x, class, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_is_not(x, class, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_is_not(x, class, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -32,6 +32,16 @@ arg_is_not(x, class, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -70,15 +80,12 @@ obj <- structure(list(1),
 try(arg_is(obj, "test"))            # No error
 try(arg_is(obj, c("test", "quiz"))) # No error
 try(arg_is(obj, "quiz"))            # Error
-#> Error in eval(expr, envir) : 
-#>   `obj` must inherit from class <quiz>.
+#> Error : `obj` must inherit from class <quiz>.
 
 try(arg_is_not(obj, "test"))            # Error
-#> Error in eval(expr, envir) : 
-#>   `obj` must not inherit from class <test>.
+#> Error : `obj` must not inherit from class <test>.
 try(arg_is_not(obj, c("test", "quiz"))) # Error
-#> Error in eval(expr, envir) : 
-#>   `obj` must not inherit from class <test/quiz>.
+#> Error : `obj` must not inherit from class <test/quiz>.
 try(arg_is_not(obj, "quiz"))            # No error
 
 # Multiple classes
@@ -87,22 +94,19 @@ obj2 <- structure(list(1),
 
 try(arg_is(obj2, c("test", "quiz")))     # No error
 try(arg_is_not(obj2, c("test", "quiz"))) # Error
-#> Error in eval(expr, envir) : 
-#>   `obj2` must not inherit from class <test/quiz>.
+#> Error : `obj2` must not inherit from class <test/quiz>.
 
 ## Require argument to be of multiple classes
 try(arg_and(obj2,
             arg_is("test"),
             arg_is("quiz")))
-#> Error in eval(expr, envir) : 
-#>   `obj2` must inherit from class <quiz>.
+#> Error : `obj2` must inherit from class <quiz>.
 
 ## Require argument to not be a specific combination of
 ## multiple classes
 try(arg_or(obj2,
            arg_is_not("test"),
            arg_is_not("essay")))
-#> Error in eval(expr, envir) : 
-#>   `obj2` must not inherit from class <test> or must not inherit from class
+#> Error : `obj2` must not inherit from class <test> or must not inherit from class
 #> <essay>.
 ```

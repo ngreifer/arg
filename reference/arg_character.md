@@ -6,11 +6,11 @@ character scalar (`arg_string()`), or a factor (`arg_factor()`).
 ## Usage
 
 ``` r
-arg_character(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_character(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_string(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_string(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_factor(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_factor(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -30,6 +30,16 @@ arg_factor(x, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -54,7 +64,7 @@ f <- function(z) {
 
 try(f("a")) # No error
 try(f(c("a", "b"))) # Error: arg_string() requires scalar
-#> Error in f(c("a", "b")) : `z` must be a string.
+#> Error : `z` must be a string.
 try(f(NA)) # NAs not allowed for arg_string()
-#> Error in f(NA) : `z` must be a string.
+#> Error : `z` must be a string.
 ```

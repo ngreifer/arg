@@ -3,6 +3,16 @@
 Functions for checking arguments in R package. Uses a simple interface
 and produces clean, informative error messages using 'cli'.
 
+## See also
+
+Useful links:
+
+- <https://ngreifer.github.io/arg/>
+
+- <https://github.com/ngreifer/arg>
+
+- Report bugs at <https://github.com/ngreifer/arg/issues>
+
 ## Author
 
 **Maintainer**: Noah Greifer <noah.greifer@gmail.com>

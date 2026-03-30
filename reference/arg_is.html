@@ -19,6 +19,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ngreifer/arg/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -28,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Check Argument Class</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/ngreifer/arg/blob/main/R/arg_is.R" class="external-link"><code>R/arg_is.R</code></a></small>
       <div class="d-none name"><code>arg_is.Rd</code></div>
     </div>
 
@@ -38,9 +39,9 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">arg_is</span><span class="op">(</span><span class="va">x</span>, <span class="va">class</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">arg_is</span><span class="op">(</span><span class="va">x</span>, <span class="va">class</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">.call</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">arg_is_not</span><span class="op">(</span><span class="va">x</span>, <span class="va">class</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">arg_is_not</span><span class="op">(</span><span class="va">x</span>, <span class="va">class</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">.call</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -61,6 +62,10 @@
 
 <dt id="arg--msg">.msg<a class="anchor" aria-label="anchor" href="#arg--msg"></a></dt>
 <dd><p>an optional alternative message to display if an error is thrown instead of the default message.</p></dd>
+
+
+<dt id="arg--call">.call<a class="anchor" aria-label="anchor" href="#arg--call"></a></dt>
+<dd><p>the execution environment of a currently running function, e.g. <code>.call = rlang::current_env()</code>. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to <code><a href="err.html">err()</a></code>. Set to <code>NULL</code> to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -85,15 +90,12 @@
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_is</span><span class="op">(</span><span class="va">obj</span>, <span class="st">"test"</span><span class="op">)</span><span class="op">)</span>            <span class="co"># No error</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_is</span><span class="op">(</span><span class="va">obj</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"quiz"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># No error</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_is</span><span class="op">(</span><span class="va">obj</span>, <span class="st">"quiz"</span><span class="op">)</span><span class="op">)</span>            <span class="co"># Error</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `obj` must inherit from class <span style="color: #0000BB;">&lt;quiz&gt;</span>.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj` must inherit from class <span style="color: #0000BB;">&lt;quiz&gt;</span>.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_is_not</span><span class="op">(</span><span class="va">obj</span>, <span class="st">"test"</span><span class="op">)</span><span class="op">)</span>            <span class="co"># Error</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `obj` must not inherit from class <span style="color: #0000BB;">&lt;test&gt;</span>.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj` must not inherit from class <span style="color: #0000BB;">&lt;test&gt;</span>.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_is_not</span><span class="op">(</span><span class="va">obj</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"quiz"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># Error</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `obj` must not inherit from class <span style="color: #0000BB;">&lt;test/quiz&gt;</span>.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj` must not inherit from class <span style="color: #0000BB;">&lt;test/quiz&gt;</span>.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_is_not</span><span class="op">(</span><span class="va">obj</span>, <span class="st">"quiz"</span><span class="op">)</span><span class="op">)</span>            <span class="co"># No error</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Multiple classes</span></span></span>
@@ -102,23 +104,20 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_is</span><span class="op">(</span><span class="va">obj2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"quiz"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>     <span class="co"># No error</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_is_not</span><span class="op">(</span><span class="va">obj2</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"test"</span>, <span class="st">"quiz"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># Error</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `obj2` must not inherit from class <span style="color: #0000BB;">&lt;test/quiz&gt;</span>.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj2` must not inherit from class <span style="color: #0000BB;">&lt;test/quiz&gt;</span>.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Require argument to be of multiple classes</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="arg_or.html">arg_and</a></span><span class="op">(</span><span class="va">obj2</span>,</span></span>
 <span class="r-in"><span>            <span class="fu">arg_is</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            <span class="fu">arg_is</span><span class="op">(</span><span class="st">"quiz"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `obj2` must inherit from class <span style="color: #0000BB;">&lt;quiz&gt;</span>.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj2` must inherit from class <span style="color: #0000BB;">&lt;quiz&gt;</span>.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Require argument to not be a specific combination of</span></span></span>
 <span class="r-in"><span><span class="co">## multiple classes</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="arg_or.html">arg_or</a></span><span class="op">(</span><span class="va">obj2</span>,</span></span>
 <span class="r-in"><span>           <span class="fu">arg_is_not</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>           <span class="fu">arg_is_not</span><span class="op">(</span><span class="st">"essay"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in eval(expr, envir) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `obj2` must not inherit from class <span style="color: #0000BB;">&lt;test&gt;</span> or must not inherit from class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj2` must not inherit from class <span style="color: #0000BB;">&lt;test&gt;</span> or must not inherit from class</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">&lt;essay&gt;</span>.</span>
 </code></pre></div>
     </div>

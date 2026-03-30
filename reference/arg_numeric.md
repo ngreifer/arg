@@ -11,17 +11,17 @@ argument is a non-negative whole numeric vector or scalar, respectively.
 ## Usage
 
 ``` r
-arg_numeric(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_numeric(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_number(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_number(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_whole_numeric(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_whole_numeric(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_whole_number(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_whole_number(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_counts(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_counts(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_count(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_count(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -41,6 +41,16 @@ arg_count(x, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -73,22 +83,19 @@ try(arg_count(count))        # No error
 try(arg_number(whole))       # No error
 try(arg_whole_number(whole)) # No error
 try(arg_count(whole))        # Error: negatives not allowed
-#> Error in eval(expr, envir) : 
-#>   `whole` must be a count (a non-negative whole number).
+#> Error : `whole` must be a count (a non-negative whole number).
 
 try(arg_number(num))       # No error
 try(arg_whole_number(num)) # Error: not a whole number
-#> Error in eval(expr, envir) : `num` must be a whole number.
+#> Error : `num` must be a whole number.
 try(arg_count(num))        # Error: not a count
-#> Error in eval(expr, envir) : 
-#>   `num` must be a count (a non-negative whole number).
+#> Error : `num` must be a count (a non-negative whole number).
 
 nums <- c(0, .5, 1)
 
 try(arg_number(nums))  # Error: not a single number
-#> Error in eval(expr, envir) : `nums` must be a single number.
+#> Error : `nums` must be a single number.
 try(arg_numeric(nums)) # No error
 try(arg_counts(nums))  # Error: not counts
-#> Error in eval(expr, envir) : 
-#>   `nums` must be a vector of counts (non-negative whole numeric values).
+#> Error : `nums` must be a vector of counts (non-negative whole numeric values).
 ```

@@ -6,7 +6,13 @@ Checks whether an argument is a
 ## Usage
 
 ``` r
-arg_formula(x, one_sided = NULL, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_formula(
+  x,
+  one_sided = NULL,
+  .arg = rlang::caller_arg(x),
+  .msg = NULL,
+  .call
+)
 ```
 
 ## Arguments
@@ -34,6 +40,16 @@ arg_formula(x, one_sided = NULL, .arg = rlang::caller_arg(x), .msg = NULL)
   an optional alternative message to display if an error is thrown
   instead of the default message.
 
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
+
 ## Value
 
 Returns `NULL` invisibly if an error is not thrown.
@@ -53,23 +69,17 @@ not_form <- 1:3
 try(arg_formula(form1))    # No error
 try(arg_formula(form2))    # No error
 try(arg_formula(not_form)) # Error: not a formula
-#> Error in eval(expr, envir) : `not_form` must be a formula.
+#> Error : `not_form` must be a formula.
 
 try(arg_formula(form1,
                 one_sided = TRUE)) # No error
-#> Error in arg_formula(form1, one_sided = TRUE) : 
-#>   `one_sided` must be a logical value (TRUE or FALSE).
 try(arg_formula(form2,
                 one_sided = TRUE)) # Error, not one-sided
-#> Error in arg_formula(form2, one_sided = TRUE) : 
-#>   `one_sided` must be a logical value (TRUE or FALSE).
+#> Error : `form2` must be a one-sided formula.
 
 try(arg_formula(form1,
                 one_sided = FALSE)) # Error, only one-sided
-#> Error in arg_formula(form1, one_sided = FALSE) : 
-#>   `one_sided` must be a logical value (TRUE or FALSE).
+#> Error : `form1` must be a two-sided formula.
 try(arg_formula(form2,
                 one_sided = FALSE)) # No error
-#> Error in arg_formula(form2, one_sided = FALSE) : 
-#>   `one_sided` must be a logical value (TRUE or FALSE).
 ```

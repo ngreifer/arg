@@ -13,16 +13,17 @@ arg_between(
   range = c(0, 1),
   inclusive = TRUE,
   .arg = rlang::caller_arg(x),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 
-arg_gt(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_gt(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_gte(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_gte(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_lt(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_lt(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_lte(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_lte(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -54,6 +55,16 @@ arg_lte(x, bound = 0, .arg = rlang::caller_arg(x), .msg = NULL)
   an optional alternative message to display if an error is thrown
   instead of the default message.
 
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
+
 - bound:
 
   the bound to check against. Default is 0.
@@ -79,25 +90,22 @@ try(arg_between(z, c(1, 3))) # No error
 try(arg_between(z, c(1, 2))) # No error
 try(arg_between(z, c(1, 2),
                 inclusive = FALSE)) # Error
-#> Error in eval(expr, envir) : 
-#>   `z` must be between 1 and 2 (exclusive).
+#> Error : `z` must be between 1 and 2 (exclusive).
 try(arg_between(z, c(1, 2),
                 inclusive = c(TRUE, FALSE))) # Error
-#> Error in eval(expr, envir) : 
-#>   `z` must be greater than or equal to 1 and less than 2.
+#> Error : `z` must be greater than or equal to 1 and less than 2.
 
 try(arg_gt(z, 0))  # No error
 try(arg_gt(z, 2))  # Error
-#> Error in eval(expr, envir) : `z` must be greater than 2.
+#> Error : `z` must be greater than 2.
 try(arg_gte(z, 2)) # No error
 
 try(arg_lt(z, 0))  # Error
-#> Error in eval(expr, envir) : `z` must be negative.
+#> Error : `z` must be negative.
 try(arg_lt(z, 2))  # Error
-#> Error in eval(expr, envir) : `z` must be less than 2.
+#> Error : `z` must be less than 2.
 try(arg_lte(z, 2)) # No error
 
 try(arg_lte(z, "3")) # Error: wrong type
-#> Error in eval(expr, envir) : 
-#>   `z` must be less than or equal to "3".
+#> Error : `z` must be less than or equal to "3".
 ```

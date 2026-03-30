@@ -38,6 +38,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="search.json">
 </form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ngreifer/arg/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul>
 </div>
 
@@ -46,22 +47,27 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="arg-clean-simple-argument-checking">arg: Clean, Simple Argument Checking<a class="anchor" aria-label="anchor" href="#arg-clean-simple-argument-checking"></a>
+<div class="page-header"><h1 id="arg-clean-simple-argument-checking">
+<em>arg</em>: Clean, Simple Argument Checking<a class="anchor" aria-label="anchor" href="#arg-clean-simple-argument-checking"></a>
 </h1></div>
 <!-- badges: start -->
-<!-- badges: end -->
-<p><em>arg</em> produces nice, clean error messages for checking function arguments in R packages. I developed <em>arg</em> because I often found myself writing the same error messages in my packages, and I wasn’t satisfied with the other similar R packages available. <em>arg</em> uses <em>cli</em> to produce clean and clear errors without requiring much programming from the developer. These messages are designed to be clear to the user, not using complicated language. Many messages adapt to the type of (incorrect) input received.</p>
+
+<p><em>arg</em> produces nice, clean error messages for checking function arguments in R packages. I developed <em>arg</em> because I often found myself writing the same error messages in my packages, and I wasn’t satisfied with the other similar R packages available. <em>arg</em> uses <a href="https://cli.r-lib.org/" class="external-link"><em>cli</em></a> to produce clean and clear errors without requiring much programming from the developer. These messages are designed to be clear to the user, not using complicated language. Many messages adapt to the type of (incorrect) input received.</p>
+<p><em>arg</em> contains function for common arguments checks, such as checking that an argument is a single number (<code><a href="reference/arg_numeric.html">arg_number()</a></code>), a string (<code><a href="reference/arg_character.html">arg_string()</a></code>), a single <code>TRUE</code>/<code>FALSE</code> value (<code><a href="reference/arg_logical.html">arg_flag()</a></code>), or a data frame or matrix (<code><a href="reference/arg_data.html">arg_data()</a></code>). In addition, it is possible to build more complex argument checks using <code><a href="reference/arg_or.html">arg_and()</a></code> and <code><a href="reference/arg_or.html">arg_or()</a></code>, which require that all or at least one check is passed, and <code><a href="reference/when_supplied.html">when_not_null()</a></code> and <code><a href="reference/when_supplied.html">when_supplied()</a></code>, which allow for <code>NULL</code> or omitted arguments.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ngreifer.github.io/arg/">arg</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">z</span> <span class="op">&lt;-</span> <span class="st">"a string"</span></span>
 <span></span>
+<span><span class="co"># Check that `z` is a string</span></span>
 <span><span class="fu"><a href="reference/arg_character.html">arg_string</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Check that `z` is a number</span></span>
 <span><span class="fu"><a href="reference/arg_numeric.html">arg_number</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Error:</span></span>
 <span><span class="co">#&gt; ! `z` must be a number.</span></span>
 <span></span>
+<span><span class="co"># Check that `z` is a string of length 2</span></span>
 <span><span class="fu"><a href="reference/arg_or.html">arg_and</a></span><span class="op">(</span><span class="va">z</span>,</span>
 <span>        <span class="va">arg_string</span>,</span>
 <span>        <span class="fu"><a href="reference/arg_length.html">arg_length</a></span><span class="op">(</span><span class="fl">2L</span><span class="op">)</span><span class="op">)</span></span>
@@ -70,6 +76,7 @@
 <span><span class="co">#&gt; ✔ `z` must be a string</span></span>
 <span><span class="co">#&gt; ✖ `z` must have length 2</span></span>
 <span></span>
+<span><span class="co"># Check that `z` is NA, a flag, or a count</span></span>
 <span><span class="fu"><a href="reference/arg_or.html">arg_or</a></span><span class="op">(</span><span class="va">z</span>,</span>
 <span>       <span class="va">arg_is_NA</span>,</span>
 <span>       <span class="va">arg_flag</span>,</span>
@@ -77,39 +84,48 @@
 <span><span class="co">#&gt; Error:</span></span>
 <span><span class="co">#&gt; ! `z` must be NA, a logical value (TRUE or FALSE), or a count (a</span></span>
 <span><span class="co">#&gt;   non-negative whole number).</span></span></code></pre></div>
-<p>The name “arg” is meant to be short for “argument”, but also perhaps represents the sound you would make if you were to encounter an error when running some code. Hopefully <em>arg</em> reduces the number of times users say “arg”.</p>
-<p>If you use any of my R packages, including <em>MatchIt</em>, <em>WeightIt</em>, <em>cobalt</em>, <em>optweight</em>, or <em>adrftools</em>, you may already be using <em>arg</em>!</p>
+<p><em>arg</em> is meant to be used inside other R packages. Its error-throwing function <code><a href="reference/err.html">err()</a></code> (a wrapper for <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code>) automatically includes the relevant (user-facing) function in its error message.</p>
+<p>The name “arg” is meant to be short for “argument”, but also perhaps represents the sound you would make if you were to encounter an error when running some code. Hopefully <em>arg</em> reduces the number of times users say “arg!”.</p>
+<!-- If you use any of my R packages, including [*MatchIt*], [*WeightIt*], [*cobalt*], [*optweight*], or [*adrftools*], you may already be using *arg*!
+-->
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of arg from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of arg from <a href="https://github.com/ngreifer/arg" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ngreifer/arg"</span><span class="op">)</span></span></code></pre></div>
 <p>You can install the stable version on CRAN using</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"arg"</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Error in `contrib.url()`:</span></span>
-<span><span class="co">#&gt; ! trying to use CRAN without setting a mirror</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"arg"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="related-packages">Related packages<a class="anchor" aria-label="anchor" href="#related-packages"></a>
 </h2>
-<p><em>arg</em> has a similar function to other existing packages. These packages may be better for your purposes, and <em>arg</em> is not meant to compete with them.</p>
+<p><em>arg</em> serves a similar function to other existing packages. These packages may be better for your purposes, and <em>arg</em> is not meant to compete with them.</p>
 <ul>
-<li><em>checkmate</em></li>
-<li><em>checkarg</em></li>
-<li><em>erify</em></li>
-<li><em>favr</em></li>
-<li><em>assertions</em></li>
-<li><em>dreamerr</em></li>
+<li><a href="https://selkamand.github.io/assertions/" class="external-link"><em>assertions</em></a></li>
+<li><a href="https://mllg.github.io/checkmate/" class="external-link"><em>checkmate</em></a></li>
+<li><a href="https://cran.r-project.org/package=checkarg" class="external-link"><em>checkarg</em></a></li>
+<li><a href="https://poissonconsulting.github.io/chk/" class="external-link"><em>chk</em></a></li>
+<li><a href="https://cran.r-project.org/package=dreamerr" class="external-link"><em>dreamerr</em></a></li>
+<li><a href="https://flujoo.github.io/erify/" class="external-link"><em>erify</em></a></li>
+<li><a href="https://lj-jenkins.github.io/favr/" class="external-link"><em>favr</em></a></li>
 </ul>
 </div>
 </div>
-  </main><aside class="col-md-3"><div class="license">
+  </main><aside class="col-md-3"><div class="links">
+<h2 data-toc-skip>Links</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/ngreifer/arg/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/ngreifer/arg/issues" class="external-link">Report a bug</a></li>
+</ul>
+</div>
+
+<div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li>GPL (&gt;= 2)</li>
+<li>GPL (&gt;=2)</li>
 </ul>
 </div>
 
@@ -128,7 +144,12 @@
 </ul>
 </div>
 
-
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://CRAN.R-project.org/package=arg" class="external-link"><img src="https://www.r-pkg.org/badges/version/arg" alt="CRAN status"></a></li>
+</ul>
+</div>
 
   </aside>
 </div>

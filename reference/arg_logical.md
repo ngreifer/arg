@@ -7,9 +7,9 @@ values include `TRUE` and `FALSE`.
 ## Usage
 
 ``` r
-arg_logical(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_logical(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_flag(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_flag(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -30,6 +30,16 @@ arg_flag(x, .arg = rlang::caller_arg(x), .msg = NULL)
   an optional alternative message to display if an error is thrown
   instead of the default message.
 
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
+
 ## Value
 
 Returns `NULL` invisibly if an error is not thrown.
@@ -49,22 +59,18 @@ Returns `NULL` invisibly if an error is not thrown.
 obj <- TRUE
 
 try(arg_flag(obj))    # No error
-#> Error in eval(expr, envir) : 
-#>   `obj` must be a logical value (TRUE or FALSE).
 try(arg_logical(obj)) # No error
 
 obj <- c(TRUE, FALSE)
 
 try(arg_flag(obj))    # Error: must be a scalar
-#> Error in eval(expr, envir) : 
-#>   `obj` must be a logical value (TRUE or FALSE).
+#> Error : `obj` must be a single logical value (TRUE or FALSE).
 try(arg_logical(obj)) # No error
 
 obj <- 1L
 
 try(arg_flag(obj))    # Error must be logical
-#> Error in eval(expr, envir) : 
-#>   `obj` must be a logical value (TRUE or FALSE).
+#> Error : `obj` must be a logical value (TRUE or FALSE).
 try(arg_logical(obj)) # Error must be logical
-#> Error in eval(expr, envir) : `obj` must be a logical vector.
+#> Error : `obj` must be a logical vector.
 ```

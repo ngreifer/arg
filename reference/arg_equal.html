@@ -19,6 +19,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ngreifer/arg/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -28,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Check Equal Arguments</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/ngreifer/arg/blob/main/R/arg_equal.R" class="external-link"><code>R/arg_equal.R</code></a></small>
       <div class="d-none name"><code>arg_equal.Rd</code></div>
     </div>
 
@@ -44,7 +45,8 @@
 <span>  <span class="va">...</span>,</span>
 <span>  .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
 <span>  .arg2 <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span>,</span>
-<span>  .msg <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .msg <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">.call</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">arg_not_equal</span><span class="op">(</span></span>
@@ -53,7 +55,8 @@
 <span>  <span class="va">...</span>,</span>
 <span>  .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
 <span>  .arg2 <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span>,</span>
-<span>  .msg <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  .msg <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">.call</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -75,6 +78,10 @@
 
 <dt id="arg--msg">.msg<a class="anchor" aria-label="anchor" href="#arg--msg"></a></dt>
 <dd><p>an optional alternative message to display if an error is thrown instead of the default message.</p></dd>
+
+
+<dt id="arg--call">.call<a class="anchor" aria-label="anchor" href="#arg--call"></a></dt>
+<dd><p>the execution environment of a currently running function, e.g. <code>.call = rlang::current_env()</code>. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to <code><a href="err.html">err()</a></code>. Set to <code>NULL</code> to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -102,16 +109,16 @@
 <span class="r-in"><span>      tolerance <span class="op">=</span> <span class="fl">.001</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>       <span class="co">## Error: different</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in f(x = 1, y = 2) : `x` must be equal to `y`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `x` must be equal to `y`.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">1.00001</span><span class="op">)</span><span class="op">)</span> <span class="co">## Error</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in f(x = 1, y = 1.00001) : `x` must be equal to `y`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `x` must be equal to `y`.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu">arg_not_equal</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="co">## Error</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in g(x = 1, y = 1) : `x` must not be equal to `y`.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `x` must not be equal to `y`.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, y <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span> <span class="co">## No error</span></span></span>
 </code></pre></div>
     </div>

@@ -17,7 +17,8 @@ arg_symmetric(
   tol = 100 * .Machine$double.eps,
   ...,
   .arg = rlang::caller_arg(x),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 
 arg_cov(
@@ -25,7 +26,8 @@ arg_cov(
   tol = 100 * .Machine$double.eps,
   ...,
   .arg = rlang::caller_arg(x),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 
 arg_cor(
@@ -33,7 +35,8 @@ arg_cor(
   tol = 100 * .Machine$double.eps,
   ...,
   .arg = rlang::caller_arg(x),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 
 arg_distance(
@@ -41,7 +44,8 @@ arg_distance(
   tol = 100 * .Machine$double.eps,
   ...,
   .arg = rlang::caller_arg(x),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 ```
 
@@ -74,6 +78,16 @@ arg_distance(
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -112,23 +126,19 @@ cor_mat <- cor(mat)                 # Correlation
 dist_mat <- as.matrix(dist(mat))    # Distance
 
 try(arg_symmetric(mat))     # Error: not square
-#> Error in eval(expr, envir) : 
-#>   `mat` must be a square, symmetric, numeric matrix.
+#> Error : `mat` must be a square, symmetric, numeric matrix.
 try(arg_symmetric(sym_mat)) # No error
 
 try(arg_cov(sym_mat)) # Error: diagonal must be non-negative
-#> Error in eval(expr, envir) : 
-#>   `sym_mat` must be a square, symmetric matrix with non-negative values on
+#> Error : `sym_mat` must be a square, symmetric matrix with non-negative values on
 #> the diagonal.
 try(arg_cov(cov_mat)) # No error
 
 try(arg_cor(cov_mat)) # Error: values must be in [-1, 1]
-#> Error in eval(expr, envir) : 
-#>   All values in `cov_mat` must be between -1 and 1.
+#> Error : All values in `cov_mat` must be between -1 and 1.
 try(arg_cor(cor_mat)) # No error
 
 try(arg_distance(cor_mat))  # Error: diagonal must be 0
-#> Error in eval(expr, envir) : 
-#>   `cor_mat` must be a square, symmetric matrix with zeros on the diagonal.
+#> Error : `cor_mat` must be a square, symmetric matrix with zeros on the diagonal.
 try(arg_distance(dist_mat)) # No error
 ```

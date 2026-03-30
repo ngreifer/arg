@@ -9,9 +9,9 @@ an error when `any(is.element(x, values))` is `TRUE`.
 ## Usage
 
 ``` r
-arg_element(x, values, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_element(x, values, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_not_element(x, values, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_not_element(x, values, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -35,6 +35,16 @@ arg_not_element(x, values, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -73,25 +83,20 @@ try(f("opt1"))            # No error
 try(f(c("opt1", "opt2"))) # No error, all are elements
 try(f(c("opt1", "opt1"))) # No error: repeats allowed
 try(f("bad_arg"))         # Error: not an element of set
-#> Error in f("bad_arg") : 
-#>   `z` must be one of "opt1", "opt2", or "opt3".
+#> Error : `z` must be one of "opt1", "opt2", or "opt3".
 try(f("opt"))             # Error: partial matching not allowed
-#> Error in f("opt") : 
-#>   `z` must be one of "opt1", "opt2", or "opt3".
+#> Error : `z` must be one of "opt1", "opt2", or "opt3".
 try(f(c("opt1", "bad_arg"))) # Error: one non-match
-#> Error in f(c("opt1", "bad_arg")) : 
-#>   Each element of `z` must be one of "opt1", "opt2", or "opt3".
+#> Error : Each element of `z` must be one of "opt1", "opt2", or "opt3".
 
 g <- function(z) {
   arg_not_element(z, c("bad1", "bad2", "bad3"))
 }
 
 try(g("bad1"))            # Error: z is an element
-#> Error in g("bad1") : 
-#>   `z` must not be one of "bad1", "bad2", or "bad3".
+#> Error : `z` must not be one of "bad1", "bad2", or "bad3".
 try(g(c("bad1", "opt2"))) # Error: at least one bad match
-#> Error in g(c("bad1", "opt2")) : 
-#>   No element of `z` may be one of "bad1", "bad2", or "bad3".
+#> Error : No element of `z` may be one of "bad1", "bad2", or "bad3".
 try(g("opt1"))            # No error: not an element
 try(g(c("opt1", "opt2"))) # No error, none are elements
 ```

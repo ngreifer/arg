@@ -12,7 +12,8 @@ arg_equal(
   ...,
   .arg = rlang::caller_arg(x),
   .arg2 = rlang::caller_arg(x2),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 
 arg_not_equal(
@@ -21,7 +22,8 @@ arg_not_equal(
   ...,
   .arg = rlang::caller_arg(x),
   .arg2 = rlang::caller_arg(x2),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 ```
 
@@ -45,6 +47,16 @@ arg_not_equal(
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -72,15 +84,15 @@ try(f(x = 1, y = 1.00001, ## No error, within tolerance
       tolerance = .001))
 
 try(f(x = 1, y = 2))       ## Error: different
-#> Error in f(x = 1, y = 2) : `x` must be equal to `y`.
+#> Error : `x` must be equal to `y`.
 try(f(x = 1, y = 1.00001)) ## Error
-#> Error in f(x = 1, y = 1.00001) : `x` must be equal to `y`.
+#> Error : `x` must be equal to `y`.
 
 g <- function(x, y, ...) {
   arg_not_equal(x, y, ...)
 }
 
 try(g(x = 1, y = 1)) ## Error
-#> Error in g(x = 1, y = 1) : `x` must not be equal to `y`.
+#> Error : `x` must not be equal to `y`.
 try(g(x = 1, y = 2)) ## No error
 ```

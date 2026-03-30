@@ -8,9 +8,9 @@ be supplied, but checks them only if they are.
 ## Usage
 
 ``` r
-when_supplied(x, ..., .arg = rlang::caller_arg(x))
+when_supplied(x, ..., .arg = rlang::caller_arg(x), .call)
 
-when_not_null(x, ..., .arg = rlang::caller_arg(x))
+when_not_null(x, ..., .arg = rlang::caller_arg(x), .call)
 ```
 
 ## Arguments
@@ -30,6 +30,16 @@ when_not_null(x, ..., .arg = rlang::caller_arg(x))
   The default is to extract the argument's name using
   [`rlang::caller_arg()`](https://rlang.r-lib.org/reference/caller_arg.html).
   Ignored if `.msg` is supplied.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -75,11 +85,9 @@ f <- function(z) {
 
 try(f())    # No error: not supplied
 try(f("a")) # Error: not a number
-#> Error in tryCatchOne(expr, names, parentenv, handlers[[1L]]) : 
-#>   When supplied, `z` must be a number.
+#> Error : When `z` is supplied, `z` must be a number.
 try(f(2))   # Error: not within 0-1 range
-#> Error in tryCatchOne(expr, names, parentenv, handlers[[1L]]) : 
-#>   When supplied, `z` must be between 0 and 1 (inclusive).
+#> Error : When `z` is supplied, `z` must be between 0 and 1 (inclusive).
 try(f(.7))  # No error: number within range
 
 g <- function(z = NULL) {
@@ -91,10 +99,8 @@ g <- function(z = NULL) {
 try(g())     # No error: NULL okay
 try(g(NULL)) # No error: NULL okay
 try(g("a"))  # Error: not a number
-#> Error in tryCatchOne(expr, names, parentenv, handlers[[1L]]) : 
-#>   When not NULL, `z` must be a number.
+#> Error : When `z` is not NULL, `z` must be a number.
 try(g(2))    # Error: not within 0-1 range
-#> Error in tryCatchOne(expr, names, parentenv, handlers[[1L]]) : 
-#>   When not NULL, `z` must be between 0 and 1 (inclusive).
+#> Error : When `z` is not NULL, `z` must be between 0 and 1 (inclusive).
 try(g(.7))   # No error: number within range
 ```

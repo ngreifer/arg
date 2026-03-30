@@ -19,6 +19,7 @@
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ngreifer/arg/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -28,7 +29,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Check That Arguments Meet Some or All Criteria</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/ngreifer/arg/blob/main/R/arg_or.R" class="external-link"><code>R/arg_or.R</code></a></small>
       <div class="d-none name"><code>arg_or.Rd</code></div>
     </div>
 
@@ -38,9 +39,9 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">arg_or</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">arg_or</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">.call</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">arg_and</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">arg_and</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">.call</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -61,6 +62,10 @@
 
 <dt id="arg--msg">.msg<a class="anchor" aria-label="anchor" href="#arg--msg"></a></dt>
 <dd><p>an optional alternative message to display if an error is thrown instead of the default message.</p></dd>
+
+
+<dt id="arg--call">.call<a class="anchor" aria-label="anchor" href="#arg--call"></a></dt>
+<dd><p>the execution environment of a currently running function, e.g. <code>.call = rlang::current_env()</code>. The corresponding function call is retrieved and mentioned in error messages as the source of the error. Passed to <code><a href="err.html">err()</a></code>. Set to <code>NULL</code> to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -101,11 +106,8 @@
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>      <span class="co"># No error</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span><span class="op">)</span> <span class="co"># No error</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>   <span class="co"># No error</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in f(TRUE) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `z` must be a number, a string, or a logical value (<span style="color: #0000BB;">TRUE</span> or <span style="color: #0000BB;">FALSE</span>).</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>    <span class="co"># Error: neither a number, string,</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in f(1:4) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `z` must be a single number, a string, or a logical value (<span style="color: #0000BB;">TRUE</span> or</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `z` must be a single number, a string, or a logical value (<span style="color: #0000BB;">TRUE</span> or</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">FALSE</span>).</span>
 <span class="r-in"><span><span class="co">#              #        or flag, but a vector</span></span></span>
 <span class="r-in"><span></span></span>
@@ -119,23 +121,22 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>     <span class="co"># No error</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">7</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>     <span class="co"># Error: not &lt; 5</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in g(c(1, 7)) : All of the following conditions must be met:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : All of the following conditions must be met:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> `z` must be a vector of counts (non-negative whole numeric values)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> `z` must have length 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> each element of `z` must be less than <span style="color: #0000BB;">5</span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">2.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="co"># Error: not counts</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in g(c(1.1, 2.1)) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   All of the following conditions must be met:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : All of the following conditions must be met:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> `z` must be a vector of counts (non-negative whole numeric values)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> `z` must have length 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> each element of `z` must be less than <span style="color: #0000BB;">5</span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span>           <span class="co"># Error: not length 2</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in g(4) : All of the following conditions must be met:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : All of the following conditions must be met:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> `z` must be a vector of counts (non-negative whole numeric values)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> `z` must have length 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> `z` must be less than <span style="color: #0000BB;">5</span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">g</span><span class="op">(</span><span class="st">"bad"</span><span class="op">)</span><span class="op">)</span>       <span class="co"># Error: no criteria satisfied</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in g("bad") : All of the following conditions must be met:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : All of the following conditions must be met:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> `z` must be a vector of counts (non-negative whole numeric values)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> `z` must have length 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> `z` must be less than <span style="color: #0000BB;">5</span></span>
@@ -154,14 +155,12 @@
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">h</span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>   <span class="co"># No error</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">h</span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span><span class="op">)</span> <span class="co"># No error</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">h</span><span class="op">(</span><span class="fl">7</span><span class="op">)</span><span class="op">)</span>   <span class="co"># Error: not &lt; 5</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in h(7) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   At least one of the following conditions must be met:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : At least one of the following conditions must be met:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `z` must be <span style="color: #0000BB;">NA</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `z` must be a count (a non-negative whole number) and less than <span style="color: #0000BB;">5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `z` must be a string and one of <span style="color: #0000BB;">"a"</span>, <span style="color: #0000BB;">"b"</span>, or <span style="color: #0000BB;">"c"</span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">h</span><span class="op">(</span><span class="st">"d"</span><span class="op">)</span><span class="op">)</span> <span class="co"># Error: not in "a", "b", or "c"</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in h("d") : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   At least one of the following conditions must be met:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : At least one of the following conditions must be met:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `z` must be <span style="color: #0000BB;">NA</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `z` must be a count (a non-negative whole number) and less than <span style="color: #0000BB;">5</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">•</span> `z` must be a string and one of <span style="color: #0000BB;">"a"</span>, <span style="color: #0000BB;">"b"</span>, or <span style="color: #0000BB;">"c"</span></span>

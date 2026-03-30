@@ -6,9 +6,9 @@ non-`NA`) names.
 ## Usage
 
 ``` r
-arg_named(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_named(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_colnamed(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_colnamed(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -28,6 +28,16 @@ arg_colnamed(x, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -54,24 +64,21 @@ obj <- c(1,
          C = 3)
 
 try(arg_named(obj)) # Error: one name is blank
-#> Error in eval(expr, envir) : 
-#>   `obj` must have non-empty and non-NA names.
+#> Error : `obj` must have non-empty and non-NA names.
 
 names(obj)[1L] <- "A"
 try(arg_named(obj)) # No error
 
 obj2 <- unname(obj)
 try(arg_named(obj2)) # Error: no names
-#> Error in eval(expr, envir) : 
-#>   `obj2` must have non-empty and non-NA names.
+#> Error : `obj2` must have non-empty and non-NA names.
 
 # Matrix and data frame
 mat <- matrix(1:6, ncol = 2L)
 colnames(mat) <- c("A", "B")
 
 try(arg_named(mat))    # Error: matrices are not named
-#> Error in eval(expr, envir) : 
-#>   `mat` must have non-empty and non-NA names.
+#> Error : `mat` must have non-empty and non-NA names.
 try(arg_colnamed(mat)) # No error
 
 dat <- as.data.frame(mat)
@@ -80,6 +87,5 @@ try(arg_colnamed(dat)) # No error
 
 colnames(mat) <- NULL
 try(arg_colnamed(mat)) # Error: no colnames
-#> Error in eval(expr, envir) : 
-#>   `mat` must have non-empty and non-NA names.
+#> Error : `mat` must have non-empty and non-NA names.
 ```

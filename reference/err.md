@@ -13,7 +13,7 @@ function.
 ## Usage
 
 ``` r
-err(m, call = rlang::caller_env(2), .envir = rlang::caller_env())
+err(m, .call, .envir = rlang::caller_env())
 
 wrn(m, immediate = TRUE, .envir = rlang::caller_env())
 
@@ -29,13 +29,16 @@ msg(m, .envir = rlang::caller_env())
   [`rlang::warn()`](https://rlang.r-lib.org/reference/abort.html), or
   [`rlang::inform()`](https://rlang.r-lib.org/reference/abort.html).
 
-- call:
+- .call:
 
-  the execution environment of the function. The corresponding function
-  call is retrieved and mentioned in error messages as the source of the
-  error. See
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  See the `call` argument of
   [`rlang::abort()`](https://rlang.r-lib.org/reference/abort.html) for
-  details.
+  details. Set to `NULL` to omit call information. The default is to
+  search along the call stack for the first user-facing function in
+  another package, if any.
 
 - .envir:
 
@@ -89,8 +92,7 @@ f <- function(x) {
 }
 
 try(f(1))
-#> Error in eval(expr, envir) : 
-#>   This is an error, and `x` is a number.
+#> Error : This is an error, and `x` is a number.
 
 g <- function(x) {
   wrn("this warning displayed last", immediate = FALSE)

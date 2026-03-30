@@ -7,7 +7,7 @@ with no default is omitted from a function call.
 ## Usage
 
 ``` r
-arg_supplied(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_supplied(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -27,6 +27,16 @@ arg_supplied(x, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -48,7 +58,7 @@ f <- function(z) {
 
 try(f(1)) ## No error: argument supplied
 try(f())  ## Error!
-#> Error in f() : An argument to `z` must be supplied.
+#> Error : An argument to `z` must be supplied.
 
 # Will not throw for NULL or default arguments
 try(f(NULL)) ## No error: argument supplied

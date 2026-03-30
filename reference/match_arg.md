@@ -11,9 +11,10 @@ match_arg(
   x,
   choices,
   several.ok = FALSE,
-  ignore.case = FALSE,
+  ignore.case = TRUE,
   .context = NULL,
-  .arg = rlang::caller_arg(x)
+  .arg = rlang::caller_arg(x),
+  .call
 )
 ```
 
@@ -35,8 +36,8 @@ match_arg(
 
 - ignore.case:
 
-  `logical`; if `FALSE` (the default), the matching is case sensitive,
-  and if `TRUE`, case is ignored.
+  `logical`; if `FALSE`, the matching is case sensitive, and if `TRUE`
+  (the default), case is ignored.
 
 - .context:
 
@@ -51,11 +52,21 @@ match_arg(
   [`rlang::caller_arg()`](https://rlang.r-lib.org/reference/caller_arg.html).
   Ignored if `.msg` is supplied.
 
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
+
 ## Value
 
 A character string (or vector, if `several.ok = TRUE`) of the matched
 element(s) from `choices`. If there is no match, an error is thrown.
-When `several.okay = TRUE`, no error is thrown if there is at least one
+When `several.ok = TRUE`, no error is thrown if there is at least one
 match.
 
 ## Details
@@ -72,6 +83,12 @@ is used to check whether `x` was supplied; then
 [`arg_character()`](https://ngreifer.github.io/arg/reference/arg_character.md)
 (if `several.ok = FALSE`) is used to check whether `x` is a valid string
 or character vector, respectively.
+
+When `ignore.case = TRUE` (the default), an initial case-sensitive match
+is run, and if any values in `x` are unmatched, a second,
+case-insensitive match is run. When `ignore.case = FALSE`, only the
+first match is run. This ensures that exact matches (on both content and
+case) are prioritized before case-insensitive matches.
 
 ## See also
 
@@ -99,14 +116,11 @@ f <- function(z = NULL) {
 try(f())            # "None" (first choice returned)
 #> [1] "None"
 try(f("partial"))   # "Partial"
-#> Error in match_arg(z, c("None", "Exact", "Partial"), ignore.case = TRUE) : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> [1] "Partial"
 try(f("p"))         # "Partial" (partial match)
-#> Error in match_arg(z, c("None", "Exact", "Partial"), ignore.case = TRUE) : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> [1] "Partial"
 try(f(c("e", "p"))) # Error: several.ok = FALSE
-#> Error in match_arg(z, c("None", "Exact", "Partial"), ignore.case = TRUE) : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> Error : `z` must be a string.
 
 # several.ok = TRUE
 g <- function(z = NULL) {
@@ -115,20 +129,15 @@ g <- function(z = NULL) {
 }
 
 try(g("exact"))               # Error: case not ignored
-#> Error in match_arg(z, c("None", "Exact", "Partial"), several.ok = TRUE) : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> [1] "Exact"
 try(g("Exact"))               # "Exact"
-#> Error in match_arg(z, c("None", "Exact", "Partial"), several.ok = TRUE) : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> [1] "Exact"
 try(g(c("Exact", "Partial"))) # "Exact", "Partial"
-#> Error in match_arg(z, c("None", "Exact", "Partial"), several.ok = TRUE) : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> [1] "Exact"   "Partial"
 try(g(c("Exact", "Wrong")))   # "Exact"
-#> Error in match_arg(z, c("None", "Exact", "Partial"), several.ok = TRUE) : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> [1] "Exact"
 try(g(c("Wrong1", "Wrong2"))) # Error: no match
-#> Error in match_arg(z, c("None", "Exact", "Partial"), several.ok = TRUE) : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> Error : `z` should be at least one of "None", "Exact", or "Partial".
 
 h <- function(z = NULL) {
   match_arg(z, c("None", "Exact", "Partial"),
@@ -136,6 +145,5 @@ h <- function(z = NULL) {
 }
 
 try(h("Wrong")) # Error with context
-#> Error in match_arg(z, c("None", "Exact", "Partial"), .context = "in {.fun h},") : 
-#>   `several.ok` must be a logical value (TRUE or FALSE).
+#> Error : In `h()`, `z` should be one of "None", "Exact", or "Partial".
 ```

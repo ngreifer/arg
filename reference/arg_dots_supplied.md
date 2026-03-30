@@ -5,9 +5,9 @@ Checks whether an argument was supplied to `...`.
 ## Usage
 
 ``` r
-arg_dots_supplied(..., .msg = NULL)
+arg_dots_supplied(..., .msg = NULL, .call)
 
-arg_dots_not_supplied(..., .msg = NULL)
+arg_dots_not_supplied(..., .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -21,6 +21,16 @@ arg_dots_not_supplied(..., .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -57,5 +67,5 @@ f <- function(...) {
 
 try(f(1)) # No error: argument supplied
 try(f())  # Error!
-#> Error in f() : An argument must be supplied to `...`.
+#> Error : An argument must be supplied to `...`.
 ```

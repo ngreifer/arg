@@ -1,6 +1,6 @@
 # Package index
 
-## All functions
+## Argument checking
 
 - [`arg_between()`](https://ngreifer.github.io/arg/reference/arg_between.md)
   [`arg_gt()`](https://ngreifer.github.io/arg/reference/arg_between.md)
@@ -74,12 +74,18 @@
   : Check Symmetric Matrix Argument
 - [`arg_unique()`](https://ngreifer.github.io/arg/reference/arg_unique.md)
   : Check Unique Argument
+- [`when_supplied()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
+  [`when_not_null()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
+  : Check Arguments When Supplied
+
+## Argument processing
+
+- [`match_arg()`](https://ngreifer.github.io/arg/reference/match_arg.md)
+  : Argument Verification
+
+## Assertions
+
 - [`err()`](https://ngreifer.github.io/arg/reference/err.md)
   [`wrn()`](https://ngreifer.github.io/arg/reference/err.md)
   [`msg()`](https://ngreifer.github.io/arg/reference/err.md) : Throw an
   Error, Warning, or Message
-- [`match_arg()`](https://ngreifer.github.io/arg/reference/match_arg.md)
-  : Argument Verification
-- [`when_supplied()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
-  [`when_not_null()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
-  : Check Arguments When Supplied

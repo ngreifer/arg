@@ -11,7 +11,8 @@ arg_index(
   data,
   .arg = rlang::caller_arg(x),
   .arg_data = rlang::caller_arg(data),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 
 arg_indices(
@@ -19,7 +20,8 @@ arg_indices(
   data,
   .arg = rlang::caller_arg(x),
   .arg_data = rlang::caller_arg(data),
-  .msg = NULL
+  .msg = NULL,
+  .call
 )
 ```
 
@@ -51,6 +53,16 @@ arg_indices(
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -91,15 +103,12 @@ f <- function(z) {
 
 try(f(1))         # No error
 try(f(3))         # Error: not a valid index
-#> Error in f(3) : 
-#>   `z` must be the name or index of a column in `dat`.
+#> Error : `z` must be the name or index of a column in `dat`.
 try(f("col1"))    # No error
 try(f("bad_col")) # Error: not a valid index
-#> Error in f("bad_col") : 
-#>   `z` must be the name or index of a column in `dat`.
+#> Error : `z` must be the name or index of a column in `dat`.
 try(f(1:2))       # Error: arg_index() requires scalar
-#> Error in f(1:2) : 
-#>   `z` must be the name or index of a column in `dat`.
+#> Error : `z` must be the name or index of a column in `dat`.
 
 mat <- matrix(1:9, ncol = 3)
 
@@ -110,5 +119,5 @@ g <- function(z) {
 try(g(1))     # No error
 try(g(1:3))   # No error
 try(g("col")) # Error: `mat` has no names
-#> Error in g("col") : `z` must be the index of a column in `mat`.
+#> Error : `z` must be the index of a column in `mat`.
 ```

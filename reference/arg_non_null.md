@@ -7,9 +7,9 @@ Checks whether an argument is non-`NULL` (`arg_non_null()`) or is `NULL`
 ## Usage
 
 ``` r
-arg_non_null(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_non_null(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_null(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_null(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -29,6 +29,16 @@ arg_null(x, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -59,19 +69,19 @@ f <- function(x = NULL, y = NULL) {
 
 try(f(x = 1,    y = NULL)) ## No error
 try(f(x = NULL, y = NULL)) ## Error: x is NULL
-#> Error in f(x = NULL, y = NULL) : `x` must be non-NULL.
+#> Error : `x` must be non-NULL.
 try(f(x = 1,    y = 1))    ## Error: y is non-NULL
-#> Error in f(x = 1, y = 1) : `y` must be NULL.
+#> Error : `y` must be NULL.
 
 # Any object of length 0 is considered NULL
 try(f(x = numeric())) ## Error: x is NULL
-#> Error in f(x = numeric()) : `x` must be non-NULL.
+#> Error : `x` must be non-NULL.
 try(f(x = list()))    ## Error: x is NULL
-#> Error in f(x = list()) : `x` must be non-NULL.
+#> Error : `x` must be non-NULL.
 
 test <- c(1, 2)[c(FALSE, FALSE)]
 try(f(x = test))      ## Error: x is NULL
-#> Error in f(x = test) : `x` must be non-NULL.
+#> Error : `x` must be non-NULL.
 
 # arg_null() is best used in and_or():
 f2 <- function(z) {
@@ -83,5 +93,5 @@ f2 <- function(z) {
 try(f2(NULL)) ## No error; z can be NULL
 try(f2(1))    ## No error; z can be a number
 try(f2(TRUE)) ## Error: z must be NULL or a number
-#> Error in f2(TRUE) : `z` must be NULL or a number.
+#> Error : `z` must be NULL or a number.
 ```

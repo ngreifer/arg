@@ -7,9 +7,9 @@ criteria.
 ## Usage
 
 ``` r
-arg_or(x, ..., .arg = rlang::caller_arg(x), .msg = NULL)
+arg_or(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_and(x, ..., .arg = rlang::caller_arg(x), .msg = NULL)
+arg_and(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -34,6 +34,16 @@ arg_and(x, ..., .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -90,11 +100,8 @@ f <- function(z) {
 try(f(1))      # No error
 try(f("test")) # No error
 try(f(TRUE))   # No error
-#> Error in f(TRUE) : 
-#>   `z` must be a number, a string, or a logical value (TRUE or FALSE).
 try(f(1:4))    # Error: neither a number, string,
-#> Error in f(1:4) : 
-#>   `z` must be a single number, a string, or a logical value (TRUE or
+#> Error : `z` must be a single number, a string, or a logical value (TRUE or
 #> FALSE).
 #              #        or flag, but a vector
 
@@ -108,23 +115,22 @@ g <- function(z) {
 
 try(g(c(1, 2)))     # No error
 try(g(c(1, 7)))     # Error: not < 5
-#> Error in g(c(1, 7)) : All of the following conditions must be met:
+#> Error : All of the following conditions must be met:
 #> ✔ `z` must be a vector of counts (non-negative whole numeric values)
 #> ✔ `z` must have length 2
 #> ✖ each element of `z` must be less than 5
 try(g(c(1.1, 2.1))) # Error: not counts
-#> Error in g(c(1.1, 2.1)) : 
-#>   All of the following conditions must be met:
+#> Error : All of the following conditions must be met:
 #> ✖ `z` must be a vector of counts (non-negative whole numeric values)
 #> ✔ `z` must have length 2
 #> ✔ each element of `z` must be less than 5
 try(g(4))           # Error: not length 2
-#> Error in g(4) : All of the following conditions must be met:
+#> Error : All of the following conditions must be met:
 #> ✔ `z` must be a vector of counts (non-negative whole numeric values)
 #> ✖ `z` must have length 2
 #> ✔ `z` must be less than 5
 try(g("bad"))       # Error: no criteria satisfied
-#> Error in g("bad") : All of the following conditions must be met:
+#> Error : All of the following conditions must be met:
 #> ✖ `z` must be a vector of counts (non-negative whole numeric values)
 #> ✖ `z` must have length 2
 #> ✖ `z` must be less than 5
@@ -143,14 +149,12 @@ try(h(NA))  # No error
 try(h(1))   # No error
 try(h("a")) # No error
 try(h(7))   # Error: not < 5
-#> Error in h(7) : 
-#>   At least one of the following conditions must be met:
+#> Error : At least one of the following conditions must be met:
 #> • `z` must be NA
 #> • `z` must be a count (a non-negative whole number) and less than 5
 #> • `z` must be a string and one of "a", "b", or "c"
 try(h("d")) # Error: not in "a", "b", or "c"
-#> Error in h("d") : 
-#>   At least one of the following conditions must be met:
+#> Error : At least one of the following conditions must be met:
 #> • `z` must be NA
 #> • `z` must be a count (a non-negative whole number) and less than 5
 #> • `z` must be a string and one of "a", "b", or "c"

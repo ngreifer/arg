@@ -12,21 +12,21 @@ rectangular data set (`arg_data()`), or an
 ## Usage
 
 ``` r
-arg_atomic(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_atomic(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_vector(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_vector(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_list(x, df_ok = FALSE, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_list(x, df_ok = FALSE, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_data.frame(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_data.frame(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_matrix(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_matrix(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_array(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_array(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_data(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_data(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_env(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_env(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -46,6 +46,16 @@ arg_env(x, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 - df_ok:
 
@@ -90,34 +100,34 @@ nul <- NULL
 try(arg_atomic(vec))
 try(arg_atomic(mat))
 try(arg_atomic(dat))
-#> Error in eval(expr, envir) : `dat` must be an atomic vector.
+#> Error : `dat` must be an atomic vector.
 try(arg_atomic(lis))
-#> Error in eval(expr, envir) : `lis` must be an atomic vector.
+#> Error : `lis` must be an atomic vector.
 try(arg_atomic(nul))
-#> Error in eval(expr, envir) : `nul` must be an atomic vector.
+#> Error : `nul` must be an atomic vector.
 
 # arg_vector()
 try(arg_vector(vec))
 try(arg_vector(mat))
-#> Error in eval(expr, envir) : `mat` must be a vector.
+#> Error : `mat` must be a vector.
 
 # arg_matrix()
 try(arg_matrix(vec))
-#> Error in eval(expr, envir) : `vec` must be a matrix.
+#> Error : `vec` must be a matrix.
 try(arg_matrix(mat))
 try(arg_matrix(dat))
-#> Error in eval(expr, envir) : `dat` must be a matrix.
+#> Error : `dat` must be a matrix.
 
 # arg_data.frame()
 try(arg_data.frame(vec))
-#> Error in eval(expr, envir) : `vec` must be a data frame.
+#> Error : `vec` must be a data frame.
 try(arg_data.frame(mat))
-#> Error in eval(expr, envir) : `mat` must be a data frame.
+#> Error : `mat` must be a data frame.
 try(arg_data.frame(dat))
 
 # arg_data()
 try(arg_data(vec))
-#> Error in eval(expr, envir) : `vec` must be a data frame or matrix.
+#> Error : `vec` must be a data frame or matrix.
 try(arg_data(mat))
 try(arg_data(dat))
 ```

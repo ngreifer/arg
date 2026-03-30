@@ -7,11 +7,11 @@ scalar `NA` (`arg_is_NA()`).
 ## Usage
 
 ``` r
-arg_no_NA(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_no_NA(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_is_NA(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_is_NA(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
-arg_all_NA(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_all_NA(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -31,6 +31,16 @@ arg_all_NA(x, .arg = rlang::caller_arg(x), .msg = NULL)
 
   an optional alternative message to display if an error is thrown
   instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
 
 ## Value
 
@@ -62,9 +72,9 @@ f <- function(x) {
 
 try(f(1))           ## No error
 try(f(NA))          ## Error: x is NA
-#> Error in f(NA) : `x` must not be NA.
+#> Error : `x` must not be NA.
 try(f(c(1, NA, 3))) ## Error: x contains NA
-#> Error in f(c(1, NA, 3)) : `x` must not contain NA values.
+#> Error : `x` must not contain NA values.
 
 f2 <- function(y) {
   arg_all_NA(y) ## y must be NA
@@ -73,8 +83,7 @@ f2 <- function(y) {
 try(f2(NA))          ## No error
 try(f2(c(NA, NA)))   ## No error
 try(f2(1))           ## Error: y is not NA
-#> Error in f2(1) : `y` must be NA.
+#> Error : `y` must be NA.
 try(f2(c(1, NA, 3))) ## Error: y is not all NA
-#> Error in f2(c(1, NA, 3)) : 
-#>   `y` must only contain NA values.
+#> Error : `y` must only contain NA values.
 ```

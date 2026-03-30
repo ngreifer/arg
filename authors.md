@@ -7,6 +7,9 @@
 
 ## Citation
 
+Source:
+[`DESCRIPTION`](https://github.com/ngreifer/arg/blob/main/DESCRIPTION)
+
 Greifer N (2026). *arg: Clean, Simple Argument Checking*. R package
 version 0.1.0, <https://ngreifer.github.io/arg/>.
 

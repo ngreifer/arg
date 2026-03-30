@@ -5,7 +5,7 @@ Checks whether an argument is a function.
 ## Usage
 
 ``` r
-arg_function(x, .arg = rlang::caller_arg(x), .msg = NULL)
+arg_function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -26,6 +26,16 @@ arg_function(x, .arg = rlang::caller_arg(x), .msg = NULL)
   an optional alternative message to display if an error is thrown
   instead of the default message.
 
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
+
 ## Value
 
 Returns `NULL` invisibly if an error is not thrown.
@@ -44,5 +54,5 @@ f <- function(z) {
 
 try(f(print))   # No error
 try(f("print")) # Error: must be a function
-#> Error in f("print") : `z` must be a function.
+#> Error : `z` must be a function.
 ```
