@@ -67,6 +67,10 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p><code>err()</code> throws an error condition. <code>wrn()</code> throws a warning condition and invisibly returns the formatted warning message as a string. <code>msg()</code> signals a message and invisibly returns <code>NULL</code>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>These functions are simple wrappers for the corresponding functions in <span class="pkg">rlang</span>, namely <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code> for <code>err()</code>, <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::warn()</a></code> for <code>wrn()</code>, and <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::inform()</a></code> for <code>msg()</code>, but which function almost identically to the <span class="pkg">cli</span> versions. Their main differences are that they additionally process the input (capitalizing the first character of the message and adding a period to the end if needed, unless multiple strings are provided). <code>err()</code> is used inside all <code>arg_*()</code> functions in <span class="pkg">arg</span>.</p>
     </div>

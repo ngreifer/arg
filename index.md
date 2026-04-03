@@ -1,4 +1,4 @@
-# *arg*: Clean, Simple Argument Checking
+# *arg*: Clean and Simple Argument Checking
 
 *arg* produces nice, clean error messages for checking function
 arguments in R packages. I developed *arg* because I often found myself
@@ -73,7 +73,7 @@ users say “arg!”.
 
 ## Installation
 
-You can install the development version of arg from
+You can install the development version of *arg* from
 [GitHub](https://github.com/ngreifer/arg) with:
 
 ``` r

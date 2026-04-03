@@ -54,6 +54,12 @@ msg(m, .envir = rlang::caller_env())
   that the default here differs from that of
   [`warning()`](https://rdrr.io/r/base/warning.html).
 
+## Value
+
+`err()` throws an error condition. `wrn()` throws a warning condition
+and invisibly returns the formatted warning message as a string. `msg()`
+signals a message and invisibly returns `NULL`.
+
 ## Details
 
 These functions are simple wrappers for the corresponding functions in

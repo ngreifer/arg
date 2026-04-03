@@ -101,7 +101,7 @@
 <span class="r-in"><span><span class="va">lis</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">as.list</a></span><span class="op">(</span><span class="va">vec</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">nul</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># arg_atomic()</span></span></span>
+<span class="r-in"><span><span class="co"># arg_atomic</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_atomic</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_atomic</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_atomic</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -111,26 +111,26 @@
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_atomic</span><span class="op">(</span><span class="va">nul</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : `nul` must be an atomic vector.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># arg_vector()</span></span></span>
+<span class="r-in"><span><span class="co"># arg_vector</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_vector</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_vector</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : `mat` must be a vector.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># arg_matrix()</span></span></span>
+<span class="r-in"><span><span class="co"># arg_matrix</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_matrix</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : `vec` must be a matrix.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_matrix</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_matrix</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : `dat` must be a matrix.</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># arg_data.frame()</span></span></span>
+<span class="r-in"><span><span class="co"># arg_data.frame</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_data.frame</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : `vec` must be a data frame.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_data.frame</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : `mat` must be a data frame.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_data.frame</span><span class="op">(</span><span class="va">dat</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># arg_data()</span></span></span>
+<span class="r-in"><span><span class="co"># arg_data</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_data</span><span class="op">(</span><span class="va">vec</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Error : `vec` must be a data frame or matrix.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_data</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span></span></span>

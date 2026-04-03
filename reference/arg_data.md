@@ -96,7 +96,7 @@ dat <- as.data.frame(mat)
 lis <- as.list(vec)
 nul <- NULL
 
-# arg_atomic()
+# arg_atomic
 try(arg_atomic(vec))
 try(arg_atomic(mat))
 try(arg_atomic(dat))
@@ -106,26 +106,26 @@ try(arg_atomic(lis))
 try(arg_atomic(nul))
 #> Error : `nul` must be an atomic vector.
 
-# arg_vector()
+# arg_vector
 try(arg_vector(vec))
 try(arg_vector(mat))
 #> Error : `mat` must be a vector.
 
-# arg_matrix()
+# arg_matrix
 try(arg_matrix(vec))
 #> Error : `vec` must be a matrix.
 try(arg_matrix(mat))
 try(arg_matrix(dat))
 #> Error : `dat` must be a matrix.
 
-# arg_data.frame()
+# arg_data.frame
 try(arg_data.frame(vec))
 #> Error : `vec` must be a data frame.
 try(arg_data.frame(mat))
 #> Error : `mat` must be a data frame.
 try(arg_data.frame(dat))
 
-# arg_data()
+# arg_data
 try(arg_data(vec))
 #> Error : `vec` must be a data frame or matrix.
 try(arg_data(mat))
