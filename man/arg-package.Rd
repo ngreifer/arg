@@ -4,9 +4,9 @@
 \name{arg-package}
 \alias{arg}
 \alias{arg-package}
-\title{arg: Clean, Simple Argument Checking}
+\title{arg: Clean and Simple Argument Checking}
 \description{
-Functions for checking arguments in R packages. Uses a simple interface and produces clean, informative error messages using 'cli'.
+Checks function arguments, ideally for use in R packages. Uses a simple interface and produces clean, informative error messages using 'cli'.
 }
 \seealso{
 Useful links:

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# *arg*: Clean, Simple Argument Checking
+# *arg*: Clean and Simple Argument Checking
 
 <!-- badges: start -->
 
@@ -73,7 +73,7 @@ users say “arg!”.
 
 ## Installation
 
-You can install the development version of arg from
+You can install the development version of *arg* from
 [GitHub](https://github.com/ngreifer/arg) with:
 
 ``` r

@@ -10,6 +10,9 @@
 #' @details
 #' These functions are simple wrappers for the corresponding functions in \pkg{rlang}, namely [rlang::abort()] for `err()`, [rlang::warn()] for `wrn()`, and [rlang::inform()] for `msg()`, but which function almost identically to the \pkg{cli} versions. Their main differences are that they additionally process the input (capitalizing the first character of the message and adding a period to the end if needed, unless multiple strings are provided). `err()` is used inside all `arg_*()` functions in \pkg{arg}.
 #'
+#' @return
+#' `err()` throws an error condition. `wrn()` throws a warning condition and invisibly returns the formatted warning message as a string. `msg()` signals a message and invisibly returns `NULL`.
+#'
 #' @seealso
 #' * Base versions: [stop()], [warning()], [message()]
 #' * \pkg{rlang} versions: [rlang::abort()], [rlang::warn()], [rlang::inform()]

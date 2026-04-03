@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 rlang::local_options(width = 80)
 ```
 
-# *arg*: Clean, Simple Argument Checking
+# *arg*: Clean and Simple Argument Checking
 
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/arg)](https://CRAN.R-project.org/package=arg)
@@ -58,7 +58,7 @@ The name "arg" is meant to be short for "argument", but also perhaps represents 
 
 ## Installation
 
-You can install the development version of arg from [GitHub](https://github.com/ngreifer/arg) with:
+You can install the development version of *arg* from [GitHub](https://github.com/ngreifer/arg) with:
 
 ``` r
 # install.packages("pak")

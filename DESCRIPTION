@@ -1,16 +1,16 @@
 Package: arg
 Type: Package
-Title: Clean, Simple Argument Checking
+Title: Clean and Simple Argument Checking
 Version: 0.1.0
 Authors@R: person("Noah", "Greifer", role = c("aut", "cre"),
          email = "noah.greifer@gmail.com",
 	       comment = c(ORCID="0000-0003-3067-7154"))
-Description: Functions for checking arguments in R packages. Uses a simple interface and produces clean, informative error messages using 'cli'. 
+Description: Checks function arguments, ideally for use in R packages. Uses a simple interface and produces clean, informative error messages using 'cli'.
 Depends:
     R (>= 4.1.0)
 Imports:
     rlang (>= 1.1.0),
-    cli,
+    cli (>= 3.6.4),
     stats,
     utils
 License: GPL (>=2)

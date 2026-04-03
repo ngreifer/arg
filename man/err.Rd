@@ -21,6 +21,9 @@ msg(m, .envir = rlang::caller_env())
 
 \item{immediate}{whether to output the warning immediately (\code{TRUE}, the default) or save all warnings until the end of execution (\code{FALSE}). See \code{\link[=warning]{warning()}} for details. Note that the default here differs from that of \code{warning()}.}
 }
+\value{
+\code{err()} throws an error condition. \code{wrn()} throws a warning condition and invisibly returns the formatted warning message as a string. \code{msg()} signals a message and invisibly returns \code{NULL}.
+}
 \description{
 These functions are similar to \code{\link[=stop]{stop()}}/\code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[=warning]{warning()}}/\code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[=message]{message()}}/\code{\link[cli:cli_abort]{cli::cli_inform()}}, throwing an error, warning, and message, respectively. Minor processing is done to capitalize the first letter of the message, add a period at the end (if it makes sense to), and add information about the calling function.
 }
