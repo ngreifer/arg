@@ -85,10 +85,11 @@ f <- function(z) {
 
 try(f())    # No error: not supplied
 try(f("a")) # Error: not a number
-#> Error : When `z` is supplied, `z` must be a number.
+#> Error : When `z` is supplied, `n` must be a whole number, not a call.
 try(f(2))   # Error: not within 0-1 range
-#> Error : When `z` is supplied, `z` must be between 0 and 1 (inclusive).
+#> Error : When `z` is supplied, `n` must be a whole number, not a call.
 try(f(.7))  # No error: number within range
+#> Error : When `z` is supplied, `n` must be a whole number, not a call.
 
 g <- function(z = NULL) {
   when_not_null(z,
@@ -99,8 +100,9 @@ g <- function(z = NULL) {
 try(g())     # No error: NULL okay
 try(g(NULL)) # No error: NULL okay
 try(g("a"))  # Error: not a number
-#> Error : When `z` is not NULL, `z` must be a number.
+#> Error : When `z` is not NULL, `n` must be a whole number, not a call.
 try(g(2))    # Error: not within 0-1 range
-#> Error : When `z` is not NULL, `z` must be between 0 and 1 (inclusive).
+#> Error : When `z` is not NULL, `n` must be a whole number, not a call.
 try(g(.7))   # No error: number within range
+#> Error : When `z` is not NULL, `n` must be a whole number, not a call.
 ```

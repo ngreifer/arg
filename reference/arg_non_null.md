@@ -91,7 +91,12 @@ f2 <- function(z) {
 }
 
 try(f2(NULL)) ## No error; z can be NULL
+#> Error in rlang::caller_fn(arg_call) : 
+#>   `n` must be a whole number, not a call.
 try(f2(1))    ## No error; z can be a number
+#> Error in rlang::caller_fn(arg_call) : 
+#>   `n` must be a whole number, not a call.
 try(f2(TRUE)) ## Error: z must be NULL or a number
-#> Error : `z` must be NULL or a number.
+#> Error in rlang::caller_fn(arg_call) : 
+#>   `n` must be a whole number, not a call.
 ```

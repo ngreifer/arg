@@ -70,5 +70,5 @@ try(arg_length(obj, c(0:3)))
 #> Error : `obj` must have length 0, 1, 2, or 3.
 try(when_not_null(obj,
                   arg_length(1:3)))
-#> Error : When `obj` is not NULL, `obj` must have length 1, 2, or 3.
+#> Error : When `obj` is not NULL, `n` must be a whole number, not a call.
 ```
