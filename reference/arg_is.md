@@ -100,13 +100,13 @@ try(arg_is_not(obj2, c("test", "quiz"))) # Error
 try(arg_and(obj2,
             arg_is("test"),
             arg_is("quiz")))
-#> Error : `n` must be a whole number, not a call.
+#> Error : `obj2` must inherit from class <quiz>.
 
 ## Require argument to not be a specific combination of
 ## multiple classes
 try(arg_or(obj2,
            arg_is_not("test"),
            arg_is_not("essay")))
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
+#> Error : `obj2` must not inherit from class <test> or must not inherit from class
+#> <essay>.
 ```

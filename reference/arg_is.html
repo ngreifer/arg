@@ -110,15 +110,15 @@
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="arg_or.html">arg_and</a></span><span class="op">(</span><span class="va">obj2</span>,</span></span>
 <span class="r-in"><span>            <span class="fu">arg_is</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            <span class="fu">arg_is</span><span class="op">(</span><span class="st">"quiz"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `n` must be a whole number, not a call.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj2` must inherit from class <span style="color: #0000BB;">&lt;quiz&gt;</span>.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Require argument to not be a specific combination of</span></span></span>
 <span class="r-in"><span><span class="co">## multiple classes</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu"><a href="arg_or.html">arg_or</a></span><span class="op">(</span><span class="va">obj2</span>,</span></span>
 <span class="r-in"><span>           <span class="fu">arg_is_not</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>           <span class="fu">arg_is_not</span><span class="op">(</span><span class="st">"essay"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error in rlang::caller_fn(arg_call) : </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   `n` must be a whole number, not a call.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj2` must not inherit from class <span style="color: #0000BB;">&lt;test&gt;</span> or must not inherit from class</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #0000BB;">&lt;essay&gt;</span>.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

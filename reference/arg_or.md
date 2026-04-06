@@ -98,17 +98,11 @@ f <- function(z) {
 }
 
 try(f(1))      # No error
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
 try(f("test")) # No error
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
 try(f(TRUE))   # No error
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
 try(f(1:4))    # Error: neither a number, string,
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
+#> Error : `z` must be a single number, a string, or a logical value (TRUE or
+#> FALSE).
 #              #        or flag, but a vector
 
 # `arg_and()`
@@ -120,15 +114,26 @@ g <- function(z) {
 }
 
 try(g(c(1, 2)))     # No error
-#> Error : `n` must be a whole number, not a call.
 try(g(c(1, 7)))     # Error: not < 5
-#> Error : `n` must be a whole number, not a call.
+#> Error : All of the following conditions must be met:
+#> ✔ `z` must be a vector of counts (non-negative whole numeric values)
+#> ✔ `z` must have length 2
+#> ✖ each element of `z` must be less than 5
 try(g(c(1.1, 2.1))) # Error: not counts
-#> Error : `n` must be a whole number, not a call.
+#> Error : All of the following conditions must be met:
+#> ✖ `z` must be a vector of counts (non-negative whole numeric values)
+#> ✔ `z` must have length 2
+#> ✔ each element of `z` must be less than 5
 try(g(4))           # Error: not length 2
-#> Error : `n` must be a whole number, not a call.
+#> Error : All of the following conditions must be met:
+#> ✔ `z` must be a vector of counts (non-negative whole numeric values)
+#> ✖ `z` must have length 2
+#> ✔ `z` must be less than 5
 try(g("bad"))       # Error: no criteria satisfied
-#> Error : `n` must be a whole number, not a call.
+#> Error : All of the following conditions must be met:
+#> ✖ `z` must be a vector of counts (non-negative whole numeric values)
+#> ✖ `z` must have length 2
+#> ✖ `z` must be less than 5
 
 # Chaining together `arg_and()` and `arg_or()`
 h <- function(z) {
@@ -141,18 +146,16 @@ h <- function(z) {
 }
 
 try(h(NA))  # No error
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
 try(h(1))   # No error
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
 try(h("a")) # No error
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
 try(h(7))   # Error: not < 5
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
+#> Error : At least one of the following conditions must be met:
+#> • `z` must be NA
+#> • `z` must be a count (a non-negative whole number) and less than 5
+#> • `z` must be a string and one of "a", "b", or "c"
 try(h("d")) # Error: not in "a", "b", or "c"
-#> Error in rlang::caller_fn(arg_call) : 
-#>   `n` must be a whole number, not a call.
+#> Error : At least one of the following conditions must be met:
+#> • `z` must be NA
+#> • `z` must be a count (a non-negative whole number) and less than 5
+#> • `z` must be a string and one of "a", "b", or "c"
 ```
