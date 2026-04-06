@@ -113,7 +113,9 @@ when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
     arg_call <- rlang::call2(arg_call)
   }
 
-  fmls <- rlang::fn_fmls_names(rlang::caller_fn(arg_call))
+  call_fun <- eval.parent(arg_call[[1L]])
+
+  fmls <- rlang::fn_fmls_names(call_fun)
 
   if ("x" %in% fmls && !("x" %in% rlang::call_args_names(arg_call))) {
     arg_call <- rlang::call_modify(arg_call, !!!list(x = quote(x)))
@@ -127,5 +129,5 @@ when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
     arg_call <- rlang::call_modify(arg_call, !!!list(.call = NULL))
   }
 
-  rlang::call_match(call = arg_call, fn = rlang::caller_fn(arg_call))
+  rlang::call_match(call = arg_call, fn = call_fun)
 }
