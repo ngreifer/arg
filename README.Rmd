@@ -17,7 +17,6 @@ rlang::local_options(width = 80)
 ```
 
 # *arg*: Clean and Simple Argument Checking
-
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/arg)](https://CRAN.R-project.org/package=arg)
 <!-- badges: end -->
