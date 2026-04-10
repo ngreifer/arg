@@ -87,10 +87,12 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
 
   failures <- character(...length())
 
-  for (i in seq_along(dots)) {
-    j <- .to_arg_fun_call(dots[[i]])
+  x_name <- rlang::caller_arg(x)
 
-    test <- try(eval(j), silent = TRUE)
+  for (i in seq_along(dots)) {
+    test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+      eval.parent() |>
+      try(silent = TRUE)
 
     if (!inherits(test, "try-error")) {
       return(invisible())
@@ -112,13 +114,13 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     if (cli::ansi_grepl("^at least one of the following conditions must be met:", msg_i,
                         ignore.case = TRUE)) {
 
-      msg_i <- Reduce(function(m, j) unlist(strsplit(m, j, TRUE)),
+      msg_i <- Reduce(function(m, sy) unlist(strsplit(m, sy, TRUE)),
                       as.list(unlist(cli::symbol)),
                       init = msg_i) |>
         unlist() |>
         cli::ansi_trimws()
 
-      grouped_msgs_i <- group_messages(msg_i[-1], "or")
+      grouped_msgs_i <- group_messages(msg_i[-1L], "or")
       grouped_i <- attr(grouped_msgs_i, "grouped")
 
       grouped_msgs <- c(grouped_msgs,
@@ -132,13 +134,13 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     else if (cli::ansi_grepl("^all of the following conditions must be met:", msg_i,
                              ignore.case = TRUE)) {
 
-      msg_i <- Reduce(function(m, j) unlist(strsplit(m, j, TRUE)),
+      msg_i <- Reduce(function(m, sy) unlist(strsplit(m, sy, TRUE)),
                       as.list(unlist(cli::symbol)),
                       init = msg_i) |>
         unlist() |>
         cli::ansi_trimws()
 
-      grouped_msgs_i <- group_messages(msg_i[-1], "and")
+      grouped_msgs_i <- group_messages(msg_i[-1L], "and")
       grouped_i <- attr(grouped_msgs_i, "grouped")
 
       grouped_msgs <- c(grouped_msgs,
@@ -181,9 +183,11 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   failures <- character(...length())
   failed <- rep.int(FALSE, ...length())
 
+  x_name <- rlang::caller_arg(x)
+
   for (i in seq_along(dots)) {
-    test <- .to_arg_fun_call(dots[[i]]) |>
-      eval() |>
+    test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+      eval.parent() |>
       try(silent = TRUE)
 
     if (inherits(test, "try-error")) {
@@ -202,9 +206,9 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
 
   ## Get error messages for non-failures
   for (i in which(!failed)) {
-    test <- .to_arg_fun_call(dots[[i]]) |>
+    test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
       make_fail(x) |>
-      eval() |>
+      eval.parent() |>
       try(silent = TRUE)
 
     if (inherits(test, "try-error")) {
@@ -222,7 +226,7 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     if (cli::ansi_grepl("^at least one of the following conditions must be met:", msg_i,
                         ignore.case = TRUE)) {
 
-      msg_i <- Reduce(function(m, j) unlist(strsplit(m, j, TRUE)),
+      msg_i <- Reduce(function(m, sy) unlist(strsplit(m, sy, TRUE)),
                       as.list(unlist(cli::symbol)),
                       init = msg_i) |>
         unlist() |>
@@ -237,7 +241,7 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     else if (cli::ansi_grepl("^all of the following conditions must be met:", msg_i,
                              ignore.case = TRUE)) {
 
-      msg_i <- Reduce(function(m, j) unlist(strsplit(m, j, TRUE)),
+      msg_i <- Reduce(function(m, sy) unlist(strsplit(m, sy, TRUE)),
                       as.list(unlist(cli::symbol)),
                       init = msg_i) |>
         unlist() |>

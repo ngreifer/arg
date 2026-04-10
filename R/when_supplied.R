@@ -59,10 +59,11 @@ when_supplied <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
     arg_dots_supplied(..., .call = rlang::current_env())
 
     dots <- rlang::call_match(dots_expand = FALSE)[["..."]]
+    x_name <- rlang::caller_arg(x)
 
     for (i in seq_along(dots)) {
-      test <- .to_arg_fun_call(dots[[i]]) |>
-        eval() |>
+      test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+        eval.parent() |>
         try(silent = TRUE)
 
       if (inherits(test, "try-error")) {
@@ -86,10 +87,11 @@ when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
     arg_dots_supplied(..., .call = rlang::current_env())
 
     dots <- rlang::call_match(dots_expand = FALSE)[["..."]]
+    x_name <- rlang::caller_arg(x)
 
     for (i in seq_along(dots)) {
-      test <- .to_arg_fun_call(dots[[i]]) |>
-        eval() |>
+      test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+        eval.parent() |>
         try(silent = TRUE)
 
       if (inherits(test, "try-error")) {
@@ -106,7 +108,7 @@ when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
   }
 }
 
-.to_arg_fun_call <- function(arg_call) {
+.to_arg_fun_call <- function(arg_call, x_name, .arg) {
   if (!is.call(arg_call) ||
       any_apply(as.list(arg_call), identical, as.name("::")) ||
       any_apply(as.list(arg_call), identical, as.name(":::"))) {
@@ -117,12 +119,12 @@ when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
 
   fmls <- rlang::fn_fmls_names(call_fun)
 
-  if ("x" %in% fmls && !("x" %in% rlang::call_args_names(arg_call))) {
-    arg_call <- rlang::call_modify(arg_call, !!!list(x = quote(x)))
+  if ("x" %in% fmls) {
+    arg_call <- rlang::call_modify(arg_call, !!!list(x = str2lang(x_name)))
   }
 
-  if (".arg" %in% fmls && !(".arg" %in% rlang::call_args_names(arg_call))) {
-    arg_call <- rlang::call_modify(arg_call, !!!list(.arg = quote(.arg)))
+  if (".arg" %in% fmls) {
+    arg_call <- rlang::call_modify(arg_call, !!!list(.arg = .arg))
   }
 
   if (".call" %in% fmls) {
