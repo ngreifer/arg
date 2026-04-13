@@ -202,16 +202,12 @@ are_comparable <- function(x, y, comparison) {
     return(is.numeric(y))
   }
 
-  if (is.numeric(y)) {
-    return(is.numeric(x))
-  }
-
   if (is.character(x)) {
     return(is.character(y))
   }
 
-  if (is.character(y)) {
-    return(is.character(x))
+  if (is.numeric(y) || is.character(y)) {
+    return(FALSE)
   }
 
   tryCatch({

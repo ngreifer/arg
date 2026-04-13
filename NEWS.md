@@ -5,6 +5,8 @@ arg News and Updates
 
 * Fixed bugs with `arg_or()`, `arg_and()`, `when_supplied()`, and `when_not_null()`.
 
+* Fixed a bug where an extra period might be added after an error message.
+
 # *arg* 0.1.0
 
 * Initial CRAN submission.

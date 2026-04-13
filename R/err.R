@@ -53,11 +53,11 @@ err <- function(m, .call, .envir = rlang::caller_env()) {
     .call <- .pkg_caller_call()
   }
 
-  m <- .tidy_msg(m)
-
   for (i in seq_along(m)) {
     m[i] <- cli::format_inline(m[i], .envir = .envir)
   }
+
+  m <- .tidy_msg(m)
 
   rlang::abort(m, call = .call, use_cli_format = TRUE,
                .frame = .envir)
@@ -73,8 +73,8 @@ wrn <- function(m, immediate = TRUE, .envir = rlang::caller_env()) {
     rlang::local_options(warn = 1)
   }
 
-  .tidy_msg(m) |>
-    cli::format_warning(.envir = .envir) |>
+  cli::format_warning(m, .envir = .envir) |>
+    .tidy_msg() |>
     rlang::warn()
 }
 
@@ -83,8 +83,8 @@ wrn <- function(m, immediate = TRUE, .envir = rlang::caller_env()) {
 msg <- function(m, .envir = rlang::caller_env()) {
   arg_env(.envir, .call = rlang::current_env())
 
-  .tidy_msg(m) |>
-    cli::format_message(.envir = .envir) |>
+  cli::format_message(m, .envir = .envir) |>
+    .tidy_msg() |>
     rlang::inform()
 }
 
