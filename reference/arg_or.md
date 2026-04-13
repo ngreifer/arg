@@ -118,12 +118,12 @@ try(g(c(1, 7)))     # Error: not < 5
 #> Error : All of the following conditions must be met:
 #> ✔ `z` must be a vector of counts (non-negative whole numeric values)
 #> ✔ `z` must have length 2
-#> ✖ each element of `z` must be less than 5
+#> ✖ Each element of `z` must be less than 5
 try(g(c(1.1, 2.1))) # Error: not counts
 #> Error : All of the following conditions must be met:
 #> ✖ `z` must be a vector of counts (non-negative whole numeric values)
 #> ✔ `z` must have length 2
-#> ✔ each element of `z` must be less than 5
+#> ✔ Each element of `z` must be less than 5
 try(g(4))           # Error: not length 2
 #> Error : All of the following conditions must be met:
 #> ✔ `z` must be a vector of counts (non-negative whole numeric values)

@@ -122,9 +122,9 @@ h <- function() {
 h()
 #> Is a period added at the end?
 #> Not when the message ends in punctuation!
-#> or when multiple
+#> Or when multiple
 #> ! messages
 #> ✔ are
-#> • displayed
+#> • displayed.
 #> Otherwise yes.
 ```
