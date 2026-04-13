@@ -57,7 +57,8 @@ err <- function(m, .call, .envir = rlang::caller_env()) {
     m[i] <- cli::format_inline(m[i], .envir = .envir)
   }
 
-  m <- .tidy_msg(m)
+  m <- .tidy_msg(m) |>
+    cli::ansi_simplify()
 
   rlang::abort(m, call = .call, use_cli_format = TRUE,
                .frame = .envir)
@@ -75,6 +76,7 @@ wrn <- function(m, immediate = TRUE, .envir = rlang::caller_env()) {
 
   cli::format_warning(m, .envir = .envir) |>
     .tidy_msg() |>
+    cli::ansi_simplify() |>
     rlang::warn()
 }
 
@@ -85,6 +87,7 @@ msg <- function(m, .envir = rlang::caller_env()) {
 
   cli::format_message(m, .envir = .envir) |>
     .tidy_msg() |>
+    cli::ansi_simplify() |>
     rlang::inform()
 }
 
