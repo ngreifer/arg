@@ -57,7 +57,7 @@ err <- function(m, .call, .envir = rlang::caller_env()) {
     m[i] <- cli::format_inline(m[i], .envir = .envir)
   }
 
-  m <- .tidy_msg(m) |>
+  m[] <- .tidy_msg(m) |>
     cli::ansi_simplify()
 
   rlang::abort(m, call = .call, use_cli_format = TRUE,
@@ -99,11 +99,11 @@ msg <- function(m, .envir = rlang::caller_env()) {
   }
 
   # Capitalize first letter
-  m <- ansi_upper_first(m)
+  m[] <- ansi_upper_first(m)
 
   # Add period to end
   if (!cli::ansi_grepl("([.]|[?]|[!])$", m)) {
-    m <- paste0(m, ".")
+    m[] <- paste0(m, ".")
   }
 
   m

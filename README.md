@@ -9,6 +9,8 @@
 status](https://www.r-pkg.org/badges/version/arg)](https://CRAN.R-project.org/package=arg)
 <!-- badges: end -->
 
+## Overview
+
 *arg* produces nice, clean error messages for checking function
 arguments in R packages. I developed *arg* because I often found myself
 writing the same error messages in my packages, and I wasn’t satisfied
