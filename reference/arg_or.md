@@ -116,24 +116,24 @@ g <- function(z) {
 try(g(c(1, 2)))     # No error
 try(g(c(1, 7)))     # Error: not < 5
 #> Error : All of the following conditions must be met:
-#> `z` must be a vector of counts (non-negative whole numeric values)
-#> `z` must have length 2
-#> Each element of `z` must be less than 5
+#> ✔ `z` must be a vector of counts (non-negative whole numeric values)
+#> ✔ `z` must have length 2
+#> ✖ Each element of `z` must be less than 5
 try(g(c(1.1, 2.1))) # Error: not counts
 #> Error : All of the following conditions must be met:
-#> `z` must be a vector of counts (non-negative whole numeric values)
-#> `z` must have length 2
-#> Each element of `z` must be less than 5
+#> ✖ `z` must be a vector of counts (non-negative whole numeric values)
+#> ✔ `z` must have length 2
+#> ✔ Each element of `z` must be less than 5
 try(g(4))           # Error: not length 2
 #> Error : All of the following conditions must be met:
-#> `z` must be a vector of counts (non-negative whole numeric values)
-#> `z` must have length 2
-#> `z` must be less than 5
+#> ✔ `z` must be a vector of counts (non-negative whole numeric values)
+#> ✖ `z` must have length 2
+#> ✔ `z` must be less than 5
 try(g("bad"))       # Error: no criteria satisfied
 #> Error : All of the following conditions must be met:
-#> `z` must be a vector of counts (non-negative whole numeric values)
-#> `z` must have length 2
-#> `z` must be less than 5
+#> ✖ `z` must be a vector of counts (non-negative whole numeric values)
+#> ✖ `z` must have length 2
+#> ✖ `z` must be less than 5
 
 # Chaining together `arg_and()` and `arg_or()`
 h <- function(z) {
@@ -149,7 +149,13 @@ try(h(NA))  # No error
 try(h(1))   # No error
 try(h("a")) # No error
 try(h(7))   # Error: not < 5
-#> Error : `z` must be NA.
+#> Error : At least one of the following conditions must be met:
+#> • `z` must be NA
+#> • `z` must be a count (a non-negative whole number) and less than 5
+#> • `z` must be a string and one of "a", "b", or "c"
 try(h("d")) # Error: not in "a", "b", or "c"
-#> Error : `z` must be NA.
+#> Error : At least one of the following conditions must be met:
+#> • `z` must be NA
+#> • `z` must be a count (a non-negative whole number) and less than 5
+#> • `z` must be a string and one of "a", "b", or "c"
 ```

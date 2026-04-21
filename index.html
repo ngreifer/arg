@@ -52,6 +52,9 @@
 </h1></div>
 <!-- badges: start -->
 
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
 <p><em>arg</em> produces nice, clean error messages for checking function arguments in R packages. I developed <em>arg</em> because I often found myself writing the same error messages in my packages, and I wasn’t satisfied with the other similar R packages available. <em>arg</em> uses <a href="https://cli.r-lib.org/" class="external-link"><em>cli</em></a> to produce clean and clear errors without requiring much programming from the developer. These messages are designed to be clear to the user, not using complicated language. Many messages adapt to the type of (incorrect) input received.</p>
 <p><em>arg</em> contains function for common arguments checks, such as checking that an argument is a single number (<code><a href="reference/arg_numeric.html">arg_number()</a></code>), a string (<code><a href="reference/arg_character.html">arg_string()</a></code>), a single <code>TRUE</code>/<code>FALSE</code> value (<code><a href="reference/arg_logical.html">arg_flag()</a></code>), or a data frame or matrix (<code><a href="reference/arg_data.html">arg_data()</a></code>). In addition, it is possible to build more complex argument checks using <code><a href="reference/arg_or.html">arg_and()</a></code> and <code><a href="reference/arg_or.html">arg_or()</a></code>, which require that all or at least one check is passed, and <code><a href="reference/when_supplied.html">when_not_null()</a></code> and <code><a href="reference/when_supplied.html">when_supplied()</a></code>, which allow for <code>NULL</code> or omitted arguments.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -88,6 +91,7 @@
 <p>The name “arg” is meant to be short for “argument”, but also perhaps represents the sound you would make if you were to encounter an error when running some code. Hopefully <em>arg</em> reduces the number of times users say “arg!”.</p>
 <!-- If you use any of my R packages, including [*MatchIt*], [*WeightIt*], [*cobalt*], [*optweight*], or [*adrftools*], you may already be using *arg*!
 -->
+</div>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
