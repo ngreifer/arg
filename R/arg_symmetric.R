@@ -39,6 +39,11 @@
 arg_symmetric <- function(x, tol = 100 * .Machine$double.eps, ...,
                           .arg = rlang::caller_arg(x), .msg = NULL,
                           .call) {
+  arg_number(tol, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_gte(tol, 0, .call = rlang::current_env()) |>
+    internal_arg()
+
   if (!is.matrix(x) || nrow(x) != ncol(x) || !is.numeric(x) ||
       !isSymmetric(unname(x), tol = tol, ...)) {
     if (isTRUE(all.equal(tol, Inf))) {
@@ -56,6 +61,11 @@ arg_symmetric <- function(x, tol = 100 * .Machine$double.eps, ...,
 arg_cov <- function(x, tol = 100 * .Machine$double.eps, ...,
                     .arg = rlang::caller_arg(x), .msg = NULL,
                     .call) {
+  arg_number(tol, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_gte(tol, 0, .call = rlang::current_env()) |>
+    internal_arg()
+
   if (!is.matrix(x) || nrow(x) != ncol(x) || !is.numeric(x) ||
       !isSymmetric(unname(x), tol = tol, ...)) {
     err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix",
@@ -73,6 +83,11 @@ arg_cov <- function(x, tol = 100 * .Machine$double.eps, ...,
 arg_cor <- function(x, tol = 100 * .Machine$double.eps, ...,
                     .arg = rlang::caller_arg(x), .msg = NULL,
                     .call) {
+
+  arg_number(tol, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_gte(tol, 0, .call = rlang::current_env()) |>
+    internal_arg()
 
   if (!is.matrix(x) || nrow(x) != ncol(x) || !is.numeric(x) ||
       !isSymmetric(unname(x), tol = tol, ...)) {
@@ -96,6 +111,11 @@ arg_cor <- function(x, tol = 100 * .Machine$double.eps, ...,
 arg_distance <- function(x, tol = 100 * .Machine$double.eps, ...,
                          .arg = rlang::caller_arg(x), .msg = NULL,
                          .call) {
+  arg_number(tol, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_gte(tol, 0, .call = rlang::current_env()) |>
+    internal_arg()
+
   if (!is.matrix(x) || nrow(x) != ncol(x) || !is.numeric(x) ||
       !isSymmetric(unname(x), tol = tol, ...)) {
     err(.msg %or% "{.arg {(.arg)}} must be a square, symmetric, numeric matrix",

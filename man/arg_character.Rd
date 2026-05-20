@@ -40,5 +40,5 @@ try(f(c("a", "b"))) # Error: arg_string() requires scalar
 try(f(NA)) # NAs not allowed for arg_string()
 }
 \seealso{
-\code{\link[=is.character]{is.character()}}, \code{\link[=is.factor]{is.factor()}}, \code{\link[rlang:scalar-type-predicates]{rlang::is_string()}}
+\code{\link[=is.character]{is.character()}}, \code{\link[=is.factor]{is.factor()}}, \code{\link[rlang:is_string]{rlang::is_string()}}
 }

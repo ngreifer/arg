@@ -39,5 +39,5 @@ f2 <- function(z = NULL) {
 try(f2()) ## No error; default provided
 }
 \seealso{
-\code{\link[=arg_non_null]{arg_non_null()}}, \code{\link[=arg_no_NA]{arg_no_NA()}}, \code{\link[rlang:missing_arg]{rlang::is_missing()}}, \code{\link[rlang:check_required]{rlang::check_required()}}
+\code{\link[=arg_non_null]{arg_non_null()}}, \code{\link[=arg_no_NA]{arg_no_NA()}}, \code{\link[rlang:is_missing]{rlang::is_missing()}}, \code{\link[rlang:check_required]{rlang::check_required()}}
 }

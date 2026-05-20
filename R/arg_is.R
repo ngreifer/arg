@@ -53,11 +53,13 @@
 arg_is <- function(x, class,
                    .arg = rlang::caller_arg(x), .msg = NULL,
                    .call) {
-  arg_supplied(class, .call = rlang::current_env())
-  arg_character(class, .call = rlang::current_env())
+  arg_supplied(class, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_character(class, .call = rlang::current_env()) |>
+    internal_arg()
 
   if (!inherits(x, class)) {
-    err(.msg %or% "{.arg {(.arg)}} must inherit from class {.or {.cls {class}}}",
+    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must inherit from class {.or {.cls {class}}}",
         .call = .call)
   }
 }
@@ -67,11 +69,13 @@ arg_is <- function(x, class,
 arg_is_not <- function(x, class,
                        .arg = rlang::caller_arg(x), .msg = NULL,
                        .call) {
-  arg_supplied(class, .call = rlang::current_env())
-  arg_character(class, .call = rlang::current_env())
+  arg_supplied(class, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_character(class, .call = rlang::current_env()) |>
+    internal_arg()
 
   if (inherits(x, class)) {
-    err(.msg %or% "{.arg {(.arg)}} must not inherit from class {.or {.cls {class}}}",
+    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must not inherit from class {.or {.cls {class}}}",
         .call = .call)
   }
 }

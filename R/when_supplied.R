@@ -56,18 +56,23 @@
 when_supplied <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
   if (!rlang::is_missing(x)) {
     force(.arg)
-    arg_dots_supplied(..., .call = rlang::current_env())
+    arg_dots_supplied(..., .call = rlang::current_env()) |>
+      internal_arg()
 
     dots <- rlang::call_match(dots_expand = FALSE)[["..."]]
     x_name <- rlang::caller_arg(x)
 
     for (i in seq_along(dots)) {
-      test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+      cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
         eval.parent() |>
-        try(silent = TRUE)
+        rlang::catch_cnd()
 
-      if (inherits(test, "try-error")) {
-        .msg <- conditionMessage(attr(test, "condition")) |>
+      if (rlang::cnd_inherits(cnd, "internal_arg_error")) {
+        err("", .call = rlang::current_env(), parent = cnd)
+      }
+
+      if (inherits(cnd, "error")) {
+        .msg <- conditionMessage(cnd) |>
           cli::ansi_strsplit("\n") |>
           unlist(recursive = FALSE)
 
@@ -84,18 +89,23 @@ when_supplied <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
 when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
   if (is_not_null(x)) {
     force(.arg)
-    arg_dots_supplied(..., .call = rlang::current_env())
+    arg_dots_supplied(..., .call = rlang::current_env()) |>
+      internal_arg()
 
     dots <- rlang::call_match(dots_expand = FALSE)[["..."]]
     x_name <- rlang::caller_arg(x)
 
     for (i in seq_along(dots)) {
-      test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+      cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
         eval.parent() |>
-        try(silent = TRUE)
+        rlang::catch_cnd()
 
-      if (inherits(test, "try-error")) {
-        .msg <- conditionMessage(attr(test, "condition")) |>
+      if (rlang::cnd_inherits(cnd, "internal_arg_error")) {
+        err("", .call = rlang::current_env(), parent = cnd)
+      }
+
+      if (inherits(cnd, "error")) {
+        .msg <- conditionMessage(cnd) |>
           cli::ansi_strsplit("\n") |>
           unlist(recursive = FALSE)
 

@@ -44,5 +44,5 @@ try(arg_flag(obj))    # Error must be logical
 try(arg_logical(obj)) # Error must be logical
 }
 \seealso{
-\code{\link[=is.logical]{is.logical()}}, \code{\link[rlang:scalar-type-predicates]{rlang::is_bool()}}
+\code{\link[=is.logical]{is.logical()}}, \code{\link[rlang:is_bool]{rlang::is_bool()}}
 }

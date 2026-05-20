@@ -60,8 +60,10 @@
 #' @export
 match_arg <- function(x, choices, several.ok = FALSE, ignore.case = TRUE,
                       .context = NULL, .arg = rlang::caller_arg(x), .call) {
-  arg_supplied(choices, .call = rlang::current_env())
-  arg_character(choices, .call = rlang::current_env())
+  arg_supplied(choices, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_character(choices, .call = rlang::current_env()) |>
+    internal_arg()
 
   arg_supplied(x, .arg = .arg, .call = .call)
 
@@ -69,8 +71,10 @@ match_arg <- function(x, choices, several.ok = FALSE, ignore.case = TRUE,
     return(choices[1L])
   }
 
-  arg_flag(several.ok, .call = rlang::current_env())
-  arg_flag(ignore.case, .call = rlang::current_env())
+  arg_flag(several.ok, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_flag(ignore.case, .call = rlang::current_env()) |>
+    internal_arg()
 
   choices <- unique(choices)
 
@@ -100,11 +104,13 @@ match_arg <- function(x, choices, several.ok = FALSE, ignore.case = TRUE,
       err("{.arg {(.arg)}} should be {one_of} {.or {.val {choices}}}",
           .call = .call)
     }
-    else {
-      err(sprintf("%s {.arg {(.arg)}} should be {one_of} {.or {.val {choices}}}",
-                  .context),
-          .call = .call)
-    }
+
+    arg_string(.context, .call = rlang::current_env()) |>
+      internal_arg()
+
+    err(sprintf("%s {.arg {(.arg)}} should be {one_of} {.or {.val {choices}}}",
+                .context),
+        .call = .call)
   }
 
   i <- i[i > 0L]

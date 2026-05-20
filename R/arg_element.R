@@ -39,15 +39,28 @@
 arg_element <- function(x, values,
                         .arg = rlang::caller_arg(x), .msg = NULL,
                         .call) {
-  arg_supplied(values, .call = rlang::current_env())
+  arg_supplied(values, .call = rlang::current_env()) |>
+    internal_arg()
 
   if (is_null(x) || !all(is.element(x, values))) {
     if (is_not_null(.msg)) {
-      err(.msg, .call = .call)
+      err(.msg_eval(.msg), .call = .call)
     }
 
     if (is_null(values)) {
       err("{.arg {(.arg)}} cannot take on any value",
+          .call = .call)
+    }
+
+    values <- unique(values)
+
+    if (!any(nzchar(values))) {
+      if (length(x) == 1L) {
+        err('{.arg {(.arg)}} must be the empty string ({.val {""}})',
+            .call = .call)
+      }
+
+      err('each element of {.arg {(.arg)}} must be the empty string ({.val {""}})',
           .call = .call)
     }
 
@@ -68,21 +81,32 @@ arg_element <- function(x, values,
 arg_not_element <- function(x, values,
                             .arg = rlang::caller_arg(x), .msg = NULL,
                             .call) {
-  arg_supplied(values, .call = rlang::current_env())
+  arg_supplied(values, .call = rlang::current_env()) |>
+    internal_arg()
 
   if (is_not_null(x) && any(is.element(x, values))) {
     if (is_not_null(.msg)) {
-      err(.msg, .call = .call)
+      err(.msg_eval(.msg), .call = .call)
     }
 
-    one_of <- if (length(values) > 1L) "one of"
+    values <- unique(values)
 
-    if (length(x) == 1L) {
-      err("{.arg {(.arg)}} must not be {one_of} {.or {.val {values}}}",
+    if (!any(nzchar(values))) {
+      if (length(x) == 1L) {
+        err('{.arg {(.arg)}} must not be the empty string ({.val {""}})',
+            .call = .call)
+      }
+
+      err('no element of {.arg {(.arg)}} may be the empty string ({.val {""}})',
           .call = .call)
     }
 
-    err("no element of {.arg {(.arg)}} may be {one_of} {.or {.val {values}}}",
+    if (length(x) == 1L) {
+      err("{.arg {(.arg)}} must not be {.or {.val {values}}}",
+          .call = .call)
+    }
+
+    err("no element of {.arg {(.arg)}} may be {.or {.val {values}}}",
         .call = .call)
   }
 }

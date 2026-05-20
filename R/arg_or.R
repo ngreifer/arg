@@ -90,19 +90,23 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   x_name <- rlang::caller_arg(x)
 
   for (i in seq_along(dots)) {
-    test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+    cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
       eval.parent() |>
-      try(silent = TRUE)
+      rlang::catch_cnd()
 
-    if (!inherits(test, "try-error")) {
+    if (!inherits(cnd, "error")) {
       return(invisible())
     }
 
-    failures[i] <- conditionMessage(attr(test, "condition"))
+    if (rlang::cnd_inherits(cnd, "internal_arg_error")) {
+      err("", .call = rlang::current_env(), parent = cnd)
+    }
+
+    failures[i] <- conditionMessage(cnd)
   }
 
   if (is_not_null(.msg)) {
-    err(.msg, .call = .call)
+    err(.msg_eval(.msg), .call = .call)
   }
 
   grouped_msgs <- group_messages(failures, "or")
@@ -186,12 +190,16 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   x_name <- rlang::caller_arg(x)
 
   for (i in seq_along(dots)) {
-    test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+    cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
       eval.parent() |>
-      try(silent = TRUE)
+      rlang::catch_cnd()
 
-    if (inherits(test, "try-error")) {
-      failures[i] <- conditionMessage(attr(test, "condition"))
+    if (rlang::cnd_inherits(cnd, "internal_arg_error")) {
+      err("", .call = rlang::current_env(), parent = cnd)
+    }
+
+    if (inherits(cnd, "error")) {
+      failures[i] <- conditionMessage(cnd)
       failed[i] <- TRUE
     }
   }
@@ -201,18 +209,18 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   }
 
   if (is_not_null(.msg)) {
-    err(.msg, .call = .call)
+    err(.msg_eval(.msg), .call = .call)
   }
 
   ## Get error messages for non-failures
   for (i in which(!failed)) {
-    test <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+    cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
       make_fail(x) |>
       eval.parent() |>
-      try(silent = TRUE)
+      rlang::catch_cnd()
 
-    if (inherits(test, "try-error")) {
-      failures[i] <- conditionMessage(attr(test, "condition"))
+    if (inherits(cnd, "error")) {
+      failures[i] <- conditionMessage(cnd)
     }
   }
 
@@ -309,12 +317,14 @@ group_messages <- function(messages, and_or = "and", .envir = parent.frame()) {
 }
 
 .prefixes <- function() {
-  p <- c(#"{.arg {(.arg)}} must be a",
+  p <- c(
+    #"{.arg {(.arg)}} must be a",
     "{.arg {(.arg)}} must inherit from",
     "{.arg {(.arg)}} must be",
     "{.arg {(.arg)}} must have",
     # "{.arg {(.arg)}} must",
-    "{.arg {(.arg)}}")
+    "{.arg {(.arg)}}"
+    )
 
   c(p, paste("each element of", p))
 }

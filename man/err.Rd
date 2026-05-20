@@ -6,18 +6,20 @@
 \alias{msg}
 \title{Throw an Error, Warning, or Message}
 \usage{
-err(m, .call, .envir = rlang::caller_env())
+err(m, .call, .envir = rlang::caller_env(), ...)
 
-wrn(m, immediate = TRUE, .envir = rlang::caller_env())
+wrn(m, immediate = TRUE, .call, .envir = rlang::caller_env(), ...)
 
-msg(m, .envir = rlang::caller_env())
+msg(m, .call = NULL, .envir = rlang::caller_env(), ...)
 }
 \arguments{
-\item{m}{the message to be displayed, passed to the \code{message} argument of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:abort]{rlang::warn()}}, or \code{\link[rlang:abort]{rlang::inform()}}.}
+\item{m}{the message to be displayed, passed to the \code{message} argument of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:warn]{rlang::warn()}}, or \code{\link[rlang:inform]{rlang::inform()}}.}
 
 \item{.call}{the execution environment of a currently running function, e.g. \code{.call = rlang::current_env()}. The corresponding function call is retrieved and mentioned in error messages as the source of the error. See the \code{call} argument of \code{\link[rlang:abort]{rlang::abort()}} for details. Set to \code{NULL} to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.}
 
 \item{.envir}{the environment to evaluate the glue expressions in. See \code{\link[rlang:abort]{rlang::abort()}} for details. Typically this does not need to be changed.}
+
+\item{\dots}{other arguments passed to \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:warn]{rlang::warn()}}, or \code{\link[rlang:inform]{rlang::inform()}}.}
 
 \item{immediate}{whether to output the warning immediately (\code{TRUE}, the default) or save all warnings until the end of execution (\code{FALSE}). See \code{\link[=warning]{warning()}} for details. Note that the default here differs from that of \code{warning()}.}
 }
@@ -25,10 +27,10 @@ msg(m, .envir = rlang::caller_env())
 \code{err()} throws an error condition. \code{wrn()} throws a warning condition and invisibly returns the formatted warning message as a string. \code{msg()} signals a message and invisibly returns \code{NULL}.
 }
 \description{
-These functions are similar to \code{\link[=stop]{stop()}}/\code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[=warning]{warning()}}/\code{\link[cli:cli_abort]{cli::cli_warn()}}, and \code{\link[=message]{message()}}/\code{\link[cli:cli_abort]{cli::cli_inform()}}, throwing an error, warning, and message, respectively. Minor processing is done to capitalize the first letter of the message, add a period at the end (if it makes sense to), and add information about the calling function.
+These functions are similar to \code{\link[=stop]{stop()}}/\code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[=warning]{warning()}}/\code{\link[cli:cli_warn]{cli::cli_warn()}}, and \code{\link[=message]{message()}}/\code{\link[cli:cli_inform]{cli::cli_inform()}}, throwing an error, warning, and message, respectively. Minor processing is done to capitalize the first letter of the message, add a period at the end (if it makes sense to), and add information about the calling function.
 }
 \details{
-These functions are simple wrappers for the corresponding functions in \pkg{rlang}, namely \code{\link[rlang:abort]{rlang::abort()}} for \code{err()}, \code{\link[rlang:abort]{rlang::warn()}} for \code{wrn()}, and \code{\link[rlang:abort]{rlang::inform()}} for \code{msg()}, but which function almost identically to the \pkg{cli} versions. Their main differences are that they additionally process the input (capitalizing the first character of the message and adding a period to the end if needed, unless multiple strings are provided). \code{err()} is used inside all \verb{arg_*()} functions in \pkg{arg}.
+These functions are simple wrappers for the corresponding functions in \pkg{rlang}, namely \code{\link[rlang:abort]{rlang::abort()}} for \code{err()}, \code{\link[rlang:warn]{rlang::warn()}} for \code{wrn()}, and \code{\link[rlang:inform]{rlang::inform()}} for \code{msg()}, but which function almost identically to the \pkg{cli} versions. Their main differences are that they additionally process the input (capitalizing the first character of the message and adding a period to the end if needed, unless multiple strings are provided). \code{err()} is used inside all \verb{arg_*()} functions in \pkg{arg}.
 }
 \examples{
 f <- function(x) {
@@ -59,7 +61,7 @@ h()
 \seealso{
 \itemize{
 \item Base versions: \code{\link[=stop]{stop()}}, \code{\link[=warning]{warning()}}, \code{\link[=message]{message()}}
-\item \pkg{rlang} versions: \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:abort]{rlang::warn()}}, \code{\link[rlang:abort]{rlang::inform()}}
-\item \pkg{cli} versions: \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_abort]{cli::cli_warn()}}, \code{\link[cli:cli_abort]{cli::cli_inform()}}
+\item \pkg{rlang} versions: \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:warn]{rlang::warn()}}, \code{\link[rlang:inform]{rlang::inform()}}
+\item \pkg{cli} versions: \code{\link[cli:cli_abort]{cli::cli_abort()}}, \code{\link[cli:cli_warn]{cli::cli_warn()}}, \code{\link[cli:cli_inform]{cli::cli_inform()}}
 }
 }

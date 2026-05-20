@@ -6,6 +6,7 @@
 #' @param .call the execution environment of a currently running function, e.g. `.call = rlang::current_env()`. The corresponding function call is retrieved and mentioned in error messages as the source of the error. See the `call` argument of [rlang::abort()] for details. Set to `NULL` to omit call information. The default is to search along the call stack for the first user-facing function in another package, if any.
 #' @param .envir the environment to evaluate the glue expressions in. See [rlang::abort()] for details. Typically this does not need to be changed.
 #' @param immediate whether to output the warning immediately (`TRUE`, the default) or save all warnings until the end of execution (`FALSE`). See [warning()] for details. Note that the default here differs from that of `warning()`.
+#' @param \dots other arguments passed to [rlang::abort()], [rlang::warn()], or [rlang::inform()].
 #'
 #' @details
 #' These functions are simple wrappers for the corresponding functions in \pkg{rlang}, namely [rlang::abort()] for `err()`, [rlang::warn()] for `wrn()`, and [rlang::inform()] for `msg()`, but which function almost identically to the \pkg{cli} versions. Their main differences are that they additionally process the input (capitalizing the first character of the message and adding a period to the end if needed, unless multiple strings are provided). `err()` is used inside all `arg_*()` functions in \pkg{arg}.
@@ -45,9 +46,10 @@
 #' h()
 
 #' @export
-err <- function(m, .call, .envir = rlang::caller_env()) {
+err <- function(m, .call, .envir = rlang::caller_env(), ...) {
 
-  arg_env(.envir, .call = rlang::current_env())
+  arg_env(.envir, .call = rlang::current_env()) |>
+    internal_arg()
 
   if (rlang::is_missing(.call)) {
     .call <- .pkg_caller_call()
@@ -61,40 +63,61 @@ err <- function(m, .call, .envir = rlang::caller_env()) {
     cli::ansi_simplify()
 
   rlang::abort(m, call = .call, use_cli_format = TRUE,
-               .frame = .envir)
+               .frame = .envir, ...)
 }
 
 #' @export
 #' @rdname err
-wrn <- function(m, immediate = TRUE, .envir = rlang::caller_env()) {
-  arg_flag(immediate, .call = rlang::current_env())
-  arg_env(.envir, .call = rlang::current_env())
+wrn <- function(m, immediate = TRUE, .call, .envir = rlang::caller_env(), ...) {
+  arg_flag(immediate, .call = rlang::current_env()) |>
+    internal_arg()
+  arg_env(.envir, .call = rlang::current_env()) |>
+    internal_arg()
+
+  if (rlang::is_missing(.call)) {
+    .call <- .pkg_caller_call()
+  }
 
   if (isTRUE(immediate) && isTRUE(all.equal(0, getOption("warn")))) {
     rlang::local_options(warn = 1)
   }
 
+  for (i in seq_along(m)) {
+    m[i] <- cli::format_inline(m[i], .envir = .envir)
+  }
+
+  m[] <- .tidy_msg(m) |>
+    cli::ansi_simplify()
+
   cli::format_warning(m, .envir = .envir) |>
-    .tidy_msg() |>
-    cli::ansi_simplify() |>
-    rlang::warn()
+    rlang::warn(call = .call, ...)
 }
 
 #' @export
 #' @rdname err
-msg <- function(m, .envir = rlang::caller_env()) {
-  arg_env(.envir, .call = rlang::current_env())
+msg <- function(m, .call = NULL, .envir = rlang::caller_env(), ...) {
+  arg_env(.envir, .call = rlang::current_env()) |>
+    internal_arg()
+
+  if (rlang::is_missing(.call)) {
+    .call <- .pkg_caller_call()
+  }
+
+  for (i in seq_along(m)) {
+    m[i] <- cli::format_inline(m[i], .envir = .envir)
+  }
+
+  m[] <- .tidy_msg(m) |>
+    cli::ansi_simplify()
 
   cli::format_message(m, .envir = .envir) |>
-    .tidy_msg() |>
-    cli::ansi_simplify() |>
-    rlang::inform()
+    rlang::inform(call = .call, ...)
 }
 
 # Capitalize first character (if letter), add period at the end
 # (if no other ending punctuation)
 .tidy_msg <- function(m) {
-  if (length(m) != 1L) {
+  if (length(m) != 1L || !nzchar(m)) {
     return(m)
   }
 
