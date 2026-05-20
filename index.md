@@ -30,6 +30,7 @@ and
 which allow for `NULL` or omitted arguments.
 
 ``` r
+
 library(arg)
 
 z <- "a string"
@@ -79,6 +80,7 @@ You can install the development version of *arg* from
 [GitHub](https://github.com/ngreifer/arg) with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("ngreifer/arg")
 ```
@@ -86,6 +88,7 @@ pak::pak("ngreifer/arg")
 You can install the stable version on CRAN using
 
 ``` r
+
 install.packages("arg")
 ```
 

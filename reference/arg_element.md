@@ -94,9 +94,9 @@ g <- function(z) {
 }
 
 try(g("bad1"))            # Error: z is an element
-#> Error : `z` must not be one of "bad1", "bad2", or "bad3".
+#> Error : `z` must not be "bad1", "bad2", or "bad3".
 try(g(c("bad1", "opt2"))) # Error: at least one bad match
-#> Error : No element of `z` may be one of "bad1", "bad2", or "bad3".
+#> Error : No element of `z` may be "bad1", "bad2", or "bad3".
 try(g("opt1"))            # No error: not an element
 try(g(c("opt1", "opt2"))) # No error, none are elements
 ```

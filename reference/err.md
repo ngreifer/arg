@@ -13,11 +13,11 @@ function.
 ## Usage
 
 ``` r
-err(m, .call, .envir = rlang::caller_env())
+err(m, .call, .envir = rlang::caller_env(), ...)
 
-wrn(m, immediate = TRUE, .envir = rlang::caller_env())
+wrn(m, immediate = TRUE, .call, .envir = rlang::caller_env(), ...)
 
-msg(m, .envir = rlang::caller_env())
+msg(m, .call = NULL, .envir = rlang::caller_env(), ...)
 ```
 
 ## Arguments
@@ -45,6 +45,13 @@ msg(m, .envir = rlang::caller_env())
   the environment to evaluate the glue expressions in. See
   [`rlang::abort()`](https://rlang.r-lib.org/reference/abort.html) for
   details. Typically this does not need to be changed.
+
+- ...:
+
+  other arguments passed to
+  [`rlang::abort()`](https://rlang.r-lib.org/reference/abort.html),
+  [`rlang::warn()`](https://rlang.r-lib.org/reference/abort.html), or
+  [`rlang::inform()`](https://rlang.r-lib.org/reference/abort.html).
 
 - immediate:
 
@@ -122,9 +129,9 @@ h <- function() {
 h()
 #> Is a period added at the end?
 #> Not when the message ends in punctuation!
-#> Or when multiple
+#> or when multiple
 #> ! messages
 #> ✔ are
-#> • displayed.
+#> • displayed
 #> Otherwise yes.
 ```
