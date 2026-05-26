@@ -1,7 +1,7 @@
 arg News and Updates
 ======
 
-# *arg* (development version)
+# *arg* 0.1.1
 
 * `err()`, `wrn()`, and `msg()` now pass arguments specified in `...` to `rlang::abort()`, `rlang::warn()`, and `rlang::inform()`, respectively.
 
