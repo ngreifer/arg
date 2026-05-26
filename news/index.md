@@ -1,6 +1,6 @@
 # Changelog
 
-## *arg* (development version)
+## *arg* 0.1.1
 
 - [`err()`](https://ngreifer.github.io/arg/reference/err.md),
   [`wrn()`](https://ngreifer.github.io/arg/reference/err.md), and
