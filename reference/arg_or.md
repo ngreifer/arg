@@ -101,8 +101,8 @@ try(f(1))      # No error
 try(f("test")) # No error
 try(f(TRUE))   # No error
 try(f(1:4))    # Error: neither a number, string,
-#> Error : `z` must be a single number, a string, or a logical value (TRUE or
-#> FALSE).
+#> Error : `z` must be a single number, a string, or a single logical value (TRUE
+#> or FALSE).
 #              #        or flag, but a vector
 
 # `arg_and()`
@@ -150,12 +150,12 @@ try(h(1))   # No error
 try(h("a")) # No error
 try(h(7))   # Error: not < 5
 #> Error : At least one of the following conditions must be met:
-#> • `z` must be NA
-#> • `z` must be a count (a non-negative whole number) and less than 5
+#> • `z` must only contain NA values
+#> • `z` must be a single count (a non-negative whole number) and less than 5
 #> • `z` must be a string and one of "a", "b", or "c"
 try(h("d")) # Error: not in "a", "b", or "c"
 #> Error : At least one of the following conditions must be met:
-#> • `z` must be NA
+#> • `z` must only contain NA values
 #> • `z` must be a count (a non-negative whole number) and less than 5
 #> • `z` must be a string and one of "a", "b", or "c"
 ```

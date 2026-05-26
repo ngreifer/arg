@@ -139,6 +139,7 @@ try(arg_cor(cov_mat)) # Error: values must be in [-1, 1]
 try(arg_cor(cor_mat)) # No error
 
 try(arg_distance(cor_mat))  # Error: diagonal must be 0
-#> Error : `cor_mat` must be a square, symmetric matrix with zeros on the diagonal.
+#> Error in is_symmetric_mat(x) : could not find function "is_symmetric_mat"
 try(arg_distance(dist_mat)) # No error
+#> Error in is_symmetric_mat(x) : could not find function "is_symmetric_mat"
 ```

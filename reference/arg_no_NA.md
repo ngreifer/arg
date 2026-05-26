@@ -83,7 +83,7 @@ f2 <- function(y) {
 try(f2(NA))          ## No error
 try(f2(c(NA, NA)))   ## No error
 try(f2(1))           ## Error: y is not NA
-#> Error : `y` must be NA.
+#> Error : `y` must only contain NA values.
 try(f2(c(1, NA, 3))) ## Error: y is not all NA
 #> Error : `y` must only contain NA values.
 ```
