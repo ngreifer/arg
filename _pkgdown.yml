@@ -7,6 +7,11 @@ reference:
 - contents:
   - starts_with("arg_")
   - when_supplied
+- title: Compound and conditional argument checking
+- contents:
+  - arg_or
+  - arg_and
+  - starts_with("when_")
 - title: Argument processing
 - contents:
   - match_arg

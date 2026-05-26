@@ -35,7 +35,7 @@ make_fail <- function(a0, x) {
   new_args <-  switch(
     fn,
     arg_between = {
-      list(x = rep(NaN, length(x)))
+      list(x = rep(NaN, 2L))
     },
     arg_dots_not_supplied = {
       list("..." = list(1L))
@@ -47,10 +47,10 @@ make_fail <- function(a0, x) {
       if (anyNA(args[["values"]])) {
         b <- 1
         while (is.element(b, args[["values"]])) b <- b + 1
-        list(x = rep.int(b, length(x)))
+        list(x = rep.int(b, 2L))
       }
       else {
-        list(x = rep.int(NA, length(x)))
+        list(x = rep.int(NA, 2L))
       }
     },
     arg_equal = {
@@ -58,16 +58,16 @@ make_fail <- function(a0, x) {
       else list(x = NaN)
     },
     arg_gt = {
-      list(x = rep(NaN, length(x)))
+      list(x = rep(NaN, 2L))
     },
     arg_gte = {
-      list(x = rep(NaN, length(x)))
+      list(x = rep(NaN, 2L))
     },
     arg_index = {
       list(x = rep.int(NaN, 2L))
     },
     arg_indices = {
-      list(x = rep.int(NaN, length(x)))
+      list(x = rep.int(NaN, 2L))
     },
     arg_is = {
       list(x = structure(list(), class = paste(args[["class"]], collapse = "")))
@@ -82,19 +82,19 @@ make_fail <- function(a0, x) {
       list(x = 1L)
     },
     arg_lt = {
-      list(x = rep(NaN, length(x)))
+      list(x = rep(NaN, 2L))
     },
     arg_lte = {
-      list(x = rep(NaN, length(x)))
+      list(x = rep(NaN, 2L))
     },
     arg_no_NA = {
-      list(x = rep.int(NA, length(x)))
+      list(x = rep.int(NA, 2L))
     },
     arg_non_null = {
       list(x = NULL)
     },
     arg_not_element = {
-      list(x = rep.int(args[["values"]][1L], length(x)))
+      list(x = rep.int(args[["values"]][1L], 2L))
     },
     arg_not_equal = {
       list(x = args[["x2"]])

@@ -17,17 +17,17 @@ writing the same error messages in my packages, and I wasn’t satisfied
 with the other similar R packages available. *arg* uses
 [*cli*](https://cli.r-lib.org/) to produce clean and clear errors
 without requiring much programming from the developer. These messages
-are designed to be clear to the user, not using complicated language.
+are designed to be clear to the user, avoiding complicated language.
 Many messages adapt to the type of (incorrect) input received.
 
-*arg* contains function for common arguments checks, such as checking
+*arg* contains functions for common arguments checks, such as checking
 that an argument is a single number (`arg_number()`), a string
 (`arg_string()`), a single `TRUE`/`FALSE` value (`arg_flag()`), or a
 data frame or matrix (`arg_data()`). In addition, it is possible to
 build more complex argument checks using `arg_and()` and `arg_or()`,
 which require that all or at least one check is passed, and
 `when_not_null()` and `when_supplied()`, which allow for `NULL` or
-omitted arguments.
+omitted arguments, respectively.
 
 ``` r
 library(arg)

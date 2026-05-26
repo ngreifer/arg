@@ -143,7 +143,7 @@ arg_distance <- function(x, tol = 100 * .Machine$double.eps, ...,
   is_symmetric_mat <- is.matrix(x) && nrow(x) == ncol(x) &&
     is.numeric(x) && isSymmetric(unname(x), tol = tol, ...)
 
-  if (!is_symmetric_mat(x) ||
+  if (!is_symmetric_mat ||
       any(abs(diag(x)) > tol) ||
       any(x < -tol)) {
 
