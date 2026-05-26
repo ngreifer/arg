@@ -128,7 +128,7 @@ try(g(4))           # Error: not length 2
 #> Error : All of the following conditions must be met:
 #> ✔ `z` must be a vector of counts (non-negative whole numeric values)
 #> ✖ `z` must have length 2
-#> ✔ `z` must be less than 5
+#> ✔ Each element of `z` must be less than 5
 try(g("bad"))       # Error: no criteria satisfied
 #> Error : All of the following conditions must be met:
 #> ✖ `z` must be a vector of counts (non-negative whole numeric values)

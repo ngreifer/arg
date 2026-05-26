@@ -78,6 +78,15 @@
   [`when_not_null()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
   : Check Arguments When Supplied
 
+## Compound and conditional argument checking
+
+- [`arg_or()`](https://ngreifer.github.io/arg/reference/arg_or.md)
+  [`arg_and()`](https://ngreifer.github.io/arg/reference/arg_or.md) :
+  Check That Arguments Meet Some or All Criteria
+- [`when_supplied()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
+  [`when_not_null()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
+  : Check Arguments When Supplied
+
 ## Argument processing
 
 - [`match_arg()`](https://ngreifer.github.io/arg/reference/match_arg.md)

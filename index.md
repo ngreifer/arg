@@ -8,10 +8,10 @@ writing the same error messages in my packages, and I wasn’t satisfied
 with the other similar R packages available. *arg* uses
 [*cli*](https://cli.r-lib.org/) to produce clean and clear errors
 without requiring much programming from the developer. These messages
-are designed to be clear to the user, not using complicated language.
+are designed to be clear to the user, avoiding complicated language.
 Many messages adapt to the type of (incorrect) input received.
 
-*arg* contains function for common arguments checks, such as checking
+*arg* contains functions for common arguments checks, such as checking
 that an argument is a single number
 ([`arg_number()`](https://ngreifer.github.io/arg/reference/arg_numeric.md)),
 a string
@@ -27,7 +27,7 @@ require that all or at least one check is passed, and
 [`when_not_null()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
 and
 [`when_supplied()`](https://ngreifer.github.io/arg/reference/when_supplied.md),
-which allow for `NULL` or omitted arguments.
+which allow for `NULL` or omitted arguments, respectively.
 
 ``` r
 
