@@ -35,12 +35,16 @@
 arg_no_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                       .call) {
   if (anyNA(x)) {
-    if (length(x) == 1L) {
-      err(.msg %or% "{.arg {(.arg)}} must not be {.val {NA}}",
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    if (is_scalar(x)) {
+      err("{.arg {(.arg)}} must not be {.val {NA}}",
           .call = .call)
     }
 
-    err(.msg %or% "{.arg {(.arg)}} must not contain {.val {NA}} values",
+    err("{.arg {(.arg)}} must not contain {.val {NA}} values",
         .call = .call)
   }
 }
@@ -49,8 +53,13 @@ arg_no_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_no_NA
 arg_is_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                       .call) {
-  if (length(x) != 1L || !is.atomic(x) || !anyNA(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be {.val {NA}}",
+  if (!is_scalar(x) || !is.atomic(x) || !anyNA(x)) {
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be {.val {NA}}",
         .call = .call)
   }
 }
@@ -60,12 +69,12 @@ arg_is_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 arg_all_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                        .call) {
   if (!all(is.na(x))) {
-    if (length(x) == 1L) {
-      err(.msg %or% "{.arg {(.arg)}} must be {.val {NA}}",
-          .call = .call)
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
     }
 
-    err(.msg %or% "{.arg {(.arg)}} must only contain {.val {NA}} values",
+    err("{.arg {(.arg)}} must only contain {.val {NA}} values",
         .call = .call)
   }
 }

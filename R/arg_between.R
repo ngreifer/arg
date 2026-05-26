@@ -44,7 +44,7 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
   arg_length(inclusive, 1:2, .call = rlang::current_env()) |>
     internal_arg()
 
-  if (length(inclusive) == 1L) {
+  if (is_scalar(inclusive)) {
     inclusive <- inclusive[c(1L, 1L)]
   }
 
@@ -63,7 +63,7 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
       !safe_all(.lt_comp(x, range[2L]))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg))
+      err(.msg_eval(.msg), .call = .call)
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
@@ -139,11 +139,6 @@ arg_gte <- function(x, bound = 0,
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
-
-    # if (bound == 0) {
-    #   err(.msg %or% "{each_element_of} {.arg {(.arg)}} must be non-negative",
-    #       .call = .call)
-    # }
 
     err("{each_element_of} {.arg {(.arg)}} must be greater than or equal to {.val {bound}}",
         .call = .call)

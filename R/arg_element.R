@@ -39,10 +39,12 @@
 arg_element <- function(x, values,
                         .arg = rlang::caller_arg(x), .msg = NULL,
                         .call) {
+
   arg_supplied(values, .call = rlang::current_env()) |>
     internal_arg()
 
   if (is_null(x) || !all(is.element(x, values))) {
+
     if (is_not_null(.msg)) {
       err(.msg_eval(.msg), .call = .call)
     }
@@ -55,7 +57,7 @@ arg_element <- function(x, values,
     values <- unique(values)
 
     if (!any(nzchar(values))) {
-      if (length(x) == 1L) {
+      if (is_scalar(x)) {
         err('{.arg {(.arg)}} must be the empty string ({.val {""}})',
             .call = .call)
       }
@@ -81,10 +83,12 @@ arg_element <- function(x, values,
 arg_not_element <- function(x, values,
                             .arg = rlang::caller_arg(x), .msg = NULL,
                             .call) {
+
   arg_supplied(values, .call = rlang::current_env()) |>
     internal_arg()
 
   if (is_not_null(x) && any(is.element(x, values))) {
+
     if (is_not_null(.msg)) {
       err(.msg_eval(.msg), .call = .call)
     }
@@ -92,7 +96,7 @@ arg_not_element <- function(x, values,
     values <- unique(values)
 
     if (!any(nzchar(values))) {
-      if (length(x) == 1L) {
+      if (is_scalar(x)) {
         err('{.arg {(.arg)}} must not be the empty string ({.val {""}})',
             .call = .call)
       }
@@ -101,7 +105,7 @@ arg_not_element <- function(x, values,
           .call = .call)
     }
 
-    if (length(x) == 1L) {
+    if (is_scalar(x)) {
       err("{.arg {(.arg)}} must not be {.or {.val {values}}}",
           .call = .call)
     }

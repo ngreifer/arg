@@ -31,7 +31,12 @@
 #' @export
 arg_logical <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   if (!is.logical(x)) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must be a logical vector",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a logical vector",
         .call = .call)
   }
 }
@@ -39,13 +44,18 @@ arg_logical <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
 #' @export
 #' @rdname arg_logical
 arg_flag <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
-  if (!is.logical(x) || anyNA(x)) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must be a logical value ({.or {.val {c(TRUE, FALSE)}}})",
-        .call = .call)
-  }
+  if (!is_scalar(x) || !is.logical(x) || anyNA(x)) {
 
-  if (length(x) != 1L) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must be a single logical value ({.or {.val {c(TRUE, FALSE)}}})",
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    if (!is_scalar(x)) {
+      err("{.arg {(.arg)}} must be a single logical value ({.or {.val {c(TRUE, FALSE)}}})",
+          .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a logical value ({.or {.val {c(TRUE, FALSE)}}})",
         .call = .call)
   }
 }

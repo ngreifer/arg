@@ -20,7 +20,12 @@
 #' @export
 arg_function <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   if (!rlang::is_function(x)) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must be a function",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a function",
         .call = .call)
   }
 }

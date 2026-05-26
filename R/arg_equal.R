@@ -43,7 +43,12 @@ arg_equal <- function(x, x2, ...,
     internal_arg()
 
   if (!isTRUE(all.equal(x, x2, ...))) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must be equal to {.arg {(.arg2)}}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be equal to {.arg {(.arg2)}}",
         .call = .call)
   }
 }
@@ -58,7 +63,12 @@ arg_not_equal <- function(x, x2, ...,
     internal_arg()
 
   if (isTRUE(all.equal(x, x2, ...))) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must not be equal to {.arg {(.arg2)}}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must not be equal to {.arg {(.arg2)}}",
         .call = .call)
   }
 }

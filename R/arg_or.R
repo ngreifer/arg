@@ -268,7 +268,7 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     }
   }
 
-  if (length(failures) == 1L) {
+  if (is_scalar(failures)) {
     err(failures, .call = .call)
   }
 

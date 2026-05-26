@@ -25,7 +25,12 @@
 arg_character <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                           .call) {
   if (!is.character(x)) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must be a character vector",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a character vector",
         .call = .call)
   }
 }
@@ -34,8 +39,13 @@ arg_character <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_character
 arg_string <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                        .call) {
-  if (length(x) != 1L || !is.character(x) || anyNA(x)) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must be a string",
+  if (!is_scalar(x) || !is.character(x) || anyNA(x)) {
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a string",
         .call = .call)
   }
 }
@@ -45,7 +55,12 @@ arg_string <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 arg_factor <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                        .call) {
   if (!is.factor(x)) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must be a factor",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a factor",
         .call = .call)
   }
 }

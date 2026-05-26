@@ -117,7 +117,7 @@ msg <- function(m, .call = NULL, .envir = rlang::caller_env(), ...) {
 # Capitalize first character (if letter), add period at the end
 # (if no other ending punctuation)
 .tidy_msg <- function(m) {
-  if (length(m) != 1L || !nzchar(m)) {
+  if (!is_scalar(m) || !nzchar(m)) {
     return(m)
   }
 

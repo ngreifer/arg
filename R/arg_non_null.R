@@ -43,7 +43,12 @@
 arg_non_null <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                          .call) {
   if (is_null(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be non-{.val {list(NULL)}}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be non-{.val {list(NULL)}}",
         .call = .call)
   }
 }
@@ -53,7 +58,12 @@ arg_non_null <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 arg_null <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                      .call) {
   if (is_not_null(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be {.val {list(NULL)}}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be {.val {list(NULL)}}",
         .call = .call)
   }
 }

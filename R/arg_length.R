@@ -33,7 +33,12 @@ arg_length <- function(x, len = 1L,
     internal_arg()
 
   if (!length(x) %in% len) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must have length {.or {len}}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must have length {.or {len}}",
         .call = .call)
   }
 }

@@ -39,7 +39,12 @@
 arg_numeric <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                         .call) {
   if (!is.numeric(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a numeric vector",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a numeric vector",
         .call = .call)
   }
 }
@@ -48,12 +53,18 @@ arg_numeric <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                        .call) {
-  if (!is.numeric(x)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a number",
-        .call = .call)
-  }
-  else if (length(x) != 1L) {
-    err(.msg %or% "{.arg {(.arg)}} must be a single number",
+  if (!is_scalar(x) || !is.numeric(x)) {
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    if (!is_scalar(x)) {
+      err("{.arg {(.arg)}} must be a single number",
+          .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a number",
         .call = .call)
   }
 }
@@ -62,9 +73,13 @@ arg_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_whole_numeric <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                               .call) {
-  if (!is.numeric(x) ||
-      (!is.integer(x) && !all(check_if_zero(x - round(x))))) {
-    err(.msg %or% "{.arg {(.arg)}} must be a whole numeric vector",
+  if (!is_whole_numeric(x)) {
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a whole numeric vector",
         .call = .call)
   }
 }
@@ -73,14 +88,18 @@ arg_whole_numeric <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_whole_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                              .call) {
-  if (!is.numeric(x) ||
-      (!is.integer(x) && !check_if_zero(x - round(x)))) {
-    err(.msg %or% "{.arg {(.arg)}} must be a whole number",
-        .call = .call)
-  }
+  if (!is_scalar(x) || !is_whole_numeric(x)) {
 
-  if (length(x) != 1L) {
-    err(.msg %or% "{.arg {(.arg)}} must be a single whole number",
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    if (!is_scalar(x)) {
+      err("{.arg {(.arg)}} must be a single whole number",
+          .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a whole number",
         .call = .call)
   }
 }
@@ -89,10 +108,13 @@ arg_whole_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_counts <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                        .call) {
-  if (!is.numeric(x) ||
-      (!is.integer(x) && !all(check_if_zero(x - round(x)))) ||
-      any(x < 0)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a vector of counts (non-negative whole numeric values)",
+  if (!is_whole_numeric(x) || any(x < 0)) {
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a vector of counts (non-negative whole numeric values)",
         .call = .call)
   }
 }
@@ -101,15 +123,19 @@ arg_counts <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_count <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                       .call) {
-  if (!is.numeric(x) ||
-      (!is.integer(x) && !all(check_if_zero(x - round(x)))) ||
+  if (!is_scalar(x) || !is_whole_numeric(x) ||
       any(x < 0)) {
-    err(.msg %or% "{.arg {(.arg)}} must be a count (a non-negative whole number)",
-        .call = .call)
-  }
 
-  if (length(x) != 1L) {
-    err(.msg %or% "{.arg {(.arg)}} must be a single count (a non-negative whole number)",
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    if (!is_scalar(x)) {
+      err("{.arg {(.arg)}} must be a single count (a non-negative whole number)",
+          .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must be a count (a non-negative whole number)",
         .call = .call)
   }
 }

@@ -25,7 +25,12 @@
 #' @export
 arg_dots_supplied <- function(..., .msg = NULL, .call) {
   if (...length() == 0L) {
-    err(.msg_eval(.msg) %or% "an argument must be supplied to {.arg ...}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("an argument must be supplied to {.arg ...}",
         .call = .call)
   }
 }
@@ -34,7 +39,12 @@ arg_dots_supplied <- function(..., .msg = NULL, .call) {
 #' @rdname arg_dots_supplied
 arg_dots_not_supplied <- function(..., .msg = NULL, .call) {
   if (...length() != 0L) {
-    err(.msg_eval(.msg) %or% "no arguments may be supplied to {.arg ...}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("no arguments may be supplied to {.arg ...}",
         .call = .call)
   }
 }

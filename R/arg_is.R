@@ -59,7 +59,12 @@ arg_is <- function(x, class,
     internal_arg()
 
   if (!inherits(x, class)) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must inherit from class {.or {.cls {class}}}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must inherit from class {.or {.cls {class}}}",
         .call = .call)
   }
 }
@@ -75,7 +80,12 @@ arg_is_not <- function(x, class,
     internal_arg()
 
   if (inherits(x, class)) {
-    err(.msg_eval(.msg) %or% "{.arg {(.arg)}} must not inherit from class {.or {.cls {class}}}",
+
+    if (is_not_null(.msg)) {
+      err(.msg_eval(.msg), .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must not inherit from class {.or {.cls {class}}}",
         .call = .call)
   }
 }
