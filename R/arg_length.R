@@ -35,7 +35,7 @@ arg_length <- function(x, len = 1L,
   if (!length(x) %in% len) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must have length {.or {len}}",

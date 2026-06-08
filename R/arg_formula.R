@@ -42,7 +42,7 @@ arg_formula <- function(x, one_sided = NULL,
       (is_not_null(one_sided) && !rlang::is_formula(x, lhs = !one_sided))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (is_null(one_sided)) {

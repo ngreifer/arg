@@ -27,7 +27,7 @@ arg_dots_supplied <- function(..., .msg = NULL, .call) {
   if (...length() == 0L) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("an argument must be supplied to {.arg ...}",
@@ -41,7 +41,7 @@ arg_dots_not_supplied <- function(..., .msg = NULL, .call) {
   if (...length() != 0L) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("no arguments may be supplied to {.arg ...}",

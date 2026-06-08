@@ -36,7 +36,7 @@ arg_no_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                       .call) {
   if (anyNA(x)) {
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (is_scalar(x)) {
@@ -56,7 +56,7 @@ arg_is_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is_scalar(x) || !is.atomic(x) || !anyNA(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be {.val {NA}}",
@@ -71,7 +71,7 @@ arg_all_NA <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!all(is.na(x))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must only contain {.val {NA}} values",

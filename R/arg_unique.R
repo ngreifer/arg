@@ -25,7 +25,7 @@ arg_unique <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL,
   if (is_not_null(x) && anyDuplicated(x, ...) != 0) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must only contain unique values",

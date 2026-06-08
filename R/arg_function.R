@@ -22,7 +22,7 @@ arg_function <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   if (!rlang::is_function(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a function",

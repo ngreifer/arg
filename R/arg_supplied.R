@@ -31,7 +31,7 @@ arg_supplied <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (rlang::is_missing(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     arg_expr <- substitute(x)

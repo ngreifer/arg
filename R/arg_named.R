@@ -46,7 +46,7 @@ arg_named <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
       !all(nzchar(names(x)))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must have non-empty and non-{.val {NA}} names",
@@ -62,7 +62,7 @@ arg_colnamed <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
       !all(nzchar(colnames(x)))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must have non-empty and non-{.val {NA}} names",

@@ -46,7 +46,7 @@ arg_element <- function(x, values,
   if (is_null(x) || !all(is.element(x, values))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (is_null(values)) {
@@ -90,7 +90,7 @@ arg_not_element <- function(x, values,
   if (is_not_null(x) && any(is.element(x, values))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     values <- unique(values)

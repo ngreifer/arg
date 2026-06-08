@@ -2,6 +2,10 @@ is_null <- function(x) {identical(length(x), 0L)}
 is_not_null <- function(x) {!is_null(x)}
 
 is_scalar <- function(x) {identical(length(x), 1L)}
+is_color <- function(x) {
+  tryCatch(is.matrix(grDevices::col2rgb(x)),
+           error = function(e) FALSE)
+}
 
 check_if_zero <- function(x, tolerance = sqrt(.Machine$double.eps)) {
   # this is the default tolerance used in all.equal
@@ -18,12 +22,6 @@ is_error <- function(x) {
     invisible()
 
   inherits(out, c("error", "try-error"))
-}
-
-is_whole_numeric <- function(x) {
-  is_not_null(x) &&
-    (is.integer(x) ||
-       (is.numeric(x) && all(check_if_zero(x - trunc(x)))))
 }
 
 safe_any <- function(x) {

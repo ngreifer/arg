@@ -63,7 +63,7 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
       !safe_all(.lt_comp(x, range[2L]))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
@@ -108,7 +108,7 @@ arg_gt <- function(x, bound = 0,
       !safe_all(x > bound)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
@@ -135,7 +135,7 @@ arg_gte <- function(x, bound = 0,
       !safe_all(x >= bound)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
@@ -157,7 +157,7 @@ arg_lt <- function(x, bound = 0,
       !safe_all(x < bound)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"
@@ -184,7 +184,7 @@ arg_lte <- function(x, bound = 0,
       !safe_all(x <= bound)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     each_element_of <- if (length(x) > 1L) "each element of"

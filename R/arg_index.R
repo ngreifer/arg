@@ -55,7 +55,7 @@ arg_index <- function(x, data,
   arg_data(data, .call = rlang::current_env()) |>
     internal_arg()
 
-  is_valid_num_index <- is_whole_numeric(x) && all(x >= 1L) && all(x <= ncol(data))
+  is_valid_num_index <- rlang::is_integerish(x) && all(x >= 1L) && all(x <= ncol(data))
 
   is_valid_char_index <- !is_valid_num_index &&
     is_not_null(colnames(data)) &&
@@ -66,7 +66,7 @@ arg_index <- function(x, data,
       (!is_valid_num_index && !is_valid_char_index)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (is_null(colnames(data))) {
@@ -90,7 +90,7 @@ arg_indices <- function(x, data,
   arg_data(data, .call = rlang::current_env()) |>
     internal_arg()
 
-  is_valid_num_index <- is_whole_numeric(x) && all(x >= 1L) && all(x <= ncol(data))
+  is_valid_num_index <- rlang::is_integerish(x) && all(x >= 1L) && all(x <= ncol(data))
 
   is_valid_char_index <- !is_valid_num_index &&
     is_not_null(colnames(data)) &&
@@ -100,7 +100,7 @@ arg_indices <- function(x, data,
   if (!is_valid_num_index && !is_valid_char_index) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (is_null(colnames(data))) {

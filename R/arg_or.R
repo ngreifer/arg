@@ -106,7 +106,7 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   }
 
   if (is_not_null(.msg)) {
-    err(.msg_eval(.msg), .call = .call)
+    err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
   }
 
   grouped_msgs <- group_messages(failures, "or")
@@ -209,7 +209,7 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   }
 
   if (is_not_null(.msg)) {
-    err(.msg_eval(.msg), .call = .call)
+    err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
   }
 
   ## Get error messages for non-failures

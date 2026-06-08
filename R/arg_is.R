@@ -61,7 +61,7 @@ arg_is <- function(x, class,
   if (!inherits(x, class)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must inherit from class {.or {.cls {class}}}",
@@ -82,7 +82,7 @@ arg_is_not <- function(x, class,
   if (inherits(x, class)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must not inherit from class {.or {.cls {class}}}",

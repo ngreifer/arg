@@ -50,7 +50,7 @@ arg_symmetric <- function(x, tol = 100 * .Machine$double.eps, ...,
   if (!is_symmetric_mat) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (isTRUE(all.equal(tol, Inf))) {
@@ -80,7 +80,7 @@ arg_cov <- function(x, tol = 100 * .Machine$double.eps, ...,
       any(diag(x) < -tol)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (!is_symmetric_mat) {
@@ -112,7 +112,7 @@ arg_cor <- function(x, tol = 100 * .Machine$double.eps, ...,
       any(abs(diag(x) - 1) > tol)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (!is_symmetric_mat) {
@@ -148,7 +148,7 @@ arg_distance <- function(x, tol = 100 * .Machine$double.eps, ...,
       any(x < -tol)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (!is_symmetric_mat) {

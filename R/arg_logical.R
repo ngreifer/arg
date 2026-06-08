@@ -33,7 +33,7 @@ arg_logical <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   if (!is.logical(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a logical vector",
@@ -47,7 +47,7 @@ arg_flag <- function(x, .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   if (!is_scalar(x) || !is.logical(x) || anyNA(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (!is_scalar(x)) {

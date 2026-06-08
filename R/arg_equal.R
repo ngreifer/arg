@@ -45,7 +45,7 @@ arg_equal <- function(x, x2, ...,
   if (!isTRUE(all.equal(x, x2, ...))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be equal to {.arg {(.arg2)}}",
@@ -65,7 +65,7 @@ arg_not_equal <- function(x, x2, ...,
   if (isTRUE(all.equal(x, x2, ...))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must not be equal to {.arg {(.arg2)}}",

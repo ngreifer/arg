@@ -54,7 +54,7 @@ arg_atomic <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is.atomic(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be an atomic vector",
@@ -69,7 +69,7 @@ arg_vector <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is.atomic(x) || !is_null(dim(x))) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a vector",
@@ -88,7 +88,7 @@ arg_list <- function(x, df_ok = FALSE,
   if (!is.list(x) || (is.data.frame(x) && !df_ok)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (is.data.frame(x)) {
@@ -108,7 +108,7 @@ arg_data.frame <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is.data.frame(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a data frame",
@@ -123,7 +123,7 @@ arg_matrix <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is.matrix(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a matrix",
@@ -138,7 +138,7 @@ arg_array <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is.array(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be an array",
@@ -153,7 +153,7 @@ arg_data <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is.data.frame(x) && !is.matrix(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a data frame or matrix",
@@ -168,7 +168,7 @@ arg_env <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is.environment(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be an enviornment",
