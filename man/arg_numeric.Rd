@@ -37,7 +37,7 @@ Returns \code{NULL} invisibly if an error is not thrown.
 Checks whether an argument is numeric, with some additional constraints if desired. \code{arg_numeric()} simply checks whether the argument is numeric. \code{arg_number()} checks whether the argument is a numeric scalar (i.e., a single number). \code{arg_whole_numeric()} and \code{arg_whole_number()} check whether the argument is a whole numeric vector or scalar, respectively. \code{arg_counts()} and \code{arg_count()} check whether the argument is a non-negative whole numeric vector or scalar, respectively.
 }
 \details{
-A whole number is decided by testing whether the value is an integer (i.e., using \code{\link[=is.integer]{is.integer()}}) or if \code{abs(x - trunc(x)) < sqrt(.Machine$double.eps)}. This is the same tolerance used by \code{\link[=all.equal]{all.equal()}} to compare values.
+A whole number is decided by testing whether the value is an "integerish" value using \code{\link[rlang:is_integerish]{rlang::is_integerish()}}. This should not be used to test, e.g., if one number divides another, but rather if a user has supplied a numeric value meant to be interpreted as an integer.
 }
 \examples{
 count <- 3

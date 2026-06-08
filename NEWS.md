@@ -1,6 +1,14 @@
 arg News and Updates
 ======
 
+# *arg* (development version)
+
+* Added `arg_color()` (and variants) to check whether an argument corresponds to a valid color specification.
+
+* Fixed a bug where the message provided to `.msg` (if any) was not evaluated in the correct environment.
+
+* `arg_counts()` and `arg_whole_numeric()` (and their scalar equivalents) now check whether a value is a whole number using `rlang::is_integerish()` instead of the criterion used by `all.equal()`.
+
 # *arg* 0.1.1
 
 * `err()`, `wrn()`, and `msg()` now pass arguments specified in `...` to `rlang::abort()`, `rlang::warn()`, and `rlang::inform()`, respectively.
