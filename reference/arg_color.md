@@ -1,0 +1,83 @@
+# Check Color Argument
+
+Checks whether an argument is a valid color. `arg_color()` additionally
+requires that a single color is supplied. British spellings are
+supported.
+
+## Usage
+
+``` r
+arg_color(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
+
+arg_colors(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
+
+arg_colour(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
+
+arg_colours(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
+```
+
+## Arguments
+
+- x:
+
+  the argument to be checked
+
+- .arg:
+
+  the name of the argument supplied to `x` to appear in error messages.
+  The default is to extract the argument's name using
+  [`rlang::caller_arg()`](https://rlang.r-lib.org/reference/caller_arg.html).
+  Ignored if `.msg` is supplied.
+
+- .msg:
+
+  an optional alternative message to display if an error is thrown
+  instead of the default message.
+
+- .call:
+
+  the execution environment of a currently running function, e.g.
+  `.call = rlang::current_env()`. The corresponding function call is
+  retrieved and mentioned in error messages as the source of the error.
+  Passed to [`err()`](https://ngreifer.github.io/arg/reference/err.md).
+  Set to `NULL` to omit call information. The default is to search along
+  the call stack for the first user-facing function in another package,
+  if any.
+
+## Value
+
+Returns `NULL` invisibly if an error is not thrown.
+
+## Details
+
+A color specification is considered valid if
+[`grDevices::col2rgb()`](https://rdrr.io/r/grDevices/col2rgb.html)
+returns a matrix when applied to it.
+
+## See also
+
+[`grDevices::col2rgb()`](https://rdrr.io/r/grDevices/col2rgb.html)
+
+## Examples
+
+``` r
+f <- function(z) {
+  arg_colors(z)
+}
+
+try(f("red"))       # No error
+try(f("redhehehe")) # Error: not a valid color name
+#> Error : Each element of `z` must be a valid color.
+
+try(f("#A4A473")) # No error
+try(f("~A4A473")) # Error: not a valid hex code
+#> Error : Each element of `z` must be a valid color.
+
+try(f(15))  # No error
+try(f(-15)) # Error: not a valid color number
+#> Error : Each element of `z` must be a valid color.
+
+try(f(list("red", 15)))  # No error
+try(f(list("red", -15))) # Error
+#> Error : Each element of `z` must be a valid color.
+```

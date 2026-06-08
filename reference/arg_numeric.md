@@ -58,11 +58,12 @@ Returns `NULL` invisibly if an error is not thrown.
 
 ## Details
 
-A whole number is decided by testing whether the value is an integer
-(i.e., using [`is.integer()`](https://rdrr.io/r/base/integer.html)) or
-if `abs(x - trunc(x)) < sqrt(.Machine$double.eps)`. This is the same
-tolerance used by [`all.equal()`](https://rdrr.io/r/base/all.equal.html)
-to compare values.
+A whole number is decided by testing whether the value is an
+"integerish" value using
+[`rlang::is_integerish()`](https://rlang.r-lib.org/reference/is_integerish.html).
+This should not be used to test, e.g., if one number divides another,
+but rather if a user has supplied a numeric value meant to be
+interpreted as an integer.
 
 ## See also
 

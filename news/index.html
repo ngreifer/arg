@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,8 +33,15 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="development version" id="arg-development-version">
+<em>arg</em> (development version)<a class="anchor" aria-label="anchor" href="#arg-development-version"></a></h2>
+<ul><li><p>Added <code><a href="../reference/arg_color.html">arg_color()</a></code> (and variants) to check whether an argument corresponds to a valid color specification.</p></li>
+<li><p>Fixed a bug where the message provided to <code>.msg</code> (if any) was not evaluated in the correct environment.</p></li>
+<li><p><code><a href="../reference/arg_numeric.html">arg_counts()</a></code> and <code><a href="../reference/arg_numeric.html">arg_whole_numeric()</a></code> (and their scalar equivalents) now check whether a value is a whole number using <code><a href="https://rlang.r-lib.org/reference/is_integerish.html" class="external-link">rlang::is_integerish()</a></code> instead of the criterion used by <code><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal()</a></code>.</p></li>
+</ul></div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.1.1" id="arg-011">
-<em>arg</em> 0.1.1<a class="anchor" aria-label="anchor" href="#arg-011"></a></h2>
+<em>arg</em> 0.1.1<a class="anchor" aria-label="anchor" href="#arg-011"></a></h2><p class="text-muted">CRAN release: 2026-05-27</p>
 <ul><li><p><code><a href="../reference/err.html">err()</a></code>, <code><a href="../reference/err.html">wrn()</a></code>, and <code><a href="../reference/err.html">msg()</a></code> now pass arguments specified in <code>...</code> to <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code>, <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::warn()</a></code>, and <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::inform()</a></code>, respectively.</p></li>
 <li><p>When an error is caused by a failure to process a given fixed argument (e.g., <code>bounds</code> in <code><a href="../reference/arg_between.html">arg_gt()</a></code> or <code>len</code> in <code><a href="../reference/arg_length.html">arg_length()</a></code>), that error is now thrown correctly in <code><a href="../reference/arg_or.html">arg_or()</a></code>, <code><a href="../reference/arg_or.html">arg_and()</a></code>, <code><a href="../reference/when_supplied.html">when_supplied()</a></code>, and <code><a href="../reference/when_supplied.html">when_not_null()</a></code>. Previously, it was bundled with the errors thrown to the ultimate user of the function <code>and_or()</code>, etc., was used in, which it made it confusing to diagnose.</p></li>
 <li><p>Fixed bugs with <code><a href="../reference/arg_or.html">arg_or()</a></code>, <code><a href="../reference/arg_or.html">arg_and()</a></code>, <code><a href="../reference/when_supplied.html">when_supplied()</a></code>, and <code><a href="../reference/when_supplied.html">when_not_null()</a></code>.</p></li>

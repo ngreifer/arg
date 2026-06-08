@@ -12,6 +12,11 @@
   [`arg_string()`](https://ngreifer.github.io/arg/reference/arg_character.md)
   [`arg_factor()`](https://ngreifer.github.io/arg/reference/arg_character.md)
   : Check Character Argument
+- [`arg_color()`](https://ngreifer.github.io/arg/reference/arg_color.md)
+  [`arg_colors()`](https://ngreifer.github.io/arg/reference/arg_color.md)
+  [`arg_colour()`](https://ngreifer.github.io/arg/reference/arg_color.md)
+  [`arg_colours()`](https://ngreifer.github.io/arg/reference/arg_color.md)
+  : Check Color Argument
 - [`arg_atomic()`](https://ngreifer.github.io/arg/reference/arg_data.md)
   [`arg_vector()`](https://ngreifer.github.io/arg/reference/arg_data.md)
   [`arg_list()`](https://ngreifer.github.io/arg/reference/arg_data.md)

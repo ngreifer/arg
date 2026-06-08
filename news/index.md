@@ -1,6 +1,27 @@
 # Changelog
 
+## *arg* (development version)
+
+- Added
+  [`arg_color()`](https://ngreifer.github.io/arg/reference/arg_color.md)
+  (and variants) to check whether an argument corresponds to a valid
+  color specification.
+
+- Fixed a bug where the message provided to `.msg` (if any) was not
+  evaluated in the correct environment.
+
+- [`arg_counts()`](https://ngreifer.github.io/arg/reference/arg_numeric.md)
+  and
+  [`arg_whole_numeric()`](https://ngreifer.github.io/arg/reference/arg_numeric.md)
+  (and their scalar equivalents) now check whether a value is a whole
+  number using
+  [`rlang::is_integerish()`](https://rlang.r-lib.org/reference/is_integerish.html)
+  instead of the criterion used by
+  [`all.equal()`](https://rdrr.io/r/base/all.equal.html).
+
 ## *arg* 0.1.1
+
+CRAN release: 2026-05-27
 
 - [`err()`](https://ngreifer.github.io/arg/reference/err.md),
   [`wrn()`](https://ngreifer.github.io/arg/reference/err.md), and
