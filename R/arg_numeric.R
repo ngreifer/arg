@@ -6,7 +6,7 @@
 #' @inheritParams arg_is
 #'
 #' @details
-#' A whole number is decided by testing whether the value is an integer (i.e., using [is.integer()]) or if `abs(x - trunc(x)) < sqrt(.Machine$double.eps)`. This is the same tolerance used by [all.equal()] to compare values.
+#' A whole number is decided by testing whether the value is an "integerish" value using [rlang::is_integerish()]. This should not be used to test, e.g., if one number divides another, but rather if a user has supplied a numeric value meant to be interpreted as an integer.
 #'
 #' @inherit arg_is return
 #'
@@ -41,7 +41,7 @@ arg_numeric <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is.numeric(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a numeric vector",
@@ -56,7 +56,7 @@ arg_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
   if (!is_scalar(x) || !is.numeric(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (!is_scalar(x)) {
@@ -73,10 +73,10 @@ arg_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_whole_numeric <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                               .call) {
-  if (!is_whole_numeric(x)) {
+  if (!rlang::is_integerish(x)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a whole numeric vector",
@@ -88,10 +88,10 @@ arg_whole_numeric <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_whole_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                              .call) {
-  if (!is_scalar(x) || !is_whole_numeric(x)) {
+  if (!rlang::is_integerish(x, n = 1L)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (!is_scalar(x)) {
@@ -108,10 +108,10 @@ arg_whole_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_counts <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                        .call) {
-  if (!is_whole_numeric(x) || any(x < 0)) {
+  if (!rlang::is_integerish(x) || any(x < 0)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     err("{.arg {(.arg)}} must be a vector of counts (non-negative whole numeric values)",
@@ -123,11 +123,10 @@ arg_counts <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_count <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                       .call) {
-  if (!is_scalar(x) || !is_whole_numeric(x) ||
-      any(x < 0)) {
+  if (!rlang::is_integerish(x, n = 1L) || any(x < 0)) {
 
     if (is_not_null(.msg)) {
-      err(.msg_eval(.msg), .call = .call)
+      err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
     if (!is_scalar(x)) {
