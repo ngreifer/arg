@@ -3,6 +3,8 @@
 \name{arg_index}
 \alias{arg_index}
 \alias{arg_indices}
+\alias{arg_name}
+\alias{arg_names}
 \title{Check Index Argument}
 \usage{
 arg_index(
@@ -22,11 +24,29 @@ arg_indices(
   .msg = NULL,
   .call
 )
+
+arg_name(
+  x,
+  data,
+  .arg = rlang::caller_arg(x),
+  .arg_data = rlang::caller_arg(data),
+  .msg = NULL,
+  .call
+)
+
+arg_names(
+  x,
+  data,
+  .arg = rlang::caller_arg(x),
+  .arg_data = rlang::caller_arg(data),
+  .msg = NULL,
+  .call
+)
 }
 \arguments{
 \item{x}{the argument to be checked}
 
-\item{data}{a data set (i.e., a matrix or data frame)}
+\item{data}{a dataset (i.e., a matrix or data frame) or other vector-like object.}
 
 \item{.arg}{the name of the argument supplied to \code{x} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
 
@@ -40,32 +60,42 @@ arg_indices(
 Returns \code{NULL} invisibly if an error is not thrown.
 }
 \description{
-Checks whether an argument is a valid column index (\code{arg_index()}) of a data set or a vector thereof (\code{arg_indices()}).
+Checks whether an argument is a valid column index or name (\code{arg_index()}) of a dataset or a vector of valid column indices or names (\code{arg_indices()}). \code{arg_name()} and \code{arg_names()} additionally require that the argument is a string or character, respectively.
 }
 \details{
 For \code{arg_indices()}, an error will be thrown unless one of the following are true:
 \itemize{
-\item \code{x} is a vector of counts (see \code{\link[=arg_counts]{arg_counts()}}) less than or equal to \code{ncol(data)}
-\item \code{x} is a character vector with values a subset of \code{colnames(data)}
+\item \code{x} is a vector of counts (see \code{\link[=arg_counts]{arg_counts()}}) less than or equal to \code{ncol(data)} (or \code{length(data)} if \code{data} is not a dataset)
+\item \code{x} is a character vector with values a subset of \code{colnames(data)} (or \code{names(data)} if \code{data} is not a dataset)
 }
 
-For \code{arg_index()}, \code{x} additionally must have length equal to 1. Passing \code{arg_index()} ensures that \code{data[, x]} (if \code{data} is a matrix) or \code{data[[x]]} (if \code{x} is a data frame) evaluate correctly.
+For \code{arg_index()}, \code{x} additionally must have length equal to 1. Passing \code{arg_index()} ensures that \code{data[, x]} (if \code{data} is a matrix) or \code{data[[x]]} (otherwise) evaluate correctly. For \code{arg_name()} and \code{arg_names()}, an error will be thrown unless \code{x} is additionally a string or character vector, respectively.
 
-If \code{data} has no column names, an error will be thrown if \code{x} is a character vector.
+If \code{data} is a dataset with no column names or otherwise has no names, an error will be thrown if \code{x} is a character vector.
 }
 \examples{
 dat <- data.frame(col1 = 1:5,
                   col2 = 6:10)
 
-f <- function(z) {
+f1 <- function(z) {
   arg_index(z, dat)
 }
 
-try(f(1))         # No error
-try(f(3))         # Error: not a valid index
-try(f("col1"))    # No error
-try(f("bad_col")) # Error: not a valid index
-try(f(1:2))       # Error: arg_index() requires scalar
+try(f1(1))         # No error
+try(f1(3))         # Error: not a valid index
+try(f1("col1"))    # No error
+try(f1("bad_col")) # Error: not a valid index
+try(f1(1:2))       # Error: arg_index() requires scalar
+
+f2 <- function(z) {
+  arg_name(z, dat)
+}
+
+
+try(f2("col1"))            # No error
+try(f2(1))                 # Error: not a string
+try(f2("bad_col"))         # Error: not a valid name
+try(f2(c("col1", "col2"))) # Error: arg_name() requires scalar
 
 mat <- matrix(1:9, ncol = 3)
 
@@ -79,4 +109,6 @@ try(g("col")) # Error: `mat` has no names
 }
 \seealso{
 \code{\link[=arg_counts]{arg_counts()}}, \code{\link[=arg_character]{arg_character()}}
+
+\code{\link[=arg_named]{arg_named()}} for checking whether a dataset or other object has names.
 }
