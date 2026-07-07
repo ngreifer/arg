@@ -41,6 +41,8 @@
   : Check Function Argument
 - [`arg_index()`](https://ngreifer.github.io/arg/reference/arg_index.md)
   [`arg_indices()`](https://ngreifer.github.io/arg/reference/arg_index.md)
+  [`arg_name()`](https://ngreifer.github.io/arg/reference/arg_index.md)
+  [`arg_names()`](https://ngreifer.github.io/arg/reference/arg_index.md)
   : Check Index Argument
 - [`arg_is()`](https://ngreifer.github.io/arg/reference/arg_is.md)
   [`arg_is_not()`](https://ngreifer.github.io/arg/reference/arg_is.md) :

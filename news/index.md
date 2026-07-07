@@ -7,8 +7,18 @@
   (and variants) to check whether an argument corresponds to a valid
   color specification.
 
-- Fixed a bug where the message provided to `.msg` (if any) was not
-  evaluated in the correct environment.
+- Added
+  [`arg_name()`](https://ngreifer.github.io/arg/reference/arg_index.md)
+  and
+  [`arg_names()`](https://ngreifer.github.io/arg/reference/arg_index.md)
+  to check whether an argument is a vector of valid names of elements of
+  an object.
+
+- [`arg_index()`](https://ngreifer.github.io/arg/reference/arg_index.md)
+  and
+  [`arg_indices()`](https://ngreifer.github.io/arg/reference/arg_index.md)
+  now check names for arbitrary objects, not just matrices and data
+  frames.
 
 - [`arg_counts()`](https://ngreifer.github.io/arg/reference/arg_numeric.md)
   and
@@ -18,6 +28,9 @@
   [`rlang::is_integerish()`](https://rlang.r-lib.org/reference/is_integerish.html)
   instead of the criterion used by
   [`all.equal()`](https://rdrr.io/r/base/all.equal.html).
+
+- Fixed a bug where the message provided to `.msg` (if any) was not
+  evaluated in the correct environment.
 
 ## *arg* 0.1.1
 
