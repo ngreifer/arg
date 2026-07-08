@@ -100,7 +100,9 @@ try(arg_is_not(obj2, c("test", "quiz"))) # Error
 try(arg_and(obj2,
             arg_is("test"),
             arg_is("quiz")))
-#> Error : `obj2` must inherit from class <quiz>.
+#> Error : All of the following conditions must be met:
+#> ✔ `obj2` must inherit from class <test>
+#> ✖ `obj2` must inherit from class <quiz>
 
 ## Require argument to not be a specific combination of
 ## multiple classes

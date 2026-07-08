@@ -48,7 +48,7 @@ Returns `NULL` invisibly if an error is not thrown.
 
 ## Details
 
-`arg_no_NA()` throws an error when `anyNA(x)` is `0`. `arg_all_NA()`
+`arg_no_NA()` throws an error when `anyNA(x)` is `TRUE`. `arg_all_NA()`
 throws an error when `all(is.na(x))` is not `FALSE`. `arg_is_NA()`
 throws an error when `length(x)` is not 1 or `anyNA(x)` is `FALSE`.
 

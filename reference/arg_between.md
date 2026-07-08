@@ -78,8 +78,8 @@ Returns `NULL` invisibly if an error is not thrown.
 `x` is not checked for type, as it is possible for values other than
 numeric values to be passed and compared; however, an error will be
 thrown if `typeof(x)` is not equal to `typeof(range)` or
-`typeof(bound)`. `NA` values of `x` will be removed. The arguments to
-`range`, `inclusive`, and `bound` are checked for appropriateness.
+`typeof(bound)`. The arguments to `range`, `inclusive`, and `bound` are
+checked for appropriateness.
 
 ## Examples
 

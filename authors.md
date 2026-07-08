@@ -11,12 +11,12 @@ Source:
 [`DESCRIPTION`](https://github.com/ngreifer/arg/blob/main/DESCRIPTION)
 
 Greifer N (2026). *arg: Clean and Simple Argument Checking*. R package
-version 0.1.1.9001, <https://ngreifer.github.io/arg/>.
+version 0.1.1.9002, <https://ngreifer.github.io/arg/>.
 
     @Manual{,
       title = {arg: Clean and Simple Argument Checking},
       author = {Noah Greifer},
       year = {2026},
-      note = {R package version 0.1.1.9001},
+      note = {R package version 0.1.1.9002},
       url = {https://ngreifer.github.io/arg/},
     }

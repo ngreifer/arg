@@ -11,7 +11,7 @@ and supports partial matching."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,7 @@ and supports partial matching.</p>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Partial matching is supported via <code><a href="https://rdrr.io/r/base/pmatch.html" class="external-link">pmatch()</a></code>. If no match is found, an error is thrown listing the valid <code>choices</code>.</p>
-<p>Checks are run on <code>x</code> prior to matching: first, <code><a href="arg_supplied.html">arg_supplied()</a></code> is used to check whether <code>x</code> was supplied; then <code><a href="arg_character.html">arg_string()</a></code> (if <code>several.ok = TRUE</code>) or <code><a href="arg_character.html">arg_character()</a></code> (if <code>several.ok = FALSE</code>) is used to check whether <code>x</code> is a valid string or character vector, respectively.</p>
+<p>Checks are run on <code>x</code> prior to matching: first, <code><a href="arg_supplied.html">arg_supplied()</a></code> is used to check whether <code>x</code> was supplied; then <code><a href="arg_character.html">arg_character()</a></code> (if <code>several.ok = TRUE</code>) or <code><a href="arg_character.html">arg_string()</a></code> (if <code>several.ok = FALSE</code>) is used to check whether <code>x</code> is a valid string or character vector, respectively.</p>
 <p>When <code>ignore.case = TRUE</code> (the default), an initial case-sensitive match is run, and if any values in <code>x</code> are unmatched, a second, case-insensitive match is run. When <code>ignore.case = FALSE</code>, only the first match is run. This ensures that exact matches (on both content and case) are prioritized before case-insensitive matches.</p>
     </div>
     <div class="section level2">
@@ -159,7 +159,7 @@ and supports partial matching.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

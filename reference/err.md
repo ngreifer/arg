@@ -17,7 +17,7 @@ err(m, .call, .envir = rlang::caller_env(), ...)
 
 wrn(m, immediate = TRUE, .call, .envir = rlang::caller_env(), ...)
 
-msg(m, .call = NULL, .envir = rlang::caller_env(), ...)
+msg(m, .call, .envir = rlang::caller_env(), ...)
 ```
 
 ## Arguments

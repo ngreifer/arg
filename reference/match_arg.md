@@ -78,9 +78,9 @@ an error is thrown listing the valid `choices`.
 Checks are run on `x` prior to matching: first,
 [`arg_supplied()`](https://ngreifer.github.io/arg/reference/arg_supplied.md)
 is used to check whether `x` was supplied; then
-[`arg_string()`](https://ngreifer.github.io/arg/reference/arg_character.md)
-(if `several.ok = TRUE`) or
 [`arg_character()`](https://ngreifer.github.io/arg/reference/arg_character.md)
+(if `several.ok = TRUE`) or
+[`arg_string()`](https://ngreifer.github.io/arg/reference/arg_character.md)
 (if `several.ok = FALSE`) is used to check whether `x` is a valid string
 or character vector, respectively.
 

@@ -64,21 +64,21 @@ obj <- c(1,
          C = 3)
 
 try(arg_named(obj)) # Error: one name is blank
-#> Error : `obj` must have non-empty and non-NA names.
+#> Error : `obj` must not have empty names.
 
 names(obj)[1L] <- "A"
 try(arg_named(obj)) # No error
 
 obj2 <- unname(obj)
 try(arg_named(obj2)) # Error: no names
-#> Error : `obj2` must have non-empty and non-NA names.
+#> Error : `obj2` must not have empty names.
 
 # Matrix and data frame
 mat <- matrix(1:6, ncol = 2L)
 colnames(mat) <- c("A", "B")
 
 try(arg_named(mat))    # Error: matrices are not named
-#> Error : `mat` must have non-empty and non-NA names.
+#> Error : `mat` must not have empty names.
 try(arg_colnamed(mat)) # No error
 
 dat <- as.data.frame(mat)
@@ -87,5 +87,5 @@ try(arg_colnamed(dat)) # No error
 
 colnames(mat) <- NULL
 try(arg_colnamed(mat)) # Error: no colnames
-#> Error : `mat` must have non-empty and non-NA names.
+#> Error : `mat` must not have empty column names.
 ```

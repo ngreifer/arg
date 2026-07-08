@@ -32,6 +32,10 @@
 - Fixed a bug where the message provided to `.msg` (if any) was not
   evaluated in the correct environment.
 
+- Fixed several typos in the documentation and in some error messages.
+
+- Added a testing suite.
+
 ## *arg* 0.1.1
 
 CRAN release: 2026-05-27

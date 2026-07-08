@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -84,21 +84,21 @@
 <span class="r-in"><span>         C <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_named</span><span class="op">(</span><span class="va">obj</span><span class="op">)</span><span class="op">)</span> <span class="co"># Error: one name is blank</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj` must have non-empty and non-<span style="color: #0000BB;">NA</span> names.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj` must not have empty names.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span><span class="op">[</span><span class="fl">1L</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="st">"A"</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_named</span><span class="op">(</span><span class="va">obj</span><span class="op">)</span><span class="op">)</span> <span class="co"># No error</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">obj2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unname.html" class="external-link">unname</a></span><span class="op">(</span><span class="va">obj</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_named</span><span class="op">(</span><span class="va">obj2</span><span class="op">)</span><span class="op">)</span> <span class="co"># Error: no names</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj2` must have non-empty and non-<span style="color: #0000BB;">NA</span> names.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `obj2` must not have empty names.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Matrix and data frame</span></span></span>
 <span class="r-in"><span><span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span>, ncol <span class="op">=</span> <span class="fl">2L</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_named</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span>    <span class="co"># Error: matrices are not named</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `mat` must have non-empty and non-<span style="color: #0000BB;">NA</span> names.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `mat` must not have empty names.</span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_colnamed</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span> <span class="co"># No error</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span></span></span>
@@ -107,7 +107,7 @@
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span><span class="fu">arg_colnamed</span><span class="op">(</span><span class="va">mat</span><span class="op">)</span><span class="op">)</span> <span class="co"># Error: no colnames</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `mat` must have non-empty and non-<span style="color: #0000BB;">NA</span> names.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error : `mat` must not have empty column names.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -119,7 +119,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
