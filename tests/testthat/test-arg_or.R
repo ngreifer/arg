@@ -36,9 +36,13 @@ test_that("arg_and() marks passed checks with a tick and failed checks with a cr
   cnd <- rlang::catch_cnd(g(c(1, 7)))
   msg <- conditionMessage(cnd)
   expect_match(msg, "All of the following conditions must be met", fixed = TRUE)
-  expect_match(msg, "vector of counts", fixed = TRUE)
-  expect_match(msg, "have length 2", fixed = TRUE)
-  expect_match(msg, "less than 5", fixed = TRUE)
+
+  tick <- cli::symbol$tick
+  cross <- cli::symbol$cross
+
+  expect_match(msg, paste0(tick, " `z` must be a vector of counts"), fixed = TRUE)
+  expect_match(msg, paste0(tick, " `z` must have length 2"), fixed = TRUE)
+  expect_match(msg, paste0(cross, " Each element of `z` must be less than 5"), fixed = TRUE)
 })
 
 test_that("arg_and() reports a single failure message directly, without a bulleted list", {
@@ -71,4 +75,18 @@ test_that("arg_or() and arg_and() respect a custom .msg", {
 test_that("arg_or() propagates internal argument errors from malformed checks", {
   f <- function(z) arg_or(z, arg_length(len = "a"))
   expect_error(f(1))
+})
+
+test_that("arg_or() surfaces only the internal argument error, not a mix of it and a prior check's user-facing failure", {
+  # arg_string(1) fails first (a normal, user-facing failure) and is recorded
+  # internally; arg_length(len = "a") then raises an internal_arg_error, which
+  # should immediately replace the whole result, not be appended to or merged
+  # with the already-recorded arg_string() failure message.
+  f <- function(z) arg_or(z, arg_string, arg_length(len = "a"))
+  cnd <- rlang::catch_cnd(f(1))
+  msg <- conditionMessage(cnd)
+
+  expect_match(msg, "must be a vector of counts", fixed = TRUE)
+  expect_false(grepl("must be a string", msg, fixed = TRUE))
+  expect_false(grepl("at least one of the following", msg, ignore.case = TRUE))
 })

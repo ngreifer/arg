@@ -91,3 +91,66 @@ test_that("arg_between() family respects a custom .msg", {
   expect_error(arg_gt(-1, .msg = "custom failure message"),
                "ustom failure message", fixed = TRUE)
 })
+
+test_that("arg_between() family works for Date objects, which are comparable but not numeric or character", {
+  d1 <- as.Date("2020-01-01")
+  d2 <- as.Date("2020-06-01")
+  d3 <- as.Date("2020-12-31")
+
+  expect_false(is.numeric(d1))
+  expect_false(is.character(d1))
+
+  expect_null(arg_between(d2, c(d1, d3)))
+  expect_error(arg_between(d1, c(d2, d3)), "must be between", fixed = TRUE)
+
+  expect_null(arg_gt(d2, d1))
+  expect_error(arg_gt(d1, d2), "must be greater than", fixed = TRUE)
+
+  expect_null(arg_gte(d1, d1))
+  expect_null(arg_lte(d1, d1))
+  expect_null(arg_lt(d1, d2))
+  expect_error(arg_lt(d2, d1))
+})
+
+test_that("arg_between() family works for ordered factors, which have Ops.factor comparison methods", {
+  levels <- c("low", "medium", "high")
+  f1 <- factor("low", levels = levels, ordered = TRUE)
+  f2 <- factor("medium", levels = levels, ordered = TRUE)
+  f3 <- factor("high", levels = levels, ordered = TRUE)
+
+  expect_null(arg_gt(f2, f1))
+  expect_error(arg_gt(f1, f2))
+  expect_null(arg_lt(f1, f2))
+  expect_null(arg_between(f2, c(f1, f3)))
+  expect_error(arg_between(f1, c(f2, f3)))
+})
+
+test_that("arg_between() family works for any custom class with Ops methods defined", {
+  # Ops methods must be visible on the search path for S3 dispatch to find
+  # them, so this registers Ops.money on the global environment for the
+  # duration of the test and removes it again afterward.
+  Ops.money <- function(e1, e2) {
+    v1 <- if (inherits(e1, "money")) unclass(e1) else e1
+    v2 <- if (inherits(e2, "money")) unclass(e2) else e2
+    get(.Generic)(v1, v2)
+  }
+  assign("Ops.money", Ops.money, envir = globalenv())
+  on.exit(rm("Ops.money", envir = globalenv()))
+
+  money <- function(x) structure(x, class = "money")
+  m1 <- money(5)
+  m2 <- money(10)
+
+  expect_null(arg_gt(m2, m1))
+  expect_error(arg_gt(m1, m2), "must be greater than", fixed = TRUE)
+  expect_null(arg_between(m2, c(m1, money(15))))
+})
+
+test_that("arg_between() family treats an object as not comparable if its comparison method errors or is undefined", {
+  d1 <- as.Date("2020-01-01")
+  expect_error(arg_gt(d1, 5))
+  expect_error(arg_gt(d1, "2020-01-01"))
+
+  no_ops <- structure(list(1), class = "no_ops_class")
+  expect_error(arg_gt(no_ops, no_ops))
+})

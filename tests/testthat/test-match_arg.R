@@ -16,8 +16,8 @@ test_that("match_arg() errors when several.ok = FALSE and multiple values are su
 })
 
 test_that("match_arg() is case-sensitive first, then falls back to case-insensitive by default", {
-  g <- function(z = NULL) match_arg(z, c("None", "Exact", "Partial"), several.ok = TRUE)
-  expect_identical(g("exact"), "Exact")
+  g <- function(z = NULL) match_arg(z, c("None", "Exact", "Partial", "exact"), several.ok = TRUE)
+  expect_identical(g("exact"), "exact")
   expect_identical(g("Exact"), "Exact")
 })
 
