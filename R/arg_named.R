@@ -49,7 +49,17 @@ arg_named <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
-    err("{.arg {(.arg)}} must have non-empty and non-{.val {NA}} names",
+    if (is_null(names(x)) || !all(nzchar(names(x)))) {
+      if (anyNA(names(x))) {
+        err("{.arg {(.arg)}} must not have empty names or {.val {NA}} values as names",
+            .call = .call)
+      }
+
+      err("{.arg {(.arg)}} must not have empty names",
+          .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must not have {.val {NA}} values as names",
         .call = .call)
   }
 }
@@ -65,7 +75,17 @@ arg_colnamed <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
-    err("{.arg {(.arg)}} must have non-empty and non-{.val {NA}} names",
+    if (is_null(names(x)) || !all(nzchar(names(x)))) {
+      if (anyNA(names(x))) {
+        err("{.arg {(.arg)}} must not have empty names or {.val {NA}} values as column names",
+            .call = .call)
+      }
+
+      err("{.arg {(.arg)}} must not have empty column names",
+          .call = .call)
+    }
+
+    err("{.arg {(.arg)}} must not have {.val {NA}} values as column names",
         .call = .call)
   }
 }
