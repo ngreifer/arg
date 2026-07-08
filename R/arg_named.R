@@ -75,9 +75,9 @@ arg_colnamed <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
-    if (is_null(names(x)) || !all(nzchar(names(x)))) {
-      if (anyNA(names(x))) {
-        err("{.arg {(.arg)}} must not have empty names or {.val {NA}} values as column names",
+    if (is_null(colnames(x)) || !all(nzchar(colnames(x)))) {
+      if (anyNA(colnames(x))) {
+        err("{.arg {(.arg)}} must not have empty column names or {.val {NA}} values as column names",
             .call = .call)
       }
 
