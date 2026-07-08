@@ -28,7 +28,7 @@ Returns \code{NULL} invisibly if an error is not thrown.
 Checks whether an argument does not contain any \code{NA} values (\code{arg_no_NA()}), contains only \code{NA} values (\code{arg_all_NA()}), or is a scalar \code{NA} (\code{arg_is_NA()}).
 }
 \details{
-\code{arg_no_NA()} throws an error when \code{anyNA(x)} is \code{0}. \code{arg_all_NA()} throws an error when \code{all(is.na(x))} is not \code{FALSE}. \code{arg_is_NA()} throws an error when \code{length(x)} is not 1 or \code{anyNA(x)} is \code{FALSE}.
+\code{arg_no_NA()} throws an error when \code{anyNA(x)} is \code{TRUE}. \code{arg_all_NA()} throws an error when \code{all(is.na(x))} is not \code{FALSE}. \code{arg_is_NA()} throws an error when \code{length(x)} is not 1 or \code{anyNA(x)} is \code{FALSE}.
 
 \code{arg_no_NA()} is useful for checking that a meaningful argument was supplied. \code{arg_all_NA()} and \code{arg_is_NA()} are primarily used for in \code{\link[=arg_or]{arg_or()}} to denote that \code{NA} is an allowed argument.
 }

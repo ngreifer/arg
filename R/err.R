@@ -95,7 +95,7 @@ wrn <- function(m, immediate = TRUE, .call, .envir = rlang::caller_env(), ...) {
 
 #' @export
 #' @rdname err
-msg <- function(m, .call = NULL, .envir = rlang::caller_env(), ...) {
+msg <- function(m, .call, .envir = rlang::caller_env(), ...) {
   arg_env(.envir, .call = rlang::current_env()) |>
     internal_arg()
 
@@ -140,7 +140,7 @@ msg <- function(m, .call = NULL, .envir = rlang::caller_env(), ...) {
   .pkg_names <- character(nf)
   pkg_name <- NULL
 
-  # Get packahges names for all calls in the stack
+  # Get packages names for all calls in the stack
   for (i in seq_len(nf)) {
     fn <- sys.function(i)
 
@@ -181,7 +181,6 @@ msg <- function(m, .call = NULL, .envir = rlang::caller_env(), ...) {
 
     if (is_null(fn_ind)) {
       if (!.pkg_names[i] %in% .pkg_ignore) {
-        pkg_found <- TRUE
         fn_ind <- i
       }
 

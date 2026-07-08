@@ -47,7 +47,7 @@ Returns \code{NULL} invisibly if an error is not thrown.
 Checks whether values are within a range (\code{arg_between()}), greater than some value (\code{arg_gt()}), greater than or equal to some value (\code{arg_gte()}), less than some value (\code{arg_lt()}), or less than or equal to some value (\code{arg_lte()}).
 }
 \details{
-\code{x} is not checked for type, as it is possible for values other than numeric values to be passed and compared; however, an error will be thrown if \code{typeof(x)} is not equal to \code{typeof(range)} or \code{typeof(bound)}. \code{NA} values of \code{x} will be removed. The arguments to \code{range}, \code{inclusive}, and \code{bound} are checked for appropriateness.
+\code{x} is not checked for type, as it is possible for values other than numeric values to be passed and compared; however, an error will be thrown if \code{typeof(x)} is not equal to \code{typeof(range)} or \code{typeof(bound)}. The arguments to \code{range}, \code{inclusive}, and \code{bound} are checked for appropriateness.
 }
 \examples{
 z <- 2

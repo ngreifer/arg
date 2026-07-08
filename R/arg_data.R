@@ -171,7 +171,7 @@ arg_env <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
     }
 
-    err("{.arg {(.arg)}} must be an enviornment",
+    err("{.arg {(.arg)}} must be an environment",
         .call = .call)
   }
 }

@@ -17,7 +17,7 @@
 #' @details
 #' Partial matching is supported via [pmatch()]. If no match is found, an error is thrown listing the valid `choices`.
 #'
-#' Checks are run on `x` prior to matching: first, [arg_supplied()] is used to check whether `x` was supplied; then [arg_string()] (if `several.ok = TRUE`) or [arg_character()] (if `several.ok = FALSE`) is used to check whether `x` is a valid string or character vector, respectively.
+#' Checks are run on `x` prior to matching: first, [arg_supplied()] is used to check whether `x` was supplied; then [arg_character()] (if `several.ok = TRUE`) or [arg_string()] (if `several.ok = FALSE`) is used to check whether `x` is a valid string or character vector, respectively.
 #'
 #' When `ignore.case = TRUE` (the default), an initial case-sensitive match is run, and if any values in `x` are unmatched, a second, case-insensitive match is run. When `ignore.case = FALSE`, only the first match is run. This ensures that exact matches (on both content and case) are prioritized before case-insensitive matches.
 #'

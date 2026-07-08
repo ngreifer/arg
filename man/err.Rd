@@ -10,7 +10,7 @@ err(m, .call, .envir = rlang::caller_env(), ...)
 
 wrn(m, immediate = TRUE, .call, .envir = rlang::caller_env(), ...)
 
-msg(m, .call = NULL, .envir = rlang::caller_env(), ...)
+msg(m, .call, .envir = rlang::caller_env(), ...)
 }
 \arguments{
 \item{m}{the message to be displayed, passed to the \code{message} argument of \code{\link[rlang:abort]{rlang::abort()}}, \code{\link[rlang:warn]{rlang::warn()}}, or \code{\link[rlang:inform]{rlang::inform()}}.}
