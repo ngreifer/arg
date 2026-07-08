@@ -108,7 +108,7 @@ arg_whole_number <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_counts <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                        .call) {
-  if (!rlang::is_integerish(x) || any(x < 0)) {
+  if (!rlang::is_integerish(x) || safe_any(x < 0)) {
 
     if (is_not_null(.msg)) {
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
@@ -123,7 +123,7 @@ arg_counts <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
 #' @rdname arg_numeric
 arg_count <- function(x, .arg = rlang::caller_arg(x), .msg = NULL,
                       .call) {
-  if (!rlang::is_integerish(x, n = 1L) || any(x < 0)) {
+  if (!rlang::is_integerish(x, n = 1L) || safe_any(x < 0)) {
 
     if (is_not_null(.msg)) {
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
