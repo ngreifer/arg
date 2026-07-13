@@ -16,9 +16,9 @@ knitr::opts_chunk$set(
 rlang::local_options(width = 80)
 ```
 
-# *arg*: Clean and Simple Argument Checking
+# *arg*: Clean and Simple Argument Checking <img src="man/figures/logo.png" align="right" width="150"/>
 <!-- badges: start -->
-[![CRAN status](https://www.r-pkg.org/badges/version/arg)](https://CRAN.R-project.org/package=arg)
+[![CRAN status](https://www.r-pkg.org/badges/version/arg?color=fe423b)](https://CRAN.R-project.org/package=arg)
 <!-- badges: end -->
 
 ## Overview

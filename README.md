@@ -1,12 +1,12 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# *arg*: Clean and Simple Argument Checking
+# *arg*: Clean and Simple Argument Checking <img src="man/figures/logo.png" align="right" width="150"/>
 
 <!-- badges: start -->
 
 [![CRAN
-status](https://www.r-pkg.org/badges/version/arg)](https://CRAN.R-project.org/package=arg)
+status](https://www.r-pkg.org/badges/version/arg?color=fe423b)](https://CRAN.R-project.org/package=arg)
 <!-- badges: end -->
 
 ## Overview

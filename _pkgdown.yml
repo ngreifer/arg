@@ -1,12 +1,15 @@
 url: https://ngreifer.github.io/arg/
 template:
   bootstrap: 5
+  light-switch: true
+  bslib:
+    primary: "#FE423B"
+    secondary: "#feccc4"
 
 reference:
 - title: Argument checking
 - contents:
   - starts_with("arg_")
-  - when_supplied
 - title: Compound and conditional argument checking
 - contents:
   - arg_or
