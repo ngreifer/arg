@@ -7,6 +7,7 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/arg?color=fe423b)](https://CRAN.R-project.org/package=arg)
+[![CRAN_Downloads_Badge](https://cranlogs.r-pkg.org/badges/arg?color=fe423b)](https://cran.r-project.org/package=arg)
 <!-- badges: end -->
 
 ## Overview

@@ -1,10 +1,12 @@
 url: https://ngreifer.github.io/arg/
+
 template:
   bootstrap: 5
+  math-rendering: mathjax
   light-switch: true
   bslib:
     primary: "#FE423B"
-    secondary: "#feccc4"
+    secondary: "#FECCC4"
 
 reference:
 - title: Argument checking
