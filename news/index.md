@@ -34,6 +34,8 @@
 
 - Fixed several typos in the documentation and in some error messages.
 
+- Added a new logo.
+
 - Added a testing suite.
 
 ## *arg* 0.1.1

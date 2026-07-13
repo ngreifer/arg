@@ -81,9 +81,6 @@
   : Check Symmetric Matrix Argument
 - [`arg_unique()`](https://ngreifer.github.io/arg/reference/arg_unique.md)
   : Check Unique Argument
-- [`when_supplied()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
-  [`when_not_null()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
-  : Check Arguments When Supplied
 
 ## Compound and conditional argument checking
 
