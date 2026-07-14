@@ -42,7 +42,7 @@ arg_env(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 Returns \code{NULL} invisibly if an error is not thrown.
 }
 \description{
-Checks whether an argument is an atomic vector (\code{arg_atomic()}), a dimensionless atomic vector (\code{arg_vector()}), a \code{\link{list}} (\code{arg_list()}), a \link[=data.frame]{data frame} (\code{arg_data.frame()}), a \code{\link{matrix}} (\code{arg_matrix()}), an \code{\link{array}} (\code{arg_array()}), a rectangular data set (\code{arg_data()}), or an \code{\link{environment}} (\code{arg_env()}).
+Checks whether an argument is an atomic vector (\code{arg_atomic()}), a dimensionless atomic vector (\code{arg_vector()}), a \link{list} (\code{arg_list()}), a \link[=data.frame]{data frame} (\code{arg_data.frame()}), a \link{matrix} (\code{arg_matrix()}), an \link{array} (\code{arg_array()}), a rectangular data set (\code{arg_data()}), or an \link{environment} (\code{arg_env()}).
 }
 \details{
 Atomic vectors are checked using \code{\link[=is.atomic]{is.atomic()}}. Because matrices are considered atomic vectors, \code{arg_vector()} additionally checks that there is no \code{"dims"} attribute, i.e., that \code{length(dim(x)) == 0L}. \code{arg_data()} checks whether \code{x} is either a data frame or a matrix. \code{arg_list()} checks whether \code{x} is a list; when \code{df = FALSE}, it throws an error when \code{x} is a data frame, even though data frames are lists.

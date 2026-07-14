@@ -35,7 +35,8 @@ make_fail <- function(a0, x) {
   new_args <-  switch(
     fn,
     arg_between = , arg_gt = , arg_gte = , arg_lt = , arg_lte = {
-      list(x = rep(NaN, 2L))
+      is.na(x)[] <- TRUE
+      list(x = rep_len(x, 2L))
     },
     arg_colnamed =, arg_named = {
       list(x = setNames(data.frame(1, 1), c("", NA_character_)))

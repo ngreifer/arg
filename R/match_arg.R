@@ -1,8 +1,6 @@
 #' Argument Verification
 #'
-#' An alternative to [match.arg()] with improved
-#' error messages via \pkg{cli}. Returns the first choice if `x` is `NULL`,
-#' and supports partial matching.
+#' An alternative to [match.arg()] with improved error messages via \pkg{cli}. Returns the first choice if `x` is `NULL`, and supports partial matching.
 #'
 #' @inheritParams arg_is
 #' @param x a string (or character vector if `several.ok = TRUE`) to match against `choices`. If `NULL`, the first element of `choices` is returned.
@@ -41,7 +39,8 @@
 #' # several.ok = TRUE
 #' g <- function(z = NULL) {
 #'   match_arg(z, c("None", "Exact", "Partial"),
-#'             several.ok = TRUE)
+#'             several.ok = TRUE,
+#'             ignore.case = FALSE)
 #' }
 #'
 #' try(g("exact"))               # Error: case not ignored
@@ -88,8 +87,8 @@ match_arg <- function(x, choices, several.ok = FALSE, ignore.case = TRUE,
   i <- pmatch(x, choices, nomatch = 0L,
               duplicates.ok = TRUE)
 
-  if (ignore.case && any(i == 0)) {
-    i[i == 0] <- pmatch(tolower(x[i == 0]), tolower(choices), nomatch = 0L,
+  if (ignore.case && any(i == 0L)) {
+    i[i == 0L] <- pmatch(tolower(x[i == 0L]), tolower(choices), nomatch = 0L,
                         duplicates.ok = TRUE)
   }
 

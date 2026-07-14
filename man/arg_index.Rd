@@ -48,9 +48,7 @@ arg_names(
 
 \item{data}{a dataset (i.e., a matrix or data frame) or other vector-like object.}
 
-\item{.arg}{the name of the argument supplied to \code{x} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
-
-\item{.arg_data}{the name of the argument supplied to \code{data} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
+\item{.arg, .arg_data}{the name of the argument supplied to \code{x} and \code{data} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
 
 \item{.msg}{an optional alternative message to display if an error is thrown instead of the default message.}
 
@@ -65,13 +63,11 @@ Checks whether an argument is a valid column index or name (\code{arg_index()}) 
 \details{
 For \code{arg_indices()}, an error will be thrown unless one of the following are true:
 \itemize{
-\item \code{x} is a vector of counts (see \code{\link[=arg_counts]{arg_counts()}}) less than or equal to \code{ncol(data)} (or \code{length(data)} if \code{data} is not a dataset)
+\item \code{x} is a vector of positive counts (see \code{\link[=arg_counts]{arg_counts()}}) less than or equal to \code{ncol(data)} (or \code{length(data)} if \code{data} is not a dataset)
 \item \code{x} is a character vector with values a subset of \code{colnames(data)} (or \code{names(data)} if \code{data} is not a dataset)
 }
 
-For \code{arg_index()}, \code{x} additionally must have length equal to 1. Passing \code{arg_index()} ensures that \code{data[, x]} (if \code{data} is a matrix) or \code{data[[x]]} (otherwise) evaluate correctly. For \code{arg_name()} and \code{arg_names()}, an error will be thrown unless \code{x} is additionally a string or character vector, respectively.
-
-If \code{data} is a dataset with no column names or otherwise has no names, an error will be thrown if \code{x} is a character vector.
+For \code{arg_index()}, \code{x} additionally must have length equal to 1. Passing \code{arg_index()} ensures that \code{data[, x]} (if \code{data} is a matrix) or \code{data[[x]]} (otherwise) evaluate correctly. If \code{data} is a dataset with no column names or otherwise has no names, an error will be thrown if \code{x} is a character vector. For \code{arg_name()} and \code{arg_names()}, an error will be thrown unless \code{x} is additionally a string or character vector, respectively.
 }
 \examples{
 dat <- data.frame(col1 = 1:5,

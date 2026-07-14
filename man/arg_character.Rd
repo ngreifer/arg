@@ -4,6 +4,7 @@
 \alias{arg_character}
 \alias{arg_string}
 \alias{arg_factor}
+\alias{arg_ordered}
 \title{Check Character Argument}
 \usage{
 arg_character(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
@@ -11,6 +12,8 @@ arg_character(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 arg_string(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
 arg_factor(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
+
+arg_ordered(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 }
 \arguments{
 \item{x}{the argument to be checked}
@@ -25,7 +28,7 @@ arg_factor(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 Returns \code{NULL} invisibly if an error is not thrown.
 }
 \description{
-Checks whether an argument is a character vector (\code{arg_character()}), a character scalar (\code{arg_string()}), or a factor (\code{arg_factor()}).
+Checks whether an argument is a character vector (\code{arg_character()}), a character scalar (\code{arg_string()}), a factor (\code{arg_factor()}), or an ordered factor (\code{arg_ordered()}).
 }
 \details{
 \code{NA} values in \code{arg_string()} will cause an error to be thrown.
@@ -40,5 +43,5 @@ try(f(c("a", "b"))) # Error: arg_string() requires scalar
 try(f(NA)) # NAs not allowed for arg_string()
 }
 \seealso{
-\code{\link[=is.character]{is.character()}}, \code{\link[=is.factor]{is.factor()}}, \code{\link[rlang:is_string]{rlang::is_string()}}
+\code{\link[=is.character]{is.character()}}, \code{\link[=is.factor]{is.factor()}}, \code{\link[=is.ordered]{is.ordered()}}, \code{\link[rlang:is_string]{rlang::is_string()}}
 }

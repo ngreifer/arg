@@ -2,7 +2,7 @@
 #' @name arg_data
 #'
 #' @description
-#' Checks whether an argument is an atomic vector (`arg_atomic()`), a dimensionless atomic vector (`arg_vector()`), a [`list`] (`arg_list()`), a [data frame][data.frame] (`arg_data.frame()`), a [`matrix`] (`arg_matrix()`), an [`array`] (`arg_array()`), a rectangular data set (`arg_data()`), or an [`environment`] (`arg_env()`).
+#' Checks whether an argument is an atomic vector (`arg_atomic()`), a dimensionless atomic vector (`arg_vector()`), a [list] (`arg_list()`), a [data frame][data.frame] (`arg_data.frame()`), a [matrix] (`arg_matrix()`), an [array] (`arg_array()`), a rectangular data set (`arg_data()`), or an [environment] (`arg_env()`).
 #'
 #' @inheritParams arg_is
 #' @param df_ok `logical`; whether to allow data frames (which are technically lists). Default is `FALSE` to throw an error on a data frame input.

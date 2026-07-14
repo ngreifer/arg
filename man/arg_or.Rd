@@ -81,7 +81,7 @@ try(g("bad"))       # Error: no criteria satisfied
 # Chaining together `arg_and()` and `arg_or()`
 h <- function(z) {
   arg_or(z,
-         arg_all_NA,
+         arg_is_NA,
          arg_and(arg_count,
                  arg_lt(5)),
          arg_and(arg_string,

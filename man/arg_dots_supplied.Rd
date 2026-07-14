@@ -23,7 +23,7 @@ Returns \code{NULL} invisibly if an error is not thrown.
 Checks whether an argument was supplied to \code{...}.
 }
 \details{
-\code{arg_dots_supplied()} checks whether arguments were passed to the \code{...} (i.e., "dots") argument of a function. These arguments are not evaluated. \code{arg_dots_supplied()} throws an error if \code{\link[=...length]{...length()}} is 0. It can be useful for when a function must have additional arguments. For example, \code{\link[=arg_or]{arg_or()}} and \code{\link[=when_supplied]{when_supplied()}} use \code{\link[=arg_dots_supplied]{arg_dots_supplied()}}.
+\code{arg_dots_supplied()} checks whether arguments were passed to the \code{...} (i.e., "dots") argument of a function. These arguments are not evaluated. \code{arg_dots_supplied()} throws an error if \code{\link[=...length]{...length()}} is 0. It can be useful for when a function must have additional arguments. For example, \code{\link[=when_not_null]{when_not_null()}} and \code{\link[=when_supplied]{when_supplied()}} use \code{\link[=arg_dots_supplied]{arg_dots_supplied()}}.
 
 \code{arg_dots_not_supplied()} checks whether no arguments were passed to \code{...}, again without evaluating the arguments and using \code{...length()}. It can be useful when a function appears to allow further arguments (e.g., because it is a method of a generic), but when the author does not want the user to supply them.
 }

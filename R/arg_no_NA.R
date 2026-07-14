@@ -7,7 +7,7 @@
 #' @details
 #' `arg_no_NA()` throws an error when `anyNA(x)` is `TRUE`. `arg_all_NA()` throws an error when `all(is.na(x))` is not `FALSE`. `arg_is_NA()` throws an error when `length(x)` is not 1 or `anyNA(x)` is `FALSE`.
 #'
-#' `arg_no_NA()` is useful for checking that a meaningful argument was supplied. `arg_all_NA()` and `arg_is_NA()` are primarily used for in [arg_or()] to denote that `NA` is an allowed argument.
+#' `arg_no_NA()` is useful for checking that a meaningful argument was supplied. `arg_all_NA()` and `arg_is_NA()` are primarily used in [arg_or()] to denote that `NA` is an allowed argument.
 #'
 #' @inherit arg_is return
 #'

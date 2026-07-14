@@ -9,7 +9,7 @@ arg_unique(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call)
 \arguments{
 \item{x}{the argument to be checked}
 
-\item{\dots}{further argument passed to \code{\link[=anyDuplicated]{anyDuplicated()}}, which performs the checking.}
+\item{\dots}{further arguments passed to \code{\link[=anyDuplicated]{anyDuplicated()}}, which performs the checking.}
 
 \item{.arg}{the name of the argument supplied to \code{x} to appear in error messages. The default is to extract the argument's name using \code{\link[rlang:caller_arg]{rlang::caller_arg()}}. Ignored if \code{.msg} is supplied.}
 
@@ -21,7 +21,7 @@ arg_unique(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call)
 Returns \code{NULL} invisibly if an error is not thrown.
 }
 \description{
-Checks whether an argument contains only unique values.
+Checks whether an argument contains only unique (i.e., distinct) values.
 }
 \examples{
 f <- function(z) {

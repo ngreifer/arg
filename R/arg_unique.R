@@ -1,10 +1,10 @@
 #' Check Unique Argument
 #'
 #' @description
-#' Checks whether an argument contains only unique values.
+#' Checks whether an argument contains only unique (i.e., distinct) values.
 #'
 #' @inheritParams arg_is
-#' @param \dots further argument passed to [anyDuplicated()], which performs the checking.
+#' @param \dots further arguments passed to [anyDuplicated()], which performs the checking.
 #'
 #' @inherit arg_is return
 #'

@@ -6,6 +6,8 @@
 \alias{arg-package}
 \title{arg: Clean and Simple Argument Checking}
 \description{
+\if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
+
 Checks function arguments, ideally for use in R packages. Uses a simple interface and produces clean, informative error messages using 'cli'.
 }
 \seealso{

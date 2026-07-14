@@ -25,7 +25,7 @@ Returns \code{NULL} invisibly if an error is not thrown.
 Checks whether an argument is non-\code{NULL} (\code{arg_non_null()}) or is \code{NULL} (\code{arg_null()}). \code{arg_non_null()} throws an error when \code{length(x)} is \code{0}. \code{arg_null()} throws an error when \code{length(x)} is not \code{0}.
 }
 \details{
-Here, \code{NULL} refers to any length-0 object, including \code{NULL}, \code{logical(0L)}, \code{list()}, \code{3[FALSE]}, etc. \code{arg_non_null()} is useful for checking that a meaningful argument was supplied. \code{arg_null()} is primarily used for in \code{\link[=arg_or]{arg_or()}} to denote that \code{NULL} is an allowed argument.
+Here, \code{NULL} refers to any length-0 object, including \href{`NULL`}{\code{NULL}}, \code{logical(0L)}, \code{list()}, \code{3[FALSE]}, etc. \code{arg_non_null()} is useful for checking that a meaningful argument was supplied. \code{arg_null()} is primarily used in \code{\link[=arg_or]{arg_or()}} to denote that \code{NULL} is an allowed argument.
 }
 \examples{
 f <- function(x = NULL, y = NULL) {
@@ -56,5 +56,5 @@ try(f2(1))    ## No error; z can be a number
 try(f2(TRUE)) ## Error: z must be NULL or a number
 }
 \seealso{
-\code{\link[=arg_length]{arg_length()}}, \code{\link[=arg_no_NA]{arg_no_NA()}}, \code{\link[=arg_supplied]{arg_supplied()}}
+\code{\link[=arg_length]{arg_length()}}, \code{\link[=arg_no_NA]{arg_no_NA()}}, \code{\link[=arg_supplied]{arg_supplied()}}, \code{\link[=when_not_null]{when_not_null()}}
 }

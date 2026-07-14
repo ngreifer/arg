@@ -5,17 +5,15 @@
 #'
 #' @inheritParams arg_is
 #' @param data a dataset (i.e., a matrix or data frame) or other vector-like object.
-#' @param .arg_data the name of the argument supplied to `data` to appear in error messages. The default is to extract the argument's name using [rlang::caller_arg()]. Ignored if `.msg` is supplied.
+#' @param .arg,.arg_data the name of the argument supplied to `x` and `data` to appear in error messages. The default is to extract the argument's name using [rlang::caller_arg()]. Ignored if `.msg` is supplied.
 #'
 #' @details
 #' For `arg_indices()`, an error will be thrown unless one of the following are true:
 #'
-#' * `x` is a vector of counts (see [arg_counts()]) less than or equal to `ncol(data)` (or `length(data)` if `data` is not a dataset)
+#' * `x` is a vector of positive counts (see [arg_counts()]) less than or equal to `ncol(data)` (or `length(data)` if `data` is not a dataset)
 #' * `x` is a character vector with values a subset of `colnames(data)` (or `names(data)` if `data` is not a dataset)
 #'
-#' For `arg_index()`, `x` additionally must have length equal to 1. Passing `arg_index()` ensures that `data[, x]` (if `data` is a matrix) or `data[[x]]` (otherwise) evaluate correctly. For `arg_name()` and `arg_names()`, an error will be thrown unless `x` is additionally a string or character vector, respectively.
-#'
-#' If `data` is a dataset with no column names or otherwise has no names, an error will be thrown if `x` is a character vector.
+#' For `arg_index()`, `x` additionally must have length equal to 1. Passing `arg_index()` ensures that `data[, x]` (if `data` is a matrix) or `data[[x]]` (otherwise) evaluate correctly. If `data` is a dataset with no column names or otherwise has no names, an error will be thrown if `x` is a character vector. For `arg_name()` and `arg_names()`, an error will be thrown unless `x` is additionally a string or character vector, respectively.
 #'
 #' @inherit arg_is return
 #'
@@ -67,7 +65,8 @@ arg_index <- function(x, data,
     internal_arg()
 
   if (identical(length(dim(data)), 2L)) {
-    is_valid_num_index <- rlang::is_integerish(x) && all(x >= 1L) && all(x <= ncol(data))
+    is_valid_num_index <- rlang::is_integerish(x) &&
+      all(x >= 1L) && all(x <= ncol(data))
 
     is_valid_char_index <- !is_valid_num_index &&
       is_not_null(colnames(data)) &&
@@ -77,7 +76,8 @@ arg_index <- function(x, data,
     var <- "column"
   }
   else {
-    is_valid_num_index <- rlang::is_integerish(x) && all(x >= 1L) && all(x <= length(data))
+    is_valid_num_index <- rlang::is_integerish(x) &&
+      all(x >= 1L) && all(x <= length(data))
 
     is_valid_char_index <- !is_valid_num_index &&
       is_not_null(names(data)) &&

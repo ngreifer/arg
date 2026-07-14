@@ -33,9 +33,7 @@ match_arg(
 A character string (or vector, if \code{several.ok = TRUE}) of the matched element(s) from \code{choices}. If there is no match, an error is thrown. When \code{several.ok = TRUE}, no error is thrown if there is at least one match.
 }
 \description{
-An alternative to \code{\link[=match.arg]{match.arg()}} with improved
-error messages via \pkg{cli}. Returns the first choice if \code{x} is \code{NULL},
-and supports partial matching.
+An alternative to \code{\link[=match.arg]{match.arg()}} with improved error messages via \pkg{cli}. Returns the first choice if \code{x} is \code{NULL}, and supports partial matching.
 }
 \details{
 Partial matching is supported via \code{\link[=pmatch]{pmatch()}}. If no match is found, an error is thrown listing the valid \code{choices}.
@@ -58,7 +56,8 @@ try(f(c("e", "p"))) # Error: several.ok = FALSE
 # several.ok = TRUE
 g <- function(z = NULL) {
   match_arg(z, c("None", "Exact", "Partial"),
-            several.ok = TRUE)
+            several.ok = TRUE,
+            ignore.case = FALSE)
 }
 
 try(g("exact"))               # Error: case not ignored
