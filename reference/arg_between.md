@@ -77,9 +77,11 @@ Returns `NULL` invisibly if an error is not thrown.
 
 `x` is not checked for type, as it is possible for values other than
 numeric values to be passed and compared; however, an error will be
-thrown if `typeof(x)` is not equal to `typeof(range)` or
-`typeof(bound)`. The arguments to `range`, `inclusive`, and `bound` are
-checked for appropriateness.
+thrown if `x` is not comparable to `range` or `bound`. `x` is
+comparability is assessed as whether `x` and `range` or `bound` are both
+numeric, both character, or can be compared using `<`, etc., without
+error. The arguments to `range`, `inclusive`, and `bound` are checked
+for appropriateness.
 
 ## Examples
 
@@ -106,6 +108,7 @@ try(arg_lt(z, 2))  # Error
 #> Error : `z` must be less than 2.
 try(arg_lte(z, 2)) # No error
 
-try(arg_lte(z, "3")) # Error: wrong type
-#> Error : `z` must be less than or equal to "3".
+w <- "A"
+try(arg_lte(w, 2)) # Error: wrong type
+#> Error : `w` must be comparable to 2 and be less than or equal to 2.
 ```

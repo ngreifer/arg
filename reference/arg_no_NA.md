@@ -53,7 +53,7 @@ throws an error when `all(is.na(x))` is not `FALSE`. `arg_is_NA()`
 throws an error when `length(x)` is not 1 or `anyNA(x)` is `FALSE`.
 
 `arg_no_NA()` is useful for checking that a meaningful argument was
-supplied. `arg_all_NA()` and `arg_is_NA()` are primarily used for in
+supplied. `arg_all_NA()` and `arg_is_NA()` are primarily used in
 [`arg_or()`](https://ngreifer.github.io/arg/reference/arg_or.md) to
 denote that `NA` is an allowed argument.
 

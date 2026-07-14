@@ -125,11 +125,12 @@ try(f(c("e", "p"))) # Error: several.ok = FALSE
 # several.ok = TRUE
 g <- function(z = NULL) {
   match_arg(z, c("None", "Exact", "Partial"),
-            several.ok = TRUE)
+            several.ok = TRUE,
+            ignore.case = FALSE)
 }
 
 try(g("exact"))               # Error: case not ignored
-#> [1] "Exact"
+#> Error : `z` should be at least one of "None", "Exact", or "Partial".
 try(g("Exact"))               # "Exact"
 #> [1] "Exact"
 try(g(c("Exact", "Partial"))) # "Exact", "Partial"

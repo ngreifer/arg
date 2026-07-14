@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,12 +99,8 @@
 <dd><p>a dataset (i.e., a matrix or data frame) or other vector-like object.</p></dd>
 
 
-<dt id="arg--arg">.arg<a class="anchor" aria-label="anchor" href="#arg--arg"></a></dt>
-<dd><p>the name of the argument supplied to <code>x</code> to appear in error messages. The default is to extract the argument's name using <code><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">rlang::caller_arg()</a></code>. Ignored if <code>.msg</code> is supplied.</p></dd>
-
-
-<dt id="arg--arg-data">.arg_data<a class="anchor" aria-label="anchor" href="#arg--arg-data"></a></dt>
-<dd><p>the name of the argument supplied to <code>data</code> to appear in error messages. The default is to extract the argument's name using <code><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">rlang::caller_arg()</a></code>. Ignored if <code>.msg</code> is supplied.</p></dd>
+<dt id="arg--arg-arg-data">.arg, .arg_data<a class="anchor" aria-label="anchor" href="#arg--arg-arg-data"></a></dt>
+<dd><p>the name of the argument supplied to <code>x</code> and <code>data</code> to appear in error messages. The default is to extract the argument's name using <code><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">rlang::caller_arg()</a></code>. Ignored if <code>.msg</code> is supplied.</p></dd>
 
 
 <dt id="arg--msg">.msg<a class="anchor" aria-label="anchor" href="#arg--msg"></a></dt>
@@ -121,10 +117,9 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>For <code>arg_indices()</code>, an error will be thrown unless one of the following are true:</p><ul><li><p><code>x</code> is a vector of counts (see <code><a href="arg_numeric.html">arg_counts()</a></code>) less than or equal to <code>ncol(data)</code> (or <code>length(data)</code> if <code>data</code> is not a dataset)</p></li>
+    <p>For <code>arg_indices()</code>, an error will be thrown unless one of the following are true:</p><ul><li><p><code>x</code> is a vector of positive counts (see <code><a href="arg_numeric.html">arg_counts()</a></code>) less than or equal to <code>ncol(data)</code> (or <code>length(data)</code> if <code>data</code> is not a dataset)</p></li>
 <li><p><code>x</code> is a character vector with values a subset of <code>colnames(data)</code> (or <code>names(data)</code> if <code>data</code> is not a dataset)</p></li>
-</ul><p>For <code>arg_index()</code>, <code>x</code> additionally must have length equal to 1. Passing <code>arg_index()</code> ensures that <code>data[, x]</code> (if <code>data</code> is a matrix) or <code>data[[x]]</code> (otherwise) evaluate correctly. For <code>arg_name()</code> and <code>arg_names()</code>, an error will be thrown unless <code>x</code> is additionally a string or character vector, respectively.</p>
-<p>If <code>data</code> is a dataset with no column names or otherwise has no names, an error will be thrown if <code>x</code> is a character vector.</p>
+</ul><p>For <code>arg_index()</code>, <code>x</code> additionally must have length equal to 1. Passing <code>arg_index()</code> ensures that <code>data[, x]</code> (if <code>data</code> is a matrix) or <code>data[[x]]</code> (otherwise) evaluate correctly. If <code>data</code> is a dataset with no column names or otherwise has no names, an error will be thrown if <code>x</code> is a character vector. For <code>arg_name()</code> and <code>arg_names()</code>, an error will be thrown unless <code>x</code> is additionally a string or character vector, respectively.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

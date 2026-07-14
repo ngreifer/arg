@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,6 +48,7 @@
 <em>arg</em> (development version)<a class="anchor" aria-label="anchor" href="#arg-development-version"></a></h2>
 <ul><li><p>Added <code><a href="../reference/arg_color.html">arg_color()</a></code> (and variants) to check whether an argument corresponds to a valid color specification.</p></li>
 <li><p>Added <code><a href="../reference/arg_index.html">arg_name()</a></code> and <code><a href="../reference/arg_index.html">arg_names()</a></code> to check whether an argument is a vector of valid names of elements of an object.</p></li>
+<li><p>Added <code><a href="../reference/arg_character.html">arg_ordered()</a></code> to check whether an argument is an ordered factor.</p></li>
 <li><p><code><a href="../reference/arg_index.html">arg_index()</a></code> and <code><a href="../reference/arg_index.html">arg_indices()</a></code> now check names for arbitrary objects, not just matrices and data frames.</p></li>
 <li><p><code><a href="../reference/arg_numeric.html">arg_counts()</a></code> and <code><a href="../reference/arg_numeric.html">arg_whole_numeric()</a></code> (and their scalar equivalents) now check whether a value is a whole number using <code><a href="https://rlang.r-lib.org/reference/is_integerish.html" class="external-link">rlang::is_integerish()</a></code> instead of the criterion used by <code><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal()</a></code>.</p></li>
 <li><p>Fixed a bug where the message provided to <code>.msg</code> (if any) was not evaluated in the correct environment.</p></li>

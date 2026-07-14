@@ -2,12 +2,12 @@
 
 Checks whether an argument is an atomic vector (`arg_atomic()`), a
 dimensionless atomic vector (`arg_vector()`), a
-[`list`](https://rdrr.io/r/base/list.html) (`arg_list()`), a [data
+[list](https://rdrr.io/r/base/list.html) (`arg_list()`), a [data
 frame](https://rdrr.io/r/base/data.frame.html) (`arg_data.frame()`), a
-[`matrix`](https://rdrr.io/r/base/matrix.html) (`arg_matrix()`), an
-[`array`](https://rdrr.io/r/base/array.html) (`arg_array()`), a
+[matrix](https://rdrr.io/r/base/matrix.html) (`arg_matrix()`), an
+[array](https://rdrr.io/r/base/array.html) (`arg_array()`), a
 rectangular data set (`arg_data()`), or an
-[`environment`](https://rdrr.io/r/base/environment.html) (`arg_env()`).
+[environment](https://rdrr.io/r/base/environment.html) (`arg_env()`).
 
 ## Usage
 

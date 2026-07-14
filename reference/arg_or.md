@@ -133,12 +133,12 @@ try(g("bad"))       # Error: no criteria satisfied
 #> Error : All of the following conditions must be met:
 #> ✖ `z` must be a vector of counts (non-negative whole numeric values)
 #> ✖ `z` must have length 2
-#> ✖ `z` must be less than 5
+#> ✖ `z` must be comparable to 5 and be less than 5
 
 # Chaining together `arg_and()` and `arg_or()`
 h <- function(z) {
   arg_or(z,
-         arg_all_NA,
+         arg_is_NA,
          arg_and(arg_count,
                  arg_lt(5)),
          arg_and(arg_string,
@@ -150,12 +150,13 @@ try(h(1))   # No error
 try(h("a")) # No error
 try(h(7))   # Error: not < 5
 #> Error : At least one of the following conditions must be met:
-#> • `z` must only contain NA values
+#> • `z` must be NA
 #> • `z` must be a single count (a non-negative whole number) and less than 5
 #> • `z` must be a string and one of "a", "b", or "c"
 try(h("d")) # Error: not in "a", "b", or "c"
 #> Error : At least one of the following conditions must be met:
-#> • `z` must only contain NA values
-#> • `z` must be a count (a non-negative whole number) and less than 5
+#> • `z` must be NA
+#> • `z` must be a count (a non-negative whole number) and comparable to 5 and be
+#>   less than 5
 #> • `z` must be a string and one of "a", "b", or "c"
 ```

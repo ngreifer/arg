@@ -74,6 +74,13 @@ represents the sound you would make if you were to encounter an error
 when running some code. Hopefully *arg* reduces the number of times
 users say “arg!”.
 
+If you use any of my R packages, including
+[*clarify*](https://iqss.github.io/clarify/),
+[*cobalt*](https://ngreifer.github.io/cobalt/),
+[*fwb*](https://ngreifer.github.io/fwb/), or
+[*WeightIt*](https://ngreifer.github.io/WeightIt/), you may already be
+using *arg*!
+
 ## Installation
 
 You can install the development version of *arg* from

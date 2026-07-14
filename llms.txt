@@ -74,6 +74,13 @@ represents the sound you would make if you were to encounter an error
 when running some code. Hopefully *arg* reduces the number of times
 users say “arg!”.
 
+If you use any of my R packages, including
+[*clarify*](https://iqss.github.io/clarify/),
+[*cobalt*](https://ngreifer.github.io/cobalt/),
+[*fwb*](https://ngreifer.github.io/fwb/), or
+[*WeightIt*](https://ngreifer.github.io/WeightIt/), you may already be
+using *arg*!
+
 ## Installation
 
 You can install the development version of *arg* from
@@ -119,6 +126,7 @@ compete with them.
 - [`arg_character()`](https://ngreifer.github.io/arg/reference/arg_character.md)
   [`arg_string()`](https://ngreifer.github.io/arg/reference/arg_character.md)
   [`arg_factor()`](https://ngreifer.github.io/arg/reference/arg_character.md)
+  [`arg_ordered()`](https://ngreifer.github.io/arg/reference/arg_character.md)
   : Check Character Argument
 - [`arg_color()`](https://ngreifer.github.io/arg/reference/arg_color.md)
   [`arg_colors()`](https://ngreifer.github.io/arg/reference/arg_color.md)

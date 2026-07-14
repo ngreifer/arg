@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +77,7 @@
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>arg_dots_supplied()</code> checks whether arguments were passed to the <code>...</code> (i.e., "dots") argument of a function. These arguments are not evaluated. <code>arg_dots_supplied()</code> throws an error if <code><a href="https://rdrr.io/r/base/dots.html" class="external-link">...length()</a></code> is 0. It can be useful for when a function must have additional arguments. For example, <code><a href="arg_or.html">arg_or()</a></code> and <code><a href="when_supplied.html">when_supplied()</a></code> use <code>arg_dots_supplied()</code>.</p>
+    <p><code>arg_dots_supplied()</code> checks whether arguments were passed to the <code>...</code> (i.e., "dots") argument of a function. These arguments are not evaluated. <code>arg_dots_supplied()</code> throws an error if <code><a href="https://rdrr.io/r/base/dots.html" class="external-link">...length()</a></code> is 0. It can be useful for when a function must have additional arguments. For example, <code><a href="when_supplied.html">when_not_null()</a></code> and <code><a href="when_supplied.html">when_supplied()</a></code> use <code>arg_dots_supplied()</code>.</p>
 <p><code>arg_dots_not_supplied()</code> checks whether no arguments were passed to <code>...</code>, again without evaluating the arguments and using <code><a href="https://rdrr.io/r/base/dots.html" class="external-link">...length()</a></code>. It can be useful when a function appears to allow further arguments (e.g., because it is a method of a generic), but when the author does not want the user to supply them.</p>
     </div>
     <div class="section level2">

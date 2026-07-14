@@ -14,6 +14,10 @@
   to check whether an argument is a vector of valid names of elements of
   an object.
 
+- Added
+  [`arg_ordered()`](https://ngreifer.github.io/arg/reference/arg_character.md)
+  to check whether an argument is an ordered factor.
+
 - [`arg_index()`](https://ngreifer.github.io/arg/reference/arg_index.md)
   and
   [`arg_indices()`](https://ngreifer.github.io/arg/reference/arg_index.md)

@@ -55,16 +55,9 @@ arg_names(
 
   a dataset (i.e., a matrix or data frame) or other vector-like object.
 
-- .arg:
+- .arg, .arg_data:
 
-  the name of the argument supplied to `x` to appear in error messages.
-  The default is to extract the argument's name using
-  [`rlang::caller_arg()`](https://rlang.r-lib.org/reference/caller_arg.html).
-  Ignored if `.msg` is supplied.
-
-- .arg_data:
-
-  the name of the argument supplied to `data` to appear in error
+  the name of the argument supplied to `x` and `data` to appear in error
   messages. The default is to extract the argument's name using
   [`rlang::caller_arg()`](https://rlang.r-lib.org/reference/caller_arg.html).
   Ignored if `.msg` is supplied.
@@ -93,7 +86,7 @@ Returns `NULL` invisibly if an error is not thrown.
 For `arg_indices()`, an error will be thrown unless one of the following
 are true:
 
-- `x` is a vector of counts (see
+- `x` is a vector of positive counts (see
   [`arg_counts()`](https://ngreifer.github.io/arg/reference/arg_numeric.md))
   less than or equal to `ncol(data)` (or `length(data)` if `data` is not
   a dataset)
@@ -103,12 +96,11 @@ are true:
 
 For `arg_index()`, `x` additionally must have length equal to 1. Passing
 `arg_index()` ensures that `data[, x]` (if `data` is a matrix) or
-`data[[x]]` (otherwise) evaluate correctly. For `arg_name()` and
-`arg_names()`, an error will be thrown unless `x` is additionally a
-string or character vector, respectively.
-
-If `data` is a dataset with no column names or otherwise has no names,
-an error will be thrown if `x` is a character vector.
+`data[[x]]` (otherwise) evaluate correctly. If `data` is a dataset with
+no column names or otherwise has no names, an error will be thrown if
+`x` is a character vector. For `arg_name()` and `arg_names()`, an error
+will be thrown unless `x` is additionally a string or character vector,
+respectively.
 
 ## See also
 

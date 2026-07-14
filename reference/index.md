@@ -11,6 +11,7 @@
 - [`arg_character()`](https://ngreifer.github.io/arg/reference/arg_character.md)
   [`arg_string()`](https://ngreifer.github.io/arg/reference/arg_character.md)
   [`arg_factor()`](https://ngreifer.github.io/arg/reference/arg_character.md)
+  [`arg_ordered()`](https://ngreifer.github.io/arg/reference/arg_character.md)
   : Check Character Argument
 - [`arg_color()`](https://ngreifer.github.io/arg/reference/arg_color.md)
   [`arg_colors()`](https://ngreifer.github.io/arg/reference/arg_color.md)

@@ -1,6 +1,6 @@
 # Check Unique Argument
 
-Checks whether an argument contains only unique values.
+Checks whether an argument contains only unique (i.e., distinct) values.
 
 ## Usage
 
@@ -16,7 +16,7 @@ arg_unique(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
 - ...:
 
-  further argument passed to
+  further arguments passed to
   [`anyDuplicated()`](https://rdrr.io/r/base/duplicated.html), which
   performs the checking.
 

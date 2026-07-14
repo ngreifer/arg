@@ -1,7 +1,8 @@
 # Check Character Argument
 
 Checks whether an argument is a character vector (`arg_character()`), a
-character scalar (`arg_string()`), or a factor (`arg_factor()`).
+character scalar (`arg_string()`), a factor (`arg_factor()`), or an
+ordered factor (`arg_ordered()`).
 
 ## Usage
 
@@ -11,6 +12,8 @@ arg_character(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 arg_string(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 
 arg_factor(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
+
+arg_ordered(x, .arg = rlang::caller_arg(x), .msg = NULL, .call)
 ```
 
 ## Arguments
@@ -53,6 +56,7 @@ Returns `NULL` invisibly if an error is not thrown.
 
 [`is.character()`](https://rdrr.io/r/base/character.html),
 [`is.factor()`](https://rdrr.io/r/base/factor.html),
+[`is.ordered()`](https://rdrr.io/r/base/factor.html),
 [`rlang::is_string()`](https://rlang.r-lib.org/reference/scalar-type-predicates.html)
 
 ## Examples

@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Check Character Argument — arg_character"><meta name="description" content="Checks whether an argument is a character vector (arg_character()), a character scalar (arg_string()), or a factor (arg_factor())."><meta property="og:description" content="Checks whether an argument is a character vector (arg_character()), a character scalar (arg_string()), or a factor (arg_factor())."><meta property="og:image" content="https://ngreifer.github.io/arg/logo.png"></head><body>
+</script><script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Check Character Argument — arg_character"><meta name="description" content="Checks whether an argument is a character vector (arg_character()), a character scalar (arg_string()), a factor (arg_factor()), or an ordered factor (arg_ordered())."><meta property="og:description" content="Checks whether an argument is a character vector (arg_character()), a character scalar (arg_string()), a factor (arg_factor()), or an ordered factor (arg_ordered())."><meta property="og:image" content="https://ngreifer.github.io/arg/logo.png"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,7 +45,7 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>Checks whether an argument is a character vector (<code>arg_character()</code>), a character scalar (<code>arg_string()</code>), or a factor (<code>arg_factor()</code>).</p>
+    <p>Checks whether an argument is a character vector (<code>arg_character()</code>), a character scalar (<code>arg_string()</code>), a factor (<code>arg_factor()</code>), or an ordered factor (<code>arg_ordered()</code>).</p>
     </div>
 
     <div class="section level2">
@@ -54,7 +54,9 @@
 <span></span>
 <span><span class="fu">arg_string</span><span class="op">(</span><span class="va">x</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">.call</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">arg_factor</span><span class="op">(</span><span class="va">x</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">.call</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">arg_factor</span><span class="op">(</span><span class="va">x</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">.call</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">arg_ordered</span><span class="op">(</span><span class="va">x</span>, .arg <span class="op">=</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/caller_arg.html" class="external-link">caller_arg</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, .msg <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">.call</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -87,7 +89,7 @@
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">is.character()</a></code>, <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">is.factor()</a></code>, <code><a href="https://rlang.r-lib.org/reference/scalar-type-predicates.html" class="external-link">rlang::is_string()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="https://rdrr.io/r/base/character.html" class="external-link">is.character()</a></code>, <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">is.factor()</a></code>, <code><a href="https://rdrr.io/r/base/factor.html" class="external-link">is.ordered()</a></code>, <code><a href="https://rlang.r-lib.org/reference/scalar-type-predicates.html" class="external-link">rlang::is_string()</a></code></p></div>
     </div>
 
     <div class="section level2">

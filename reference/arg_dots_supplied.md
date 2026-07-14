@@ -43,7 +43,8 @@ Returns `NULL` invisibly if an error is not thrown.
 evaluated. `arg_dots_supplied()` throws an error if
 [`...length()`](https://rdrr.io/r/base/dots.html) is 0. It can be useful
 for when a function must have additional arguments. For example,
-[`arg_or()`](https://ngreifer.github.io/arg/reference/arg_or.md) and
+[`when_not_null()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
+and
 [`when_supplied()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
 use `arg_dots_supplied()`.
 
