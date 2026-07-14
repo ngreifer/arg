@@ -8,7 +8,7 @@
 #' @param bound the bound to check against. Default is 0.
 #'
 #' @details
-#' `x` is not checked for type, as it is possible for values other than numeric values to be passed and compared; however, an error will be thrown if `typeof(x)` is not equal to `typeof(range)` or `typeof(bound)`. The arguments to `range`, `inclusive`, and `bound` are checked for appropriateness.
+#' `x` is not checked for type, as it is possible for values other than numeric values to be passed and compared; however, an error will be thrown if `x` is not comparable to `range` or `bound`. `x` is comparability is assessed as whether `x` and `range` or `bound` are both numeric, both character, or can be compared using `<`, etc., without error. The arguments to `range`, `inclusive`, and `bound` are checked for appropriateness.
 #'
 #' @inherit arg_is return
 #'
@@ -30,7 +30,8 @@
 #' try(arg_lt(z, 2))  # Error
 #' try(arg_lte(z, 2)) # No error
 #'
-#' try(arg_lte(z, "3")) # Error: wrong type
+#' w <- "A"
+#' try(arg_lte(w, 2)) # Error: wrong type
 
 #' @export
 arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
@@ -44,9 +45,7 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
   arg_length(inclusive, 1:2, .call = rlang::current_env()) |>
     internal_arg()
 
-  if (is_scalar(inclusive)) {
-    inclusive <- inclusive[c(1L, 1L)]
-  }
+  inclusive <- rep_len(inclusive, 2L)
 
   if (is.unsorted(range)) {
     o_range <- order(range)
@@ -57,8 +56,10 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
   .gt_comp <- if (inclusive[1L]) function(a, b) {a >= b} else function(a, b) {a > b}
   .lt_comp <- if (inclusive[2L]) function(a, b) {a <= b} else function(a, b) {a < b}
 
-  if (!are_comparable(x, range[1L], .gt_comp) ||
-      !are_comparable(x, range[2L], .lt_comp) ||
+  comp <- are_comparable(x, range[1L], .gt_comp) &&
+    are_comparable(x, range[2L], .lt_comp)
+
+  if (!comp ||
       !safe_all(.gt_comp(x, range[1L])) ||
       !safe_all(.lt_comp(x, range[2L]))) {
 
@@ -68,30 +69,37 @@ arg_between <- function(x, range = c(0, 1), inclusive = TRUE,
 
     each_element_of <- if (length(x) > 1L) "each element of"
 
+    be_comp_to <- {
+      if (comp) "be"
+      else "be comparable to {.val {bound}} and be"
+    }
+
     if (all(inclusive)) {
-      err("{each_element_of} {.arg {(.arg)}} must be between {.val {range}} (inclusive)",
+      err(sprintf("{each_element_of} {.arg {(.arg)}} must %s between {.val {range}} (inclusive)",
+                  be_comp_to),
           .call = .call)
     }
 
     if (!any(inclusive)) {
-      err("{each_element_of} {.arg {(.arg)}} must be between {.val {range}} (exclusive)",
+      err(sprintf("{each_element_of} {.arg {(.arg)}} must %s between {.val {range}} (exclusive)",
+                  be_comp_to),
           .call = .call)
     }
 
     .gt_str <- {
-      if (range[1L] == 0 && !inclusive[1L]) "positive"
+      if (is.numeric(range) && range[1L] == 0 && !inclusive[1L]) "positive"
       else if (inclusive[1L]) "greater than or equal to {.val {range[1L]}}"
       else "greater than {.val {range[1L]}}"
     }
 
     .lt_str <- {
-      if (range[2L] == 0 && !inclusive[2L]) "negative"
+      if (is.numeric(range) && range[2L] == 0 && !inclusive[2L]) "negative"
       else if (inclusive[2L]) "less than or equal to {.val {range[2L]}}"
       else "less than {.val {range[2L]}}"
     }
 
-    err(sprintf("{each_element_of} {.arg {(.arg)}} must be %s and %s",
-                .gt_str, .lt_str),
+    err(sprintf("{each_element_of} {.arg {(.arg)}} must %s %s and %s",
+                be_comp_to, .gt_str, .lt_str),
         .call = .call)
   }
 }
@@ -104,8 +112,9 @@ arg_gt <- function(x, bound = 0,
   arg_length(bound, 1L, .call = rlang::current_env()) |>
     internal_arg()
 
-  if (!are_comparable(x, bound, `>`) ||
-      !safe_all(x > bound)) {
+  comp <- are_comparable(x, bound, `>`)
+
+  if (!comp || !safe_all(x > bound)) {
 
     if (is_not_null(.msg)) {
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
@@ -113,12 +122,18 @@ arg_gt <- function(x, bound = 0,
 
     each_element_of <- if (length(x) > 1L) "each element of"
 
-    if (bound == 0) {
+    if (is.numeric(bound) && bound == 0) {
       err("{each_element_of} {.arg {(.arg)}} must be positive",
           .call = .call)
     }
 
-    err("{each_element_of} {.arg {(.arg)}} must be greater than {.val {bound}}",
+    be_comp_to <- {
+      if (comp) "be"
+      else "be comparable to {.val {bound}} and be"
+    }
+
+    err(sprintf("{each_element_of} {.arg {(.arg)}} must %s greater than {.val {bound}}",
+                be_comp_to),
         .call = .call)
   }
 }
@@ -131,8 +146,9 @@ arg_gte <- function(x, bound = 0,
   arg_length(bound, 1L, .call = rlang::current_env()) |>
     internal_arg()
 
-  if (!are_comparable(x, bound, `>=`) ||
-      !safe_all(x >= bound)) {
+  comp <- are_comparable(x, bound, `>=`)
+
+  if (!comp || !safe_all(x >= bound)) {
 
     if (is_not_null(.msg)) {
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
@@ -140,7 +156,13 @@ arg_gte <- function(x, bound = 0,
 
     each_element_of <- if (length(x) > 1L) "each element of"
 
-    err("{each_element_of} {.arg {(.arg)}} must be greater than or equal to {.val {bound}}",
+    be_comp_to <- {
+      if (comp) "be"
+      else "be comparable to {.val {bound}} and be"
+    }
+
+    err(sprintf("{each_element_of} {.arg {(.arg)}} must %s greater than or equal to {.val {bound}}",
+                be_comp_to),
         .call = .call)
   }
 }
@@ -153,8 +175,9 @@ arg_lt <- function(x, bound = 0,
   arg_length(bound, 1L, .call = rlang::current_env()) |>
     internal_arg()
 
-  if (!are_comparable(x, bound, `<`) ||
-      !safe_all(x < bound)) {
+  comp <- are_comparable(x, bound, `<`)
+
+  if (!comp || !safe_all(x < bound)) {
 
     if (is_not_null(.msg)) {
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
@@ -162,12 +185,18 @@ arg_lt <- function(x, bound = 0,
 
     each_element_of <- if (length(x) > 1L) "each element of"
 
-    if (bound == 0) {
+    if (is.numeric(bound) && bound == 0) {
       err("{each_element_of} {.arg {(.arg)}} must be negative",
           .call = .call)
     }
 
-    err("{each_element_of} {.arg {(.arg)}} must be less than {.val {bound}}",
+    be_comp_to <- {
+      if (comp) "be"
+      else "be comparable to {.val {bound}} and be"
+    }
+
+    err(sprintf("{each_element_of} {.arg {(.arg)}} must %s less than {.val {bound}}",
+                be_comp_to),
         .call = .call)
   }
 }
@@ -180,8 +209,9 @@ arg_lte <- function(x, bound = 0,
   arg_length(bound, 1L, .call = rlang::current_env()) |>
     internal_arg()
 
-  if (!are_comparable(x, bound, `<=`) ||
-      !safe_all(x <= bound)) {
+  comp <- are_comparable(x, bound, `<=`)
+
+  if (!comp || !safe_all(x <= bound)) {
 
     if (is_not_null(.msg)) {
       err(.msg_eval(.msg), .call = .call, .envir = rlang::caller_env())
@@ -194,7 +224,13 @@ arg_lte <- function(x, bound = 0,
     #       .call = .call)
     # }
 
-    err("{each_element_of} {.arg {(.arg)}} must be less than or equal to {.val {bound}}",
+    be_comp_to <- {
+      if (comp) "be"
+      else "be comparable to {.val {bound}} and be"
+    }
+
+    err(sprintf("{each_element_of} {.arg {(.arg)}} must %s less than or equal to {.val {bound}}",
+                be_comp_to),
         .call = .call)
   }
 }
@@ -212,7 +248,7 @@ are_comparable <- function(x, y, comparison) {
     return(FALSE)
   }
 
-  tryCatch({
+  rlang::try_fetch({
     comparison(x, y)
     TRUE
   },
