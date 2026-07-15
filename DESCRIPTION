@@ -9,7 +9,7 @@ Description: Checks function arguments, ideally for use in R packages. Uses a si
 Depends:
     R (>= 4.1.0)
 Imports:
-    rlang (>= 1.1.0),
+    rlang (>= 1.2.0),
     cli (>= 3.6.4),
     stats,
     utils
