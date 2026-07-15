@@ -14,5 +14,9 @@ test_that("arg_supplied() does not error for NULL or defaulted arguments", {
 
 test_that("arg_supplied() respects a custom .msg", {
   f <- function(z) arg_supplied(z, .msg = "custom failure")
-  expect_error(f(), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(f())), "Custom failure.")
+})
+
+test_that("arg_supplied() throws an internal error when x's expression is not a symbol", {
+  expect_error(arg_supplied(rlang::missing_arg()))
 })

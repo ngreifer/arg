@@ -11,5 +11,6 @@ test_that("arg_unique() passes ... through to anyDuplicated()", {
 })
 
 test_that("arg_unique() respects a custom .msg", {
-  expect_error(arg_unique(c(1, 1), .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_unique(c(1, 1), .msg = "custom failure"))),
+                    "Custom failure.")
 })

@@ -20,5 +20,8 @@ test_that("arg_equal() and arg_not_equal() require x2 to be supplied", {
 
 test_that("arg_equal() family respects a custom .msg", {
   f <- function(x, y) arg_equal(x, y, .msg = "custom failure")
-  expect_error(f(1, 2), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(f(1, 2))), "Custom failure.")
+
+  g <- function(x, y) arg_not_equal(x, y, .msg = "custom not-equal failure")
+  expect_identical(conditionMessage(rlang::catch_cnd(g(1, 1))), "Custom not-equal failure.")
 })

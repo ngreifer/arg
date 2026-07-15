@@ -47,5 +47,16 @@ test_that("arg_colnamed() reports NA column names distinctly from empty column n
 })
 
 test_that("arg_named() family respects a custom .msg", {
-  expect_error(arg_named(1:3, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_named(1:3, .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_colnamed(matrix(1:6, ncol = 2), .msg = "custom colnamed failure"))),
+                    "Custom colnamed failure.")
+})
+
+test_that("arg_colnamed() reports both empty and NA column names together", {
+  mat4 <- matrix(1:9, ncol = 3)
+  colnames(mat4) <- c("A", "", NA)
+  expect_error(arg_colnamed(mat4),
+               "must not have empty column names or NA values as column names",
+               fixed = TRUE)
 })

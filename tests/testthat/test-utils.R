@@ -102,3 +102,22 @@ test_that(".msg_eval() validates that .msg is NULL or a character vector", {
   expect_identical(.msg_eval(NULL), NULL)
   expect_error(.msg_eval(1))
 })
+
+test_that("is_error() detects try-error objects and passes through ordinary values", {
+  expect_false(is_error(1))
+  expect_false(is_error("a"))
+  expect_true(is_error(try(stop("boom"), silent = TRUE)))
+})
+
+test_that("is_error() does not treat a warning or message as an error", {
+  expect_false(suppressWarnings(is_error(warning("w"))))
+  expect_false(suppressMessages(is_error(message("m"))))
+})
+
+test_that("is_error() itself errors if evaluating x throws an uncaught error", {
+  # is_error()'s tryCatch() error handler returns TRUE, but that value is
+  # discarded (piped only through suppressWarnings()/suppressMessages()), so
+  # `out` is never assigned and the final inherits(out, ...) call itself
+  # errors with "object 'out' not found".
+  expect_error(is_error(stop("boom")))
+})

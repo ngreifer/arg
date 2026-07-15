@@ -19,5 +19,8 @@ test_that("arguments passed to ... are not evaluated", {
 
 test_that("arg_dots_supplied() family respects a custom .msg", {
   f <- function(...) arg_dots_supplied(..., .msg = "custom failure")
-  expect_error(f(), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(f())), "Custom failure.")
+
+  g <- function(...) arg_dots_not_supplied(..., .msg = "custom not-supplied failure")
+  expect_identical(conditionMessage(rlang::catch_cnd(g(1))), "Custom not-supplied failure.")
 })

@@ -26,5 +26,12 @@ test_that("arg_colour() and arg_colours() are British-spelling equivalents", {
 })
 
 test_that("arg_color() family respects a custom .msg", {
-  expect_error(arg_color("nope", .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_color("nope", .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_colors(c("red", "bad"), .msg = "custom colors failure"))),
+                    "Custom colors failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_colour("nope", .msg = "custom colour failure"))),
+                    "Custom colour failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_colours(c("red", "bad"), .msg = "custom colours failure"))),
+                    "Custom colours failure.")
 })

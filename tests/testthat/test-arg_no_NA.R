@@ -22,5 +22,10 @@ test_that("arg_is_NA() requires a scalar, atomic NA", {
 })
 
 test_that("arg_no_NA() family respects a custom .msg", {
-  expect_error(arg_no_NA(NA, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_no_NA(NA, .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_is_NA(1, .msg = "custom is_NA failure"))),
+                    "Custom is_NA failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_all_NA(1, .msg = "custom all_NA failure"))),
+                    "Custom all_NA failure.")
 })

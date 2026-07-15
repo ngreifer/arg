@@ -16,5 +16,8 @@ test_that("arg_flag() requires a non-NA logical scalar", {
 })
 
 test_that("arg_logical() family respects a custom .msg", {
-  expect_error(arg_flag(NA, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_flag(NA, .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_logical(1L, .msg = "custom logical failure"))),
+                    "Custom logical failure.")
 })

@@ -17,5 +17,6 @@ test_that("arg_length() validates its len argument as counts", {
 })
 
 test_that("arg_length() respects a custom .msg", {
-  expect_error(arg_length(1:4, 1, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_length(1:4, 1, .msg = "custom failure"))),
+                    "Custom failure.")
 })

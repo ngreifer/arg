@@ -69,5 +69,58 @@ test_that("arg_index() family requires data to be supplied", {
 
 test_that("arg_index() family respects a custom .msg", {
   dat <- data.frame(col1 = 1:5)
-  expect_error(arg_index(99, dat, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_index(99, dat, .msg = "custom failure"))),
+                    "Custom failure.")
+})
+
+test_that("arg_indices() uses element phrasing for non-tabular data and respects .msg", {
+  lis <- list(a = 1, b = 2, c = 3)
+  g2 <- function(z) arg_indices(z, lis)
+
+  expect_null(g2(1))
+  expect_null(g2(1:2))
+  expect_null(g2("a"))
+  expect_null(g2(c("a", "b")))
+  expect_error(g2("z"), "must be", fixed = TRUE)
+  expect_error(g2(c("a", "z")), "must be", fixed = TRUE)
+  expect_error(g2(5), "must be", fixed = TRUE)
+
+  lis2 <- list(1, 2, 3)
+  expect_error(arg_indices("a", lis2), "must be", fixed = TRUE)
+
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_indices(99, lis, .msg = "custom indices failure"))),
+                    "Custom indices failure.")
+})
+
+test_that("arg_indices() reports column-name phrasing when colnames exist but index is invalid", {
+  dat <- data.frame(col1 = 1:5, col2 = 6:10)
+  g3 <- function(z) arg_indices(z, dat)
+  expect_error(g3("bad_col"), "must be", fixed = TRUE)
+  expect_error(g3(c("col1", "bad_col")), "must be", fixed = TRUE)
+})
+
+test_that("arg_name() works for non-tabular (named-vector/list) data and respects .msg", {
+  lis <- list(a = 1, b = 2)
+  f5 <- function(z) arg_name(z, lis)
+  expect_null(f5("a"))
+  expect_error(f5("z"), "must be the name of an element", fixed = TRUE)
+  expect_error(f5(c("a", "b")), "must be the name of an element", fixed = TRUE)
+
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_name("z", lis, .msg = "custom name failure"))),
+                    "Custom name failure.")
+})
+
+test_that("arg_names() works for non-tabular (named-vector/list) data and respects .msg", {
+  lis <- list(a = 1, b = 2)
+  f6 <- function(z) arg_names(z, lis)
+  expect_null(f6("a"))
+  expect_null(f6(c("a", "b")))
+  expect_error(f6("z"), "must be", fixed = TRUE)
+
+  dat <- data.frame(col1 = 1:5, col2 = 6:10)
+  f7 <- function(z) arg_names(z, dat)
+  expect_error(f7(c("col1", "bad_col")), "must be", fixed = TRUE)
+
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_names("z", lis, .msg = "custom names failure"))),
+                    "Custom names failure.")
 })

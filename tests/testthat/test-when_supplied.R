@@ -37,3 +37,11 @@ test_that("when_supplied() stops at the first failing check", {
   f <- function(z) when_supplied(z, arg_number, arg_gt(bound = 0))
   expect_error(f("a"), "must be a number", fixed = TRUE)
 })
+
+test_that("when_supplied() and when_not_null() propagate an internal error raised by a check", {
+  f <- function(z) when_supplied(z, arg_between(inclusive = "bad"))
+  expect_error(f(1))
+
+  g <- function(z = NULL) when_not_null(z, arg_between(inclusive = "bad"))
+  expect_error(g(1))
+})

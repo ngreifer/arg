@@ -36,6 +36,9 @@ test_that("arg_not_element() has a special message for an excluded empty string"
   g <- function(z) arg_not_element(z, "")
   expect_error(g(""), "must not be the empty string", fixed = TRUE)
   expect_null(g("a"))
+
+  g2 <- function(z) arg_not_element(z, "")
+  expect_error(g2(c("", "a")), "No element of `z` may be the empty string", fixed = TRUE)
 })
 
 test_that("arg_not_element() is a no-op for NULL x", {
@@ -44,5 +47,8 @@ test_that("arg_not_element() is a no-op for NULL x", {
 
 test_that("arg_element() family respects a custom .msg", {
   f <- function(z) arg_element(z, c("a", "b"), .msg = "custom failure")
-  expect_error(f("c"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(f("c"))), "Custom failure.")
+
+  g <- function(z) arg_not_element(z, c("a", "b"), .msg = "custom not-element failure")
+  expect_identical(conditionMessage(rlang::catch_cnd(g("a"))), "Custom not-element failure.")
 })

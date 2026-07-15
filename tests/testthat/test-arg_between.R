@@ -65,6 +65,11 @@ test_that("arg_gte() checks greater-than-or-equal", {
                "must be greater than or equal to 2", fixed = TRUE)
 })
 
+test_that("arg_gte() reports not-comparable types distinctly", {
+  expect_error(arg_gte("a", 2),
+               "must be comparable to 2 and be greater than or equal to 2", fixed = TRUE)
+})
+
 test_that("arg_lt() checks strictly-less-than, with 'negative' shorthand at bound 0", {
   expect_null(arg_lt(-1))
   expect_error(arg_lt(0), "must be negative", fixed = TRUE)
@@ -88,8 +93,8 @@ test_that("arg_between() family uses the caller's argument name by default", {
 })
 
 test_that("arg_between() family respects a custom .msg", {
-  expect_error(arg_gt(-1, .msg = "custom failure message"),
-               "ustom failure message", fixed = TRUE)
+  cnd <- rlang::catch_cnd(arg_gt(-1, .msg = "custom failure message"))
+  expect_identical(conditionMessage(cnd), "Custom failure message.")
 })
 
 test_that("arg_between() family works for Date objects, which are comparable but not numeric or character", {
@@ -144,6 +149,29 @@ test_that("arg_between() family works for any custom class with Ops methods defi
   expect_null(arg_gt(m2, m1))
   expect_error(arg_gt(m1, m2), "must be greater than", fixed = TRUE)
   expect_null(arg_between(m2, c(m1, money(15))))
+})
+
+test_that("arg_between() respects a custom .msg", {
+  cnd <- rlang::catch_cnd(arg_between(5, c(1, 2), .msg = "custom between msg"))
+  expect_identical(conditionMessage(cnd), "Custom between msg.")
+})
+
+test_that("arg_between() covers mixed-inclusive gt_str/lt_str shorthand branches", {
+  expect_error(arg_between(-1, c(0, 5), inclusive = c(FALSE, TRUE)),
+               "must be positive and less than or equal to 5", fixed = TRUE)
+  expect_error(arg_between(-1, c(1, 5), inclusive = c(FALSE, TRUE)),
+               "must be greater than 1 and less than or equal to 5", fixed = TRUE)
+  expect_error(arg_between(6, c(-5, 0), inclusive = c(TRUE, FALSE)),
+               "must be greater than or equal to -5 and negative", fixed = TRUE)
+})
+
+test_that("arg_gte()/arg_lt()/arg_lte() respect a custom .msg", {
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_gte(-1, .msg = "custom gte msg"))),
+                    "Custom gte msg.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_lt(1, .msg = "custom lt msg"))),
+                    "Custom lt msg.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_lte(1, .msg = "custom lte msg"))),
+                    "Custom lte msg.")
 })
 
 test_that("arg_between() family treats an object as not comparable if its comparison method errors or is undefined", {

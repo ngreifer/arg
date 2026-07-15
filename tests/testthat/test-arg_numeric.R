@@ -47,5 +47,16 @@ test_that("arg_counts() and arg_count() do not crash on NA input and treat NA as
 })
 
 test_that("arg_numeric() family respects a custom .msg", {
-  expect_error(arg_number("a", .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_number("a", .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_numeric("a", .msg = "custom numeric failure"))),
+                    "Custom numeric failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_whole_numeric(.5, .msg = "custom whole_numeric failure"))),
+                    "Custom whole_numeric failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_whole_number(.5, .msg = "custom whole_number failure"))),
+                    "Custom whole_number failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_counts(-1, .msg = "custom counts failure"))),
+                    "Custom counts failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_count(-1, .msg = "custom count failure"))),
+                    "Custom count failure.")
 })

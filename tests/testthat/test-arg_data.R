@@ -65,5 +65,20 @@ test_that("arg_env() checks for environments", {
 })
 
 test_that("arg_data() family respects a custom .msg", {
-  expect_error(arg_matrix(1, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_matrix(1, .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_atomic(list(1), .msg = "custom atomic failure"))),
+                    "Custom atomic failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_vector(matrix(1:6, ncol = 2), .msg = "custom vector failure"))),
+                    "Custom vector failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_list(1:3, .msg = "custom list failure"))),
+                    "Custom list failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_data.frame(1:3, .msg = "custom data.frame failure"))),
+                    "Custom data.frame failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_array(1:6, .msg = "custom array failure"))),
+                    "Custom array failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_data(1:6, .msg = "custom data failure"))),
+                    "Custom data failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_env(1, .msg = "custom env failure"))),
+                    "Custom env failure.")
 })

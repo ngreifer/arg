@@ -54,5 +54,34 @@ test_that("arg_symmetric() family validates tol as a non-negative number", {
 })
 
 test_that("arg_symmetric() family respects a custom .msg", {
-  expect_error(arg_symmetric(1:4, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_symmetric(1:4, .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_cov(1:4, .msg = "custom cov failure"))),
+                    "Custom cov failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_cor(1:4, .msg = "custom cor failure"))),
+                    "Custom cor failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_distance(1:4, .msg = "custom distance failure"))),
+                    "Custom distance failure.")
+})
+
+test_that("arg_cov() reports non-symmetric matrices distinctly from a negative diagonal", {
+  m <- matrix(1:4, ncol = 2)
+  expect_error(arg_cov(m), "must be a square, symmetric, numeric matrix", fixed = TRUE)
+})
+
+test_that("arg_cor() reports non-symmetric matrices and out-of-range diagonals distinctly", {
+  m <- matrix(1:4, ncol = 2)
+  expect_error(arg_cor(m), "must be a square, symmetric, numeric matrix", fixed = TRUE)
+
+  m2 <- matrix(c(0.5, 0.2, 0.2, 0.5), ncol = 2)
+  expect_error(arg_cor(m2),
+               "must be a square, symmetric matrix with ones on the diagonal", fixed = TRUE)
+})
+
+test_that("arg_distance() reports non-symmetric matrices and negative values distinctly", {
+  m <- matrix(1:4, ncol = 2)
+  expect_error(arg_distance(m), "must be a square, symmetric, numeric matrix", fixed = TRUE)
+
+  m2 <- matrix(c(0, -1, -1, 0), ncol = 2)
+  expect_error(arg_distance(m2), "All values in `m2` must be non-negative", fixed = TRUE)
 })

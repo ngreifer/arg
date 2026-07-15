@@ -21,5 +21,8 @@ test_that("arg_or() with arg_null() allows NULL as a valid alternative", {
 })
 
 test_that("arg_non_null() family respects a custom .msg", {
-  expect_error(arg_non_null(NULL, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_non_null(NULL, .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_null(1, .msg = "custom null failure"))),
+                    "Custom null failure.")
 })

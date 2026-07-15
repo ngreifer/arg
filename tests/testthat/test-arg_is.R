@@ -35,5 +35,8 @@ test_that("arg_is() and arg_is_not() require a supplied, character class argumen
 
 test_that("arg_is() family respects a custom .msg", {
   obj <- structure(list(1), class = "test")
-  expect_error(arg_is(obj, "quiz", .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_is(obj, "quiz", .msg = "custom failure"))),
+                    "Custom failure.")
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_is_not(obj, "test", .msg = "custom is_not failure"))),
+                    "Custom is_not failure.")
 })

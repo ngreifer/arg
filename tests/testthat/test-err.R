@@ -59,3 +59,15 @@ test_that("msg() does not add a period when the message ends in punctuation", {
   h2 <- function() msg("not when the message ends in punctuation!")
   expect_message(h2(), "Not when the message ends in punctuation!", fixed = TRUE)
 })
+
+test_that(".pkg_caller_call() correctly walks a stack containing a global-environment frame", {
+  # Defining (not just assigning) the wrapper with envir = globalenv() makes
+  # its closure environment identical to globalenv(), exercising the
+  # globalenv-skip branch inside .pkg_caller_call()'s stack walk.
+  eval(quote(.test_err_wrapper_global <- function(x) arg_gt(x, 0)), envir = globalenv())
+  on.exit(rm(".test_err_wrapper_global", envir = globalenv()))
+
+  cnd <- rlang::catch_cnd(.test_err_wrapper_global(-1))
+  expect_true(inherits(cnd, "error"))
+  expect_match(conditionMessage(cnd), "must be positive", fixed = TRUE)
+})

@@ -7,5 +7,6 @@ test_that("arg_function() accepts functions and rejects non-functions", {
 })
 
 test_that("arg_function() respects a custom .msg", {
-  expect_error(arg_function(1, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_function(1, .msg = "custom failure"))),
+                    "Custom failure.")
 })

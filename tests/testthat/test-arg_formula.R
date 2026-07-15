@@ -25,5 +25,6 @@ test_that("arg_formula() validates the one_sided argument", {
 })
 
 test_that("arg_formula() respects a custom .msg", {
-  expect_error(arg_formula(1, .msg = "custom failure"), "ustom failure", fixed = TRUE)
+  expect_identical(conditionMessage(rlang::catch_cnd(arg_formula(1, .msg = "custom failure"))),
+                    "Custom failure.")
 })
