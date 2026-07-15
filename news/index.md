@@ -38,6 +38,10 @@
 
 - Fixed several typos in the documentation and in some error messages.
 
+- Fixed bugs in processing some complicated nested messages produced by
+  [`arg_and()`](https://ngreifer.github.io/arg/reference/arg_or.md) and
+  [`arg_or()`](https://ngreifer.github.io/arg/reference/arg_or.md).
+
 - Added a new logo.
 
 - Added a testing suite.

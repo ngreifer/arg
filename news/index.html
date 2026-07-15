@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,6 +53,7 @@
 <li><p><code><a href="../reference/arg_numeric.html">arg_counts()</a></code> and <code><a href="../reference/arg_numeric.html">arg_whole_numeric()</a></code> (and their scalar equivalents) now check whether a value is a whole number using <code><a href="https://rlang.r-lib.org/reference/is_integerish.html" class="external-link">rlang::is_integerish()</a></code> instead of the criterion used by <code><a href="https://rdrr.io/r/base/all.equal.html" class="external-link">all.equal()</a></code>.</p></li>
 <li><p>Fixed a bug where the message provided to <code>.msg</code> (if any) was not evaluated in the correct environment.</p></li>
 <li><p>Fixed several typos in the documentation and in some error messages.</p></li>
+<li><p>Fixed bugs in processing some complicated nested messages produced by <code><a href="../reference/arg_or.html">arg_and()</a></code> and <code><a href="../reference/arg_or.html">arg_or()</a></code>.</p></li>
 <li><p>Added a new logo.</p></li>
 <li><p>Added a testing suite.</p></li>
 </ul></div>

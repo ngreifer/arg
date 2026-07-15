@@ -151,12 +151,13 @@ try(h("a")) # No error
 try(h(7))   # Error: not < 5
 #> Error : At least one of the following conditions must be met:
 #> • `z` must be NA
-#> • `z` must be a single count (a non-negative whole number) and less than 5
-#> • `z` must be a string and one of "a", "b", or "c"
+#> • ✔ `z` must be a single count (a non-negative whole number) ✖ `z` must be less
+#>   than 5
+#> • ✖ `z` must be a string ✖ `z` must be one of "a", "b", or "c"
 try(h("d")) # Error: not in "a", "b", or "c"
 #> Error : At least one of the following conditions must be met:
 #> • `z` must be NA
-#> • `z` must be a count (a non-negative whole number) and comparable to 5 and be
-#>   less than 5
-#> • `z` must be a string and one of "a", "b", or "c"
+#> • ✖ `z` must be a count (a non-negative whole number) ✖ `z` must be comparable
+#>   to 5 and be less than 5
+#> • ✔ `z` must be a string ✖ `z` must be one of "a", "b", or "c"
 ```
