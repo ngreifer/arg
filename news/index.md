@@ -1,6 +1,6 @@
 # Changelog
 
-## *arg* (development version)
+## *arg* 0.2.0
 
 - Added
   [`arg_color()`](https://ngreifer.github.io/arg/reference/arg_color.md)
