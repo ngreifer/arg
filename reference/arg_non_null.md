@@ -47,10 +47,10 @@ Returns `NULL` invisibly if an error is not thrown.
 ## Details
 
 Here, `NULL` refers to any length-0 object, including
-[`NULL`](https://ngreifer.github.io/arg/reference/%60NULL%60),
-`logical(0L)`, [`list()`](https://rdrr.io/r/base/list.html), `3[FALSE]`,
-etc. `arg_non_null()` is useful for checking that a meaningful argument
-was supplied. `arg_null()` is primarily used in
+[`NULL`](https://rdrr.io/r/base/NULL.html), `logical(0L)`,
+[`list()`](https://rdrr.io/r/base/list.html), `3[FALSE]`, etc.
+`arg_non_null()` is useful for checking that a meaningful argument was
+supplied. `arg_null()` is primarily used in
 [`arg_or()`](https://ngreifer.github.io/arg/reference/arg_or.md) to
 denote that `NULL` is an allowed argument.
 
