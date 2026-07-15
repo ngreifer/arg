@@ -118,18 +118,14 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     if (cli::ansi_grepl("^at least one of the following conditions must be met:", msg_i,
                         ignore.case = TRUE)) {
 
-      msg_i <- Reduce(function(m, sy) unlist(strsplit(m, sy, TRUE)),
-                      as.list(unlist(cli::symbol)),
-                      init = msg_i) |>
-        unlist() |>
-        cli::ansi_trimws()
+      msg_i <- .split_bulleted_msg(msg_i)
 
-      grouped_msgs_i <- group_messages(msg_i[-1L], "or")
+      grouped_msgs_i <- group_messages(msg_i, "or")
       grouped_i <- attr(grouped_msgs_i, "grouped")
 
       grouped_msgs <- c(grouped_msgs,
                         grouped_msgs_i,
-                        msg_i[-1L][!grouped_i] |>
+                        msg_i[!grouped_i] |>
                           cli::ansi_trimws() |>
                           trim_final_punct() |>
                           ansi_lower_first() |>
@@ -138,18 +134,14 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     else if (cli::ansi_grepl("^all of the following conditions must be met:", msg_i,
                              ignore.case = TRUE)) {
 
-      msg_i <- Reduce(function(m, sy) unlist(strsplit(m, sy, TRUE)),
-                      as.list(unlist(cli::symbol)),
-                      init = msg_i) |>
-        unlist() |>
-        cli::ansi_trimws()
+      msg_i <- .split_bulleted_msg(msg_i)
 
-      grouped_msgs_i <- group_messages(msg_i[-1L], "and")
+      grouped_msgs_i <- group_messages(msg_i, "and")
       grouped_i <- attr(grouped_msgs_i, "grouped")
 
       grouped_msgs <- c(grouped_msgs,
                         grouped_msgs_i,
-                        msg_i[-1L][!grouped_i] |>
+                        msg_i[!grouped_i] |>
                           cli::ansi_trimws() |>
                           trim_final_punct() |>
                           ansi_lower_first() |>
@@ -234,13 +226,9 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     if (cli::ansi_grepl("^at least one of the following conditions must be met:", msg_i,
                         ignore.case = TRUE)) {
 
-      msg_i <- Reduce(function(m, sy) unlist(strsplit(m, sy, TRUE)),
-                      as.list(unlist(cli::symbol)),
-                      init = msg_i) |>
-        unlist() |>
-        cli::ansi_trimws()
+      msg_i <- .split_bulleted_msg(msg_i)
 
-      failures[i] <- msg_i[-1L] |>
+      failures[i] <- msg_i |>
         cli::ansi_trimws() |>
         trim_final_punct() |>
         ansi_lower_first() |>
@@ -249,13 +237,9 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
     else if (cli::ansi_grepl("^all of the following conditions must be met:", msg_i,
                              ignore.case = TRUE)) {
 
-      msg_i <- Reduce(function(m, sy) unlist(strsplit(m, sy, TRUE)),
-                      as.list(unlist(cli::symbol)),
-                      init = msg_i) |>
-        unlist() |>
-        cli::ansi_trimws()
+      msg_i <- .split_bulleted_msg(msg_i)
 
-      failures[i] <- msg_i[-1L] |>
+      failures[i] <- msg_i |>
         cli::ansi_trimws() |>
         trim_final_punct() |>
         ansi_lower_first() |>
@@ -325,4 +309,33 @@ group_messages <- function(messages, and_or = "and", .envir = parent.frame()) {
     )
 
   c(p, paste("each element of", p))
+}
+
+# Splits a rendered "All of/At least one of the following conditions must be
+# met:" message (as produced by err()) back into its individual bullet items,
+# dropping the header line. Operates on the message's line structure (each
+# bullet starts a new line with a leading glyph; word-wrapped continuation
+# lines are re-joined) rather than searching for symbol characters anywhere in
+# the text, since cli's ASCII-fallback glyphs (e.g. tick = "v", cross = "x")
+# are ordinary letters that occur constantly inside ordinary words.
+.split_bulleted_msg <- function(msg) {
+  lines <- strsplit(msg, "\n", fixed = TRUE)[[1L]][-1L]
+
+  glyphs <- c(cli::symbol$tick, cli::symbol$cross, cli::symbol$bullet)
+  items <- character(0L)
+
+  for (line in lines) {
+    trimmed <- cli::ansi_trimws(line, "left")
+    glyph <- glyphs[startsWith(trimmed, glyphs)][1L]
+
+    if (!is.na(glyph) || length(items) == 0L) {
+      item <- if (is.na(glyph)) trimmed else cli::ansi_trimws(sub(glyph, "", trimmed, fixed = TRUE), "left")
+      items <- c(items, item)
+    }
+    else {
+      items[length(items)] <- paste(items[length(items)], cli::ansi_trimws(line))
+    }
+  }
+
+  items
 }

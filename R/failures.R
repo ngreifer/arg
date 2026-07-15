@@ -10,7 +10,7 @@ make_fail <- function(a0, x) {
 
   if (fn %in% c("arg_and", "arg_or")) {
     new_args <- lapply(args[["..."]], function(j) {
-      j <- .to_arg_fun_call(j)
+      j <- .to_arg_fun_call(j, rlang::as_label(args[["x"]]), args[[".arg"]])
 
       if ("x" %in% names(j)) {
         j <- rlang::call_modify(j, !!!list(x = args[["x"]]))

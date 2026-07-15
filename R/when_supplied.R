@@ -129,7 +129,7 @@ when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
 
   fmls <- rlang::fn_fmls_names(call_fun)
 
-  if ("x" %in% fmls) {
+  if ("x" %in% fmls && !("x" %in% names(arg_call))) {
     arg_call <- rlang::call_modify(arg_call, !!!list(x = str2lang(x_name)))
   }
 
