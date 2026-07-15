@@ -1,7 +1,7 @@
 arg News and Updates
 ======
 
-# *arg* (development version)
+# *arg* 0.2.0
 
 * Added `arg_color()` (and variants) to check whether an argument corresponds to a valid color specification.
 
