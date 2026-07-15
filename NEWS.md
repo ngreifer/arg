@@ -17,6 +17,8 @@ arg News and Updates
 
 * Fixed several typos in the documentation and in some error messages.
 
+* Fixed bugs in processing some complicated nested messages produced by `arg_and()` and `arg_or()`.
+
 * Added a new logo.
 
 * Added a testing suite.
