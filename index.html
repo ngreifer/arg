@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">arg</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,6 +104,47 @@
 <span><span class="co">#&gt; Error:</span></span>
 <span><span class="co">#&gt; ! `z` must be NA, a logical value (TRUE or FALSE), or a count (a</span></span>
 <span><span class="co">#&gt;   non-negative whole number).</span></span></code></pre></div>
+<p><em>arg</em> is meant to be friendly to the developer and the user: implementing and chaining together checks are simple, and the error message produced are clean, pretty, and easy to understand for non-programmers. Consider the following example, where we check an argument (<code>vcov</code>) for validity. Below we compare the <em>checkmate</em> approach and the <em>arg</em> approach. As a user, which would you prefer to see?</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">vcov</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"bad entry"</span><span class="op">)</span></span>
+<span><span class="va">vcov_strings</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HC0"</span>, <span class="st">"HC1"</span>, <span class="st">"HC2"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># checkmate approach</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mllg.github.io/checkmate/" class="external-link">checkmate</a></span><span class="op">)</span></span>
+<span><span class="fu">assert</span><span class="op">(</span></span>
+<span>  <span class="fu">check_null</span><span class="op">(</span><span class="va">vcov</span><span class="op">)</span>,</span>
+<span>  <span class="fu">check_function</span><span class="op">(</span><span class="va">vcov</span><span class="op">)</span>,</span>
+<span>  <span class="fu">check_formula</span><span class="op">(</span><span class="va">vcov</span><span class="op">)</span>,</span>
+<span>  <span class="fu">check_matrix</span><span class="op">(</span><span class="va">vcov</span><span class="op">)</span>,</span>
+<span>  <span class="fu">check_choice</span><span class="op">(</span><span class="va">vcov</span>, choices <span class="op">=</span> <span class="va">vcov_strings</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! Assertion failed. One of the following must apply:</span></span>
+<span><span class="co">#&gt;  * check_null(vcov): Must be NULL</span></span>
+<span><span class="co">#&gt;  * check_function(vcov): Must be a function, not 'list'</span></span>
+<span><span class="co">#&gt;  * check_formula(vcov): Must be a formula, not list</span></span>
+<span><span class="co">#&gt;  * check_matrix(vcov): Must be of type 'matrix', not 'list'</span></span>
+<span><span class="co">#&gt;  * check_choice(vcov): Must be element of set {'HC0','HC1','HC2'}, but</span></span>
+<span><span class="co">#&gt;  * is not atomic scalar</span></span>
+<span></span>
+<span><span class="co"># arg approach</span></span>
+<span><span class="fu"><a href="reference/when_supplied.html">when_not_null</a></span><span class="op">(</span></span>
+<span>  <span class="va">vcov</span>,</span>
+<span>  <span class="fu"><a href="reference/arg_or.html">arg_or</a></span><span class="op">(</span></span>
+<span>    <span class="va">arg_function</span>,</span>
+<span>    <span class="fu"><a href="reference/arg_formula.html">arg_formula</a></span><span class="op">(</span>one_sided <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    <span class="va">arg_cov</span>,</span>
+<span>    <span class="fu"><a href="reference/arg_or.html">arg_and</a></span><span class="op">(</span></span>
+<span>      <span class="va">arg_string</span>,</span>
+<span>      <span class="fu"><a href="reference/arg_element.html">arg_element</a></span><span class="op">(</span><span class="va">vcov_strings</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="co">#&gt; Error:</span></span>
+<span><span class="co">#&gt; ! When `vcov` is not NULL, at least one of the following conditions must be met:</span></span>
+<span><span class="co">#&gt; • `vcov` must be a function; a one-sided formula; or a square, symmetric, numeric matrix</span></span>
+<span><span class="co">#&gt; • `vcov` must be a string and one of "HC0", "HC1", or "HC2"</span></span></code></pre></div>
+<p>Of course, there are some costs to this, notably speed, which is optimized by other argument checking packages like <em>checkmate</em>.</p>
 <p><em>arg</em> is meant to be used inside other R packages. Its error-throwing function <code><a href="reference/err.html">err()</a></code> (a wrapper for <code><a href="https://rlang.r-lib.org/reference/abort.html" class="external-link">rlang::abort()</a></code>) automatically includes the relevant (user-facing) function in its error message.</p>
 <p>The name “arg” is meant to be short for “argument”, but also perhaps represents the sound you would make if you were to encounter an error when running some code. Hopefully <em>arg</em> reduces the number of times users say “arg!”.</p>
 <p>If you use any of my R packages, including <a href="https://iqss.github.io/clarify/" class="external-link"><em>clarify</em></a>, <a href="https://ngreifer.github.io/cobalt/" class="external-link"><em>cobalt</em></a>, <a href="https://ngreifer.github.io/fwb/" class="external-link"><em>fwb</em></a>, or <a href="https://ngreifer.github.io/WeightIt/" class="external-link"><em>WeightIt</em></a>, you may already be using <em>arg</em>!</p>
@@ -112,17 +153,17 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>You can install the development version of <em>arg</em> from <a href="https://github.com/ngreifer/arg" class="external-link">GitHub</a> with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"ngreifer/arg"</span><span class="op">)</span></span></code></pre></div>
 <p>You can install the stable version on CRAN using</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"arg"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="related-packages">Related packages<a class="anchor" aria-label="anchor" href="#related-packages"></a>
 </h2>
-<p><em>arg</em> serves a similar function to other existing packages. These packages may be better for your purposes, and <em>arg</em> is not meant to compete with them.</p>
+<p><em>arg</em> serves a similar function to other existing packages. These packages may be better for your purposes and may optimize other criteria that you might prefer:</p>
 <ul>
 <li><a href="https://selkamand.github.io/assertions/" class="external-link"><em>assertions</em></a></li>
 <li><a href="https://mllg.github.io/checkmate/" class="external-link"><em>checkmate</em></a></li>

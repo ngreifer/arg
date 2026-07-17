@@ -62,6 +62,59 @@ arg_or(z,
 #>   non-negative whole number).
 ```
 
+*arg* is meant to be friendly to the developer and the user:
+implementing and chaining together checks are simple, and the error
+message produced are clean, pretty, and easy to understand for
+non-programmers. Consider the following example, where we check an
+argument (`vcov`) for validity. Below we compare the *checkmate*
+approach and the *arg* approach. As a user, which would you prefer to
+see?
+
+``` r
+
+vcov <- list("bad entry")
+vcov_strings <- c("HC0", "HC1", "HC2")
+
+# checkmate approach
+library(checkmate)
+assert(
+  check_null(vcov),
+  check_function(vcov),
+  check_formula(vcov),
+  check_matrix(vcov),
+  check_choice(vcov, choices = vcov_strings)
+)
+#> Error:
+#> ! Assertion failed. One of the following must apply:
+#>  * check_null(vcov): Must be NULL
+#>  * check_function(vcov): Must be a function, not 'list'
+#>  * check_formula(vcov): Must be a formula, not list
+#>  * check_matrix(vcov): Must be of type 'matrix', not 'list'
+#>  * check_choice(vcov): Must be element of set {'HC0','HC1','HC2'}, but
+#>  * is not atomic scalar
+
+# arg approach
+when_not_null(
+  vcov,
+  arg_or(
+    arg_function,
+    arg_formula(one_sided = TRUE),
+    arg_cov,
+    arg_and(
+      arg_string,
+      arg_element(vcov_strings)
+    )
+  )
+)
+#> Error:
+#> ! When `vcov` is not NULL, at least one of the following conditions must be met:
+#> • `vcov` must be a function; a one-sided formula; or a square, symmetric, numeric matrix
+#> • `vcov` must be a string and one of "HC0", "HC1", or "HC2"
+```
+
+Of course, there are some costs to this, notably speed, which is
+optimized by other argument checking packages like *checkmate*.
+
 *arg* is meant to be used inside other R packages. Its error-throwing
 function [`err()`](https://ngreifer.github.io/arg/reference/err.md) (a
 wrapper for
@@ -102,8 +155,8 @@ install.packages("arg")
 ## Related packages
 
 *arg* serves a similar function to other existing packages. These
-packages may be better for your purposes, and *arg* is not meant to
-compete with them.
+packages may be better for your purposes and may optimize other criteria
+that you might prefer:
 
 - [*assertions*](https://selkamand.github.io/assertions/)
 - [*checkmate*](https://mllg.github.io/checkmate/)

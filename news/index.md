@@ -1,6 +1,19 @@
 # Changelog
 
+## \*arg (development version)
+
+- Fixed bug in nested
+  [`arg_or()`](https://ngreifer.github.io/arg/reference/arg_or.md)/[`arg_and()`](https://ngreifer.github.io/arg/reference/arg_or.md)
+  introduced in previous version. Such errors render much more cleanly.
+
+- Nested errors are formatted more cleanly when used with
+  [`when_not_null()`](https://ngreifer.github.io/arg/reference/when_supplied.md)
+  and
+  [`when_supplied()`](https://ngreifer.github.io/arg/reference/when_supplied.md).
+
 ## *arg* 0.2.0
+
+CRAN release: 2026-07-15
 
 - Added
   [`arg_color()`](https://ngreifer.github.io/arg/reference/arg_color.md)
