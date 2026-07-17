@@ -51,6 +51,39 @@ arg_or(z,
        arg_count)
 ```
 
+*arg* is meant to be friendly to the developer and the user: implementing and chaining together checks are simple, and the error message produced are clean, pretty, and easy to understand for non-programmers. Consider the following example, where we check an argument (`vcov`) for validity. Below we compare the *checkmate* approach and the *arg* approach. As a user, which would you prefer to see?
+
+```{r}
+vcov <- list("bad entry")
+vcov_strings <- c("HC0", "HC1", "HC2")
+
+# checkmate approach
+library(checkmate)
+assert(
+  check_null(vcov),
+  check_function(vcov),
+  check_formula(vcov),
+  check_matrix(vcov),
+  check_choice(vcov, choices = vcov_strings)
+)
+
+# arg approach
+when_not_null(
+  vcov,
+  arg_or(
+    arg_function,
+    arg_formula(one_sided = TRUE),
+    arg_cov,
+    arg_and(
+      arg_string,
+      arg_element(vcov_strings)
+    )
+  )
+)
+```
+
+Of course, there are some costs to this, notably speed, which is optimized by other argument checking packages like *checkmate*.
+
 *arg* is meant to be used inside other R packages. Its error-throwing function `err()` (a wrapper for `rlang::abort()`) automatically includes the relevant (user-facing) function in its error message.
 
 The name "arg" is meant to be short for "argument", but also perhaps represents the sound you would make if you were to encounter an error when running some code. Hopefully *arg* reduces the number of times users say "arg!".
@@ -75,7 +108,7 @@ install.packages("arg")
 
 ## Related packages
 
-*arg* serves a similar function to other existing packages. These packages may be better for your purposes, and *arg* is not meant to compete with them. 
+*arg* serves a similar function to other existing packages. These packages may be better for your purposes and may optimize other criteria that you might prefer:
 
 * [*assertions*](https://selkamand.github.io/assertions/)
 * [*checkmate*](https://mllg.github.io/checkmate/)

@@ -1,6 +1,12 @@
 arg News and Updates
 ======
 
+# *arg (development version)
+
+* Fixed bug in nested `arg_or()`/`arg_and()` introduced in previous version. Such errors render much more cleanly.
+
+* Nested errors are formatted more cleanly when used with `when_not_null()` and `when_supplied()`.
+
 # *arg* 0.2.0
 
 * Added `arg_color()` (and variants) to check whether an argument corresponds to a valid color specification.

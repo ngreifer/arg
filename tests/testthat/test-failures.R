@@ -127,7 +127,11 @@ test_that("make_fail() preserves a passing nested arg_and() check's tick-mark me
   expect_match(msg, paste0(cli::symbol$cross, " `z` must have length 2"), fixed = TRUE)
 })
 
-test_that("a passing nested check's tick-mark message survives alongside multiple failing checks", {
+test_that("a passing nested check's tick-mark message survives alongside grouped failing checks", {
+  withr::local_options(cli.unicode = TRUE, cli.num_colors = 1, width = 200)
+  # The passing arg_or() collapses to one ticked line; the two failing checks
+  # share a prefix and the same (failing) status, so they group into one crossed
+  # line.
   f <- function(z) {
     arg_and(z,
             arg_or(arg_number, arg_string),
@@ -137,15 +141,18 @@ test_that("a passing nested check's tick-mark message survives alongside multipl
   cnd <- rlang::catch_cnd(f(5))
   msg <- conditionMessage(cnd)
   expect_match(msg, paste0(cli::symbol$tick, " `z` must be a single number or a string"), fixed = TRUE)
-  expect_match(msg, paste0(cli::symbol$cross, " `z` must have length 2"), fixed = TRUE)
-  expect_match(msg, paste0(cli::symbol$cross, " `z` must be less than 2"), fixed = TRUE)
+  expect_match(msg, paste0(cli::symbol$cross, " `z` must have length 2 and must be less than 2"),
+               fixed = TRUE)
 })
 
 test_that("make_fail() covers each remaining switch branch via a directly-passing check", {
-  # Each of these check functions has an "x" formal.
-  expect_error(arg_and(5, arg_element(values = c(1, 2, 3)), arg_string),
+  # Each of these check functions has an "x" formal and is set up to PASS (so
+  # make_fail() is invoked to synthesize its message), while arg_string() fails.
+  # Since the passing and failing checks have different statuses they are not
+  # grouped, so the arg_string() failure remains its own line.
+  expect_error(arg_and(2, arg_element(values = c(1, 2, 3)), arg_string),
                "must be a string", fixed = TRUE)
-  expect_error(arg_and(5, arg_element(values = c(NA, 1, 2)), arg_string),
+  expect_error(arg_and(1, arg_element(values = c(NA, 1, 2)), arg_string),
                "must be a string", fixed = TRUE)
   expect_error(arg_and(5, arg_equal(x2 = 5), arg_string),
                "must be a string", fixed = TRUE)

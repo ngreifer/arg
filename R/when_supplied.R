@@ -72,13 +72,8 @@ when_supplied <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
       }
 
       if (inherits(cnd, "error")) {
-        .msg <- conditionMessage(cnd) |>
-          cli::ansi_strsplit("\n") |>
-          unlist(recursive = FALSE)
-
-        .msg[1L] <- paste("When {.arg {(.arg)}} is supplied,", ansi_lower_first(.msg[1L]))
-
-        err(.msg, .call = .call)
+        prefix <- cli::format_inline("When {.arg {(.arg)}} is supplied,")
+        .emit_when_error(cnd, prefix, .call, environment())
       }
     }
   }
@@ -105,17 +100,36 @@ when_not_null <- function(x, ..., .arg = rlang::caller_arg(x), .call) {
       }
 
       if (inherits(cnd, "error")) {
-        .msg <- conditionMessage(cnd) |>
-          cli::ansi_strsplit("\n") |>
-          unlist(recursive = FALSE)
-
-        .msg[1L] <- paste(cli::format_inline("When {.arg {(.arg)}} is not {.val {list(NULL)}},"),
-                          ansi_lower_first(.msg[1L]))
-
-        err(.msg, .call = .call)
+        prefix <- cli::format_inline("When {.arg {(.arg)}} is not {.val {list(NULL)}},")
+        .emit_when_error(cnd, prefix, .call, environment())
       }
     }
   }
+}
+
+# Re-raise a caught check error, prefixing its first line (e.g. "When `x` is
+# supplied, ..."). A single-line message goes through err() (capitalize + add a
+# period); a multi-line cascade (from a nested arg_and()/arg_or()) is emitted
+# verbatim with use_cli_format = FALSE so its indentation is preserved.
+.emit_when_error <- function(cnd, prefix, .call, .frame) {
+  if (rlang::is_missing(.call)) {
+    .call <- .pkg_caller_call()
+  }
+
+  lines <- conditionMessage(cnd) |>
+    cli::ansi_strsplit("\n") |>
+    unlist(recursive = FALSE)
+
+  lines[1L] <- paste(prefix, ansi_lower_first(lines[1L]))
+
+  if (is_scalar(lines)) {
+    err(lines, .call = .call, .envir = .frame)
+  }
+
+  paste(lines, collapse = "\n") |>
+    cli::ansi_simplify() |>
+    rlang::abort(call = .call, use_cli_format = FALSE,
+                 .frame = .frame)
 }
 
 .to_arg_fun_call <- function(arg_call, x_name, .arg) {
