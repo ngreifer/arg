@@ -1,7 +1,9 @@
 arg News and Updates
 ======
 
-# *arg (development version)
+# *arg* (development version)
+
+* `arg_or()` now runs much faster when some conditions fails and others pass.
 
 * Fixed bug in nested `arg_or()`/`arg_and()` introduced in previous version. Such errors render much more cleanly.
 

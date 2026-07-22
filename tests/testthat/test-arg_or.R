@@ -379,3 +379,90 @@ test_that("arg_and() groups same-status checks that share a prefix into one line
   )
   expect_identical(msg2, expected2)
 })
+
+test_that("arg_or() takes a fast path when a check passes and restores probe state", {
+  f <- function(z) arg_or(z, arg_null, arg_logical, arg_whole_numeric, arg_character)
+
+  # A passing check returns invisibly without building the discarded errors.
+  expect_invisible(f("a"))
+  expect_null(f("a"))
+  # The internal probe flag is left FALSE (restored on exit).
+  expect_false(arg:::.arg_state$probe)
+
+  # It is also restored after an all-fail error unwinds.
+  g <- function(z) arg_or(z, arg_null, arg_logical, arg_whole_numeric)
+  tryCatch(g("a"), error = function(e) NULL)
+  expect_false(arg:::.arg_state$probe)
+
+  # The shared probe condition's class is not mutated by repeated failures.
+  for (i in 1:20) f("a")
+  expect_identical(class(arg:::.arg_probe_cnd),
+                   c("arg_probe_fail", "error", "condition"))
+})
+
+test_that("the probe fast-path does not change the all-fail error message", {
+  # The rich message-build path is unchanged, so an all-fail arg_or() produces
+  # exactly the message it did before the fast-path was added.
+  g <- function(z) arg_or(z, arg_null, arg_logical, arg_whole_numeric)
+  expect_identical(conditionMessage(rlang::catch_cnd(g("a"))),
+                   "`z` must be NULL, a logical vector, or a whole numeric vector.")
+
+  # arg_and() likewise (both checks fail and share a prefix -> one merged line).
+  h <- function(z) arg_and(z, arg_number, arg_string)
+  expect_identical(conditionMessage(rlang::catch_cnd(h(list()))),
+                   "`z` must be a single number and a string.")
+})
+
+test_that("a passing check short-circuits nested arg_and() inside arg_or()", {
+  f <- function(z) {
+    arg_or(z,
+           arg_and(arg_number, arg_lt(5)),
+           arg_character)
+  }
+  expect_invisible(f("a"))          # nested arg_and fails cheaply; arg_character passes
+  expect_false(arg:::.arg_state$probe)
+  expect_null(f("a"))
+})
+
+test_that("internal errors still surface through the probe fast-path", {
+  # Top-level malformed check.
+  f1 <- function(z) arg_or(z, arg_length(len = "a"))
+  expect_error(f1(1), "must be a vector of counts", fixed = TRUE)
+
+  # Malformed check BEFORE a would-pass check must still error (guards force(m)).
+  f2 <- function(z) arg_or(z, arg_length(len = "a"), arg_character)
+  expect_error(f2("a"), "must be a vector of counts", fixed = TRUE)
+
+  # A malformed per-check .msg on a failing check before a passing check.
+  f3 <- function(z) arg_or(z, arg_number(.msg = 1L), arg_character)
+  expect_error(f3("a"), "`.msg` must be a character vector", fixed = TRUE)
+
+  # Internal error nested in arg_and inside arg_or, with a passing sibling.
+  f4 <- function(z) arg_or(z, arg_and(arg_number, arg_length(len = "a")), arg_character)
+  expect_error(f4("a"), "must be a vector of counts", fixed = TRUE)
+
+  # Internal error nested in arg_or inside arg_or, with a passing sibling.
+  f5 <- function(z) arg_or(z, arg_or(arg_length(len = "a"), arg_number), arg_character)
+  expect_error(f5("a"), "must be a vector of counts", fixed = TRUE)
+
+  expect_false(arg:::.arg_state$probe)
+})
+
+test_that("a nested arg_or() failure is probed cheaply while a sibling passes", {
+  f <- function(z) {
+    arg_or(z,
+           arg_or(arg_null, arg_logical),
+           arg_character)
+  }
+  expect_invisible(f("a"))          # inner arg_or fails (probed); arg_character passes
+  expect_null(f("a"))
+  expect_false(arg:::.arg_state$probe)
+})
+
+test_that("arg_or() nested inside when_supplied() works with the fast-path", {
+  w <- function(z) when_supplied(z, arg_or(arg_null, arg_logical, arg_character))
+  expect_null(w())        # not supplied
+  expect_null(w("a"))     # arg_or fast path (arg_character passes)
+  expect_error(w(1L), "When `z` is supplied, `z` must be NULL, a logical vector, or a character vector",
+               fixed = TRUE)
+})

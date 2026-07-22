@@ -89,6 +89,39 @@ arg_or <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
 
   x_name <- rlang::caller_arg(x)
 
+  # Fast probe pass: evaluate checks recording only pass/fail (err() short-circuits
+  # to a message-less condition). If any check passes, return without ever building
+  # the error messages that would be discarded anyway.
+  prev_probe <- .arg_state$probe
+  .arg_state$probe <- TRUE
+  on.exit(.arg_state$probe <- prev_probe, add = TRUE)
+
+  for (i in seq_along(dots)) {
+    cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+      eval.parent() |>
+      rlang::catch_cnd()
+
+    if (!inherits(cnd, "error")) {
+      return(invisible())
+    }
+
+    if (rlang::cnd_inherits(cnd, "internal_arg_error")) {
+      if (prev_probe) {
+        stop(cnd)
+      }
+      break
+    }
+  }
+
+  # All checks failed (or an internal error needs its real message). A nested
+  # probe just signals failure cheaply; the outermost call turns the flag off and
+  # rebuilds the full error through the normal path below.
+  if (prev_probe) {
+    stop(.arg_probe_cnd)
+  }
+
+  .arg_state$probe <- FALSE
+
   for (i in seq_along(dots)) {
     cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
       eval.parent() |>
@@ -125,6 +158,45 @@ arg_and <- function(x, ..., .arg = rlang::caller_arg(x), .msg = NULL, .call) {
   failed <- rep.int(FALSE, ...length())
 
   x_name <- rlang::caller_arg(x)
+
+  # Fast probe pass: record only pass/fail (err() short-circuits). Unlike arg_or(),
+  # every check is scanned -- arg_and() surfaces an internal error from any position
+  # even when other checks pass, so it must not short-circuit on the first failure.
+  prev_probe <- .arg_state$probe
+  .arg_state$probe <- TRUE
+  on.exit(.arg_state$probe <- prev_probe, add = TRUE)
+
+  any_failed <- FALSE
+
+  for (i in seq_along(dots)) {
+    cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>
+      eval.parent() |>
+      rlang::catch_cnd()
+
+    if (rlang::cnd_inherits(cnd, "internal_arg_error")) {
+      if (prev_probe) {
+        stop(cnd)
+      }
+      any_failed <- TRUE
+      break
+    }
+
+    if (inherits(cnd, "error")) {
+      any_failed <- TRUE
+    }
+  }
+
+  if (!any_failed) {
+    return(invisible())
+  }
+
+  # A nested probe signals failure cheaply; the outermost call rebuilds the full
+  # tick/cross error through the normal path below.
+  if (prev_probe) {
+    stop(.arg_probe_cnd)
+  }
+
+  .arg_state$probe <- FALSE
 
   for (i in seq_along(dots)) {
     cnd <- .to_arg_fun_call(dots[[i]], x_name, .arg) |>

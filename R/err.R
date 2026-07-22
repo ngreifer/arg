@@ -48,6 +48,15 @@
 #' @export
 err <- function(m, .call, .envir = rlang::caller_env(), ...) {
 
+  # Probe fast-path: arg_or()/arg_and() only need to know that this check failed,
+  # not its (expensive to format) message, which they would discard. Forcing `m`
+  # first preserves the behavior of a malformed `.msg` (whose validation raises an
+  # internal_arg_error); the costly cli formatting below is what we skip.
+  if (isTRUE(.arg_state$probe)) {
+    force(m)
+    stop(.arg_probe_cnd)
+  }
+
   arg_env(.envir, .call = rlang::current_env()) |>
     internal_arg()
 
