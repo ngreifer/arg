@@ -1,6 +1,9 @@
 # Changelog
 
-## \*arg (development version)
+## *arg* (development version)
+
+- [`arg_or()`](https://ngreifer.github.io/arg/reference/arg_or.md) now
+  runs much faster when some conditions fails and others pass.
 
 - Fixed bug in nested
   [`arg_or()`](https://ngreifer.github.io/arg/reference/arg_or.md)/[`arg_and()`](https://ngreifer.github.io/arg/reference/arg_or.md)
